@@ -1,2 +1,59 @@
 @import "tailwindcss";
-@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default;
+}
+@plugin "daisyui/theme" {
+  name: "civicconnectlight";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  /* base layers */
+  --color-base-100: #F5F7FA;   /* main background */
+  --color-base-200: #E9EDF2;   /* light surface */
+  --color-base-300: #DDE3EA;   /* card borders / subtle surface */
+  --color-base-content: #1A1A1A; /* text */
+
+  /* brand colors */
+  --color-primary: #1E88E5;
+  --color-primary-content: #FFFFFF;
+
+  --color-secondary: #43A047;
+  --color-secondary-content: #FFFFFF;
+
+  --color-accent: #FFB300;
+  --color-accent-content: #1A1A1A;
+
+  /* neutrals */
+  --color-neutral: #4A4A4A;
+  --color-neutral-content: #FFFFFF;
+
+  /* semantic colors */
+  --color-info: #29B6F6;
+  --color-info-content: #FFFFFF;
+
+  --color-success: #4CAF50;
+  --color-success-content: #FFFFFF;
+
+  --color-warning: #FB8C00;
+  --color-warning-content: #1A1A1A;
+
+  --color-error: #E53935;
+  --color-error-content: #FFFFFF;
+
+  /* border radius */
+  --radius-selector: 1rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+
+  /* base sizes */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+
+  /* border size */
+  --border: 1px;
+
+  /* effects */
+  --depth: 1;
+  --noise: 0;
+}
