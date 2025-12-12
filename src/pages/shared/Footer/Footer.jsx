@@ -1,5 +1,5 @@
 import { Facebook, Linkedin, Youtube } from "lucide-react";
-import civicConnLogo from "../../../assets/civicConnect.png";
+import civicConnLogo from "/civicConnect.png";
 import { Link } from "react-router";
 
 export default function Footer() {
@@ -8,7 +8,7 @@ export default function Footer() {
             <nav>
                 <Link to="/" className="flex items-center gap-2">
                     <img className="w-15 h-15" src={civicConnLogo} alt="" />
-                    <span className="text-2xl font-semibold ">
+                    <span className="text-3xl font-semibold ">
                         Civic
                         <span className="font-bold text-primary">Connect</span>
                     </span>

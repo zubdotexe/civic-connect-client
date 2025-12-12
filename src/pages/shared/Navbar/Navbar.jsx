@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, NavLink } from "react-router";
-import civicConnLogo from "../../../assets/civicConnect.png";
+import civicConnLogo from "/civicConnect.png";
 
 export default function Navbar() {
     const links = (
