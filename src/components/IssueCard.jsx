@@ -1,10 +1,10 @@
 import React from "react";
+import { Link } from "react-router";
 
 export default function IssueCard({ issue }) {
     return (
         <div className="card bg-base-100 shadow-sm">
             <div className="card-body">
-                <h2 className="card-title">{issue.title}</h2>
                 <figure>
                     <img
                         // src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
@@ -13,6 +13,7 @@ export default function IssueCard({ issue }) {
                         alt="Shoes"
                     />
                 </figure>
+                <h2 className="card-title">{issue.title}</h2>
                 <p>{issue.description}</p>
                 <div className="flex space-x-3">
                     <p className="badge badge-soft badge-primary">
@@ -28,14 +29,14 @@ export default function IssueCard({ issue }) {
                 </div>
 
                 <div>
-                    <p className="font-semibold">UpVotes</p>
+                    <p className="font-semibold">Upvotes</p>
                     <p className="text-xl">{issue.upvoteCount}</p>
                     <p className="font-semibold mt-3">Location</p>
                     <p>{issue.location}</p>
                 </div>
-                <button className="w-full btn btn-secondary">
+                <Link to={`/issues/${issue._id}`} className="w-full btn btn-secondary">
                     View Details
-                </button>
+                </Link>
             </div>
         </div>
     );
