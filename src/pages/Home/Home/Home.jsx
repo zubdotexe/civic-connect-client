@@ -4,11 +4,13 @@ import HowItWorks from '../HowItWorks/HowItWorks'
 import Features from '../Features/Features'
 import Benefits from '../Benefits/Benefits'
 import CoveredCategories from '../CoveredCategories/CoveredCategories'
+import LatestResolvedIssues from '../LatestResolvedIssues/LatestResolvedIssues'
 
 export default function Home() {
   return (
     <div>
         <Hero />
+        <LatestResolvedIssues />
         <Features />
         <HowItWorks />
         <Benefits />
