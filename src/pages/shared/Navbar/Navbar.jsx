@@ -1,13 +1,21 @@
-import React from "react";
+import "./Navbar.css";
 import { Link, NavLink } from "react-router";
 import civicConnLogo from "/civicConnect.png";
 
 export default function Navbar() {
     const links = (
         <>
-            <NavLink className="mx-2">Home</NavLink>
-            <NavLink className="mx-2">All Issues</NavLink>
-            <NavLink className="mx-2">Volunteer</NavLink>
+            <li>
+                <NavLink to="/" className="mx-2">Home</NavLink>
+            </li>
+            <li>
+                <NavLink to="/issues" className="mx-2">
+                    All Issues
+                </NavLink>
+            </li>
+            <li>
+                <NavLink to="/volunteer" className="mx-2">Volunteer</NavLink>
+            </li>
         </>
     );
     return (
@@ -45,7 +53,8 @@ export default function Navbar() {
                 <Link to="/" className="flex items-center gap-2">
                     <img className="w-7 h-7" src={civicConnLogo} alt="" />
                     <span className="text-xl font-semibold ">
-                        Civic<span className="font-bold text-primary">Connect</span>
+                        Civic
+                        <span className="font-bold text-primary">Connect</span>
                     </span>
                 </Link>
             </div>
