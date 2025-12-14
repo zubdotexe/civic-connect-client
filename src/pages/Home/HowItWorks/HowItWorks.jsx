@@ -105,7 +105,7 @@ export default function HowItWorks() {
                             <span>
                                 <span>Citizen Tracks</span>
                                 <span className="text-success">
-                                    Citizens Glad!
+                                    Citizen's Glad!
                                 </span>
                             </span>
                         </span>

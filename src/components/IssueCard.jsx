@@ -19,13 +19,15 @@ export default function IssueCard({ issue }) {
                     <p className="badge badge-soft badge-primary">
                         {issue.category}
                     </p>
-                    {
-                        issue.status === "resolved" ? (<p className="badge badge-soft badge-success">
-                        {issue.status}
-                    </p>) : (<p className="badge badge-soft badge-warning">
-                        {issue.status}
-                    </p>)
-                    }
+                    <p
+                        className={`text-sm font-medium ${
+                            issue?.priority === "high"
+                                ? "badge badge-soft badge-error"
+                                : issue?.priority === "medium"
+                                ? "badge badge-soft badge-warning"
+                                : "badge badge-soft badge-success"
+                        }`}
+                    >{issue.priority}</p>
                 </div>
 
                 <div>
@@ -34,7 +36,10 @@ export default function IssueCard({ issue }) {
                     <p className="font-semibold mt-3">Location</p>
                     <p>{issue.location}</p>
                 </div>
-                <Link to={`/issues/${issue._id}`} className="w-full btn btn-secondary">
+                <Link
+                    to={`/issues/${issue._id}`}
+                    className="w-full btn btn-secondary"
+                >
                     View Details
                 </Link>
             </div>

@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Hero() {
     return (
-        <div className="max-w-375 mx-auto mt-10 p-10 bg-linear-to-br from-[#E3F2FD] to-[#F5F7FA] flex flex-col-reverse md:flex-row gap-5 items-center">
+        <div className="max-w-375 mx-auto p-10 bg-linear-to-br from-[#E3F2FD] to-[#F5F7FA] flex flex-col-reverse md:flex-row gap-5 items-center">
             <div className="space-y-3 flex-1">
                 <h1 className="text-4xl">
                     Connecting Citizens <br /> to Smarter Cities.

@@ -19,6 +19,17 @@ export default function IssueDetails() {
 
     // console.log("issue", issue);
 
+    useEffect(() => {
+        if (issue?.title) {
+            document.title = issue.title;
+        }
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    }, [issue]);
+
     return (
         <div className="min-h-screen bg-base-200 p-10">
             <div className="max-w-3xl mx-auto p-6 bg-base-100 rounded-lg shadow-lg">
@@ -49,7 +60,7 @@ export default function IssueDetails() {
                     </div>
 
                     {/* Category, Priority, Status */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div className="flex items-center space-x-2">
                             <span className="font-semibold text-gray-600">
                                 Category:
