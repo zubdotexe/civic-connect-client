@@ -49,7 +49,7 @@ export default function Features() {
             <h2 className="text-3xl font-semibold">Features</h2>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mt-7">
                 {features.map((feature, idx) => (
-                    <div key={idx} className="bg-base-200 p-5 text-center rounded-md shadow-xl">
+                    <div key={idx} className="bg-base-200 hover:bg-base-300/65 hover:scale-102 p-5 text-center rounded-md shadow-xl">
                         <p>{feature.icon}</p>
                         <h3 className="font-semibold text-2xl mt-2">
                             {feature.title}
