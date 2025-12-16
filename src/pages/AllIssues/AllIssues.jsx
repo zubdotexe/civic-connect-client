@@ -10,13 +10,25 @@ export default function AllIssues() {
     // const [totalPages, setTotalPages] = useState(0);
     const limit = 6;
     const [currPage, setCurrPage] = useState(0);
+    const [searchText, setSearchText] = useState("");
+    // const [categories, setCategories] = useState([])
+    const [category, setCategory] = useState("");
+
+    const handleSearch = (e) => {
+        setSearchText(e.target.value);
+        console.log("", e.target.value);
+    };
 
     const { data } = useQuery({
-        queryKey: ["issues", currPage],
+        queryKey: ["issues", currPage, searchText, category],
         queryFn: async () => {
             const res = await axiosInstance.get(
-                `/issues?limit=${limit}&skip=${currPage * limit}`
+                `/issues?limit=${limit}&skip=${
+                    currPage * limit
+                }&search=${searchText}&category=${category}`
             );
+            // console.log("", data);
+
             // setTotalIssues(res.data.total);
             // const pages = Math.ceil(totalIssues / limit);
             // setTotalPages(pages);
@@ -27,6 +39,23 @@ export default function AllIssues() {
     const issues = data?.result ?? [];
     const totalIssues = data?.total ?? 0;
     const totalPages = Math.ceil(totalIssues / limit);
+
+    const { data: categories = [] } = useQuery({
+        queryKey: ["categories"],
+        queryFn: async () => {
+            const res = await axiosInstance.get("/issues");
+            const categoriesData = res?.data?.result?.map((issue) => issue.category);
+            // console.log('', categoriesData);
+            return [...new Set(categoriesData)];
+            // return categories;
+        },
+    });
+
+    
+
+    // const categoriesDuplicate = data?.result?.map((issue) => issue.category);
+    // const categories = [...new Set(categoriesDuplicate)];
+    // console.log("status", categories);
 
     // useEffect(() => {
     // console.log("", totalIssues);
@@ -45,6 +74,24 @@ export default function AllIssues() {
             <h2 className="text-3xl font-semibold">
                 All Issues ({totalIssues})
             </h2>
+            <div className="mt-5 flex flex-wrap gap-5 justify-between">
+                <input
+                    className="outline-none border border-neutral rounded-lg p-3"
+                    type="text"
+                    placeholder="Search Issues"
+                    onChange={handleSearch}
+                />
+
+                <select
+                    defaultValue="Pick a category"
+                    className="select select-neutral bg-base-200 h-13"
+                >
+                    <option disabled={true}>Pick a category</option>
+                    {categories?.map((c) => (
+                        <option key={c} onClick={() => setCategory(c)}>{c}</option>
+                    ))}
+                </select>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-7">
                 {issues.map((issue, idx) => (
                     <IssueCard key={idx} issue={issue} />
