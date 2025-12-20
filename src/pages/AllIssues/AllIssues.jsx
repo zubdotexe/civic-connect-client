@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import useaxiosInstance from "../../hooks/useAxios";
 import IssueCard from "../../components/IssueCard";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import Loading from "../../components/Loading";
 
 export default function AllIssues() {
     const axiosInstance = useaxiosInstance();
@@ -16,10 +17,15 @@ export default function AllIssues() {
 
     const handleSearch = (e) => {
         setSearchText(e.target.value);
-        console.log("", e.target.value);
+        setCurrPage(0);
     };
 
-    const { data } = useQuery({
+    const handlePickCategory = (e) => {
+        setCurrPage(0);
+        setCategory(e.target.value);
+    };
+
+    const { data, isLoading } = useQuery({
         queryKey: ["issues", currPage, searchText, category],
         queryFn: async () => {
             const res = await axiosInstance.get(
@@ -44,22 +50,16 @@ export default function AllIssues() {
         queryKey: ["categories"],
         queryFn: async () => {
             const res = await axiosInstance.get("/issues");
-            const categoriesData = res?.data?.result?.map((issue) => issue.category);
+            const categoriesData = res?.data?.result?.map(
+                (issue) => issue.category
+            );
             // console.log('', categoriesData);
             return [...new Set(categoriesData)];
             // return categories;
         },
     });
 
-    
-
-    // const categoriesDuplicate = data?.result?.map((issue) => issue.category);
-    // const categories = [...new Set(categoriesDuplicate)];
-    // console.log("status", categories);
-
-    // useEffect(() => {
-    // console.log("", totalIssues);
-    // }, []);
+    // console.log('', isLoading);
 
     useEffect(() => {
         (document.title = "All Issues"),
@@ -76,26 +76,41 @@ export default function AllIssues() {
             </h2>
             <div className="mt-5 flex flex-wrap gap-5 justify-between">
                 <input
-                    className="outline-none border border-neutral rounded-lg p-3"
+                    className="outline-none border border-neutral rounded-sm p-3"
                     type="text"
                     placeholder="Search Issues"
                     onChange={handleSearch}
                 />
 
-                <select
-                    defaultValue="Pick a category"
-                    className="select select-neutral bg-base-200 h-13"
-                >
-                    <option disabled={true}>Pick a category</option>
-                    {categories?.map((c) => (
-                        <option key={c} onClick={() => setCategory(c)}>{c}</option>
-                    ))}
-                </select>
+                <div className="flex gap-2">
+                    <button
+                        onClick={() => setCategory("")}
+                        className="btn btn-error"
+                    >
+                        Remove Filter
+                    </button>
+                    <select
+                        value={category}
+                        className="select select-neutral bg-base-200"
+                        onChange={handlePickCategory}
+                    >
+                        <option value="" disabled={true}>Pick a category</option>
+                        {categories?.map((c) => (
+                            <option key={c} value={c}>
+                                {c}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-7">
-                {issues.map((issue, idx) => (
-                    <IssueCard key={idx} issue={issue} />
-                ))}
+                {isLoading ? (
+                    <Loading />
+                ) : (
+                    issues.map((issue, idx) => (
+                        <IssueCard key={idx} issue={issue} />
+                    ))
+                )}
             </div>
             <div className="flex flex-wrap justify-center gap-3 mt-7">
                 <button

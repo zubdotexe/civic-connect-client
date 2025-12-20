@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 export default function IssueCard({ issue }) {
     return (
-        <div className="card bg-base-100 shadow-sm">
+        <div className="card bg-base-100 hover:scale-101 shadow-sm">
             <div className="card-body">
                 <figure>
                     <img
