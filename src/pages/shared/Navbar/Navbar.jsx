@@ -6,15 +6,15 @@ export default function Navbar() {
     const links = (
         <>
             <li>
-                <NavLink to="/" className="mx-2">Home</NavLink>
+                <NavLink to="/" className="mx-1">Home</NavLink>
             </li>
             <li>
-                <NavLink to="/issues" className="mx-2">
+                <NavLink to="/issues" className="mx-1">
                     All Issues
                 </NavLink>
             </li>
             <li>
-                <NavLink to="/volunteer" className="mx-2">Volunteer</NavLink>
+                <NavLink to="/volunteer" className="mx-1">Volunteer</NavLink>
             </li>
         </>
     );
@@ -45,7 +45,7 @@ export default function Navbar() {
                     </div>
                     <ul
                         tabIndex="-1"
-                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
                     >
                         {links}
                     </ul>
