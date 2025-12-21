@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { useParams } from "react-router";
 import useaxiosInstance from "../../hooks/useAxios";
+import NotFound from "../NotFound/NotFound";
 
 export default function IssueDetails() {
     const { issueId } = useParams();
@@ -29,6 +30,8 @@ export default function IssueDetails() {
             behavior: "smooth",
         });
     }, [issue]);
+
+    if (!issue) return <NotFound />
 
     return (
         <div className="min-h-screen bg-base-200 p-10">
