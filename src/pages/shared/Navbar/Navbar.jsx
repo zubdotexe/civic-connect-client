@@ -1,12 +1,27 @@
 import "./Navbar.css";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import civicConnLogo from "/civicConnect.png";
+import useAuth from "../../../hooks/useAuth";
+import { LogOut } from "lucide-react";
 
 export default function Navbar() {
+    const { user, logoutUser } = useAuth();
+    const navigate = useNavigate();
+
+    const handleSignOut = () => {
+        logoutUser()
+            .then(navigate("/login"))
+            .catch((err) => {
+                console.log("", err);
+            });
+    };
+
     const links = (
         <>
             <li>
-                <NavLink to="/" className="mx-1">Home</NavLink>
+                <NavLink to="/" className="mx-1">
+                    Home
+                </NavLink>
             </li>
             <li>
                 <NavLink to="/issues" className="mx-1">
@@ -14,7 +29,9 @@ export default function Navbar() {
                 </NavLink>
             </li>
             <li>
-                <NavLink to="/volunteer" className="mx-1">Volunteer</NavLink>
+                <NavLink to="/volunteer" className="mx-1">
+                    Volunteer
+                </NavLink>
             </li>
         </>
     );
@@ -62,8 +79,47 @@ export default function Navbar() {
                 <ul className="menu menu-horizontal px-1">{links}</ul>
             </div>
             <div className="navbar-end gap-2">
-                <Link className="btn btn-primary">Login</Link>
-                <Link className="btn btn-secondary">Register</Link>
+                {user ? (
+                    <div className="dropdown dropdown-end cursor-pointer">
+                        <div
+                            tabIndex={0}
+                            role="button"
+                            className="rounded-full w-9 h-9 overflow-hidden"
+                        >
+                            <img
+                                className="w-full h-full object-cover"
+                                src={
+                                    user.photoURL
+                                        ? user.photoURL
+                                        : "https://cdn-icons-png.flaticon.com/512/1077/1077012.png"
+                                }
+                                alt=""
+                            />
+                        </div>
+                        <ul
+                            tabIndex="-1"
+                            className="dropdown-content menu bg-base-100 rounded-box z-10 w-52 p-2 shadow-sm space-y-2"
+                        >
+                            <p className="font-semibold">{user.displayName || user.email}</p>
+                            <Link to="/dashboard">Dashboard</Link>
+                            <button
+                                className="btn btn-accent"
+                                onClick={handleSignOut}
+                            >
+                                <LogOut size={16}/> Logout
+                            </button>
+                        </ul>
+                    </div>
+                ) : (
+                    <>
+                        <Link to="/login" className="btn btn-primary">
+                            Login
+                        </Link>
+                        <Link to="/register" className="btn btn-secondary">
+                            Register
+                        </Link>
+                    </>
+                )}
             </div>
         </div>
     );
