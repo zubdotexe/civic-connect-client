@@ -1,4 +1,15 @@
-import React from "react";
+import { motion } from "framer-motion";
+import { HdIcon } from "lucide-react";
+
+const divContainerVariants = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { staggerChildren: 0.25 } },
+};
+
+const divCardVariants = {
+    hidden: { opacity: 0, y: 40 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
+};
 
 export default function Features() {
     const features = [
@@ -47,17 +58,27 @@ export default function Features() {
     return (
         <div className="max-w-375 mx-auto p-10">
             <h2 className="text-3xl font-semibold">Features</h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mt-7">
+            <motion.div
+                variants={divContainerVariants}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.2 }}
+                className="grid grid-cols-1 md:grid-cols-4 gap-10 mt-7"
+            >
                 {features.map((feature, idx) => (
-                    <div key={idx} className="bg-base-200 hover:bg-base-300/65 hover:scale-102 p-5 text-center rounded-md shadow-xl">
+                    <motion.div
+                        variants={divCardVariants}
+                        key={idx}
+                        className="bg-base-200 hover:bg-base-300/65 hover:scale-102 p-5 text-center rounded-md shadow-xl"
+                    >
                         <p>{feature.icon}</p>
                         <h3 className="font-semibold text-2xl mt-2">
                             {feature.title}
                         </h3>
                         <p className="mt-3">{feature.desc}</p>
-                    </div>
+                    </motion.div>
                 ))}
-            </div>
+            </motion.div>
         </div>
     );
 }

@@ -16,11 +16,11 @@ export default function Benefits() {
         },
     ];
     return (
-        <div className="max-w-375 mx-auto p-10">
+        <div className="max-w-375 mx-auto p-10 bg-base-200">
             <h2 className="text-3xl font-semibold">
                 Citizen Benefits vs Authority Benefits
             </h2>
-            <div className="max-w-3/5 mx-auto mt-7">
+            <div className="w-full md:max-w-3/5 mx-auto mt-7">
                 <div className="overflow-x-auto">
                     <table className="table">
                         {/* head */}
