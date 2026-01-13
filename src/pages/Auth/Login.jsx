@@ -10,7 +10,7 @@ export default function Login() {
         handleSubmit,
         formState: { errors },
     } = useForm();
-    const { signInUser } = useAuth();
+    const { signInUser, loading, authMethod } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -29,7 +29,11 @@ export default function Login() {
     return (
         <div className="relative h-screen flex justify-center items-center bg-black/45">
             <div className="absolute h-full w-full top-0 overflow-hidden -z-1">
-                <img className="h-full w-full object-cover" src="https://cdn.pixabay.com/photo/2016/11/19/13/16/infrastructure-1839235_1280.jpg" alt="" />
+                <img
+                    className="h-full w-full object-cover"
+                    src="https://cdn.pixabay.com/photo/2016/11/19/13/16/infrastructure-1839235_1280.jpg"
+                    alt=""
+                />
             </div>
             <div>
                 <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
@@ -60,8 +64,16 @@ export default function Login() {
                         <Link to="/register" className="text-primary">
                             Register
                         </Link>
-                        <button className="w-full btn btn-primary mt-4">
-                            Login
+                        <button
+                            className="w-full btn btn-primary mt-4"
+                            disabled={loading}
+                        >
+                            Login{" "}
+                            {loading &&
+                                authMethod ===
+                                    "login" && (
+                                        <span className="loading loading-spinner text-accent"></span>
+                                    )}
                         </button>
                     </form>
                     <SocialLogin phrase={"Login"} />

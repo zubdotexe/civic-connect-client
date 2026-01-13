@@ -12,7 +12,7 @@ export default function Register() {
         formState: { errors },
     } = useForm();
 
-    const { registerUser, updateUserProfile } = useAuth();
+    const { registerUser, updateUserProfile, loading, authMethod } = useAuth();
     const navigate = useNavigate();
     const axiosInstance = useaxiosInstance();
 
@@ -65,11 +65,17 @@ export default function Register() {
     return (
         <div className="relative h-screen flex justify-center items-center bg-black/45">
             <div className="absolute h-full w-full top-0 overflow-hidden -z-1">
-                <img className="h-full w-full object-cover" src="https://cdn.pixabay.com/photo/2016/11/19/13/16/infrastructure-1839235_1280.jpg" alt="" />
+                <img
+                    className="h-full w-full object-cover"
+                    src="https://cdn.pixabay.com/photo/2016/11/19/13/16/infrastructure-1839235_1280.jpg"
+                    alt=""
+                />
             </div>
             <div>
                 <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-                    <legend className="fieldset-legend text-2xl">Register</legend>
+                    <legend className="fieldset-legend text-2xl">
+                        Register
+                    </legend>
 
                     <form action="" onSubmit={handleSubmit(handleRegister)}>
                         <label className="label mt-2">Name</label>
@@ -127,7 +133,10 @@ export default function Register() {
                             Login
                         </Link>
                         <button className="w-full btn btn-primary mt-4">
-                            Register
+                            Register{" "}
+                            {loading && authMethod === "register" && (
+                                <span className="loading loading-spinner text-accent"></span>
+                            )}
                         </button>
                     </form>
                     <SocialLogin phrase={"Signup"} />
