@@ -1,6 +1,9 @@
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import SocialLogin from "./SocialLogin";
+import useaxiosInstance from "../../hooks/useAxios";
+import { toast } from "react-toastify";
 
 export default function Register() {
     const {
@@ -9,24 +12,64 @@ export default function Register() {
         formState: { errors },
     } = useForm();
 
-    const { registerUser } = useAuth();
+    const { registerUser, updateUserProfile } = useAuth();
+    const navigate = useNavigate();
+    const axiosInstance = useaxiosInstance();
 
     const handleRegister = (data) => {
         console.log("", data);
+        const profileImg = data.photo[0];
+
         registerUser(data.email, data.password)
             .then((result) => {
                 console.log("", result.user);
+
+                const formData = new FormData();
+                formData.append("image", profileImg);
+
+                const imgApiUrl = `https://api.imgbb.com/1/upload?key=${
+                    import.meta.env.VITE_IMG_HOST_KEY
+                }`;
+
+                axiosInstance
+                    .post(imgApiUrl, formData)
+                    .then((result) => {
+                        console.log(result);
+
+                        const userProfile = {
+                            displayName: data.name,
+                            photoURL: result.data.data.url,
+                        };
+
+                        updateUserProfile(userProfile)
+                            .then((result) => {
+                                console.log("", result);
+                                navigate("/");
+                            })
+                            .catch((err) => {
+                                console.log("", err);
+                                toast.error(err.message);
+                            });
+                    })
+                    .catch((err) => {
+                        console.log("err", err);
+                        toast.error(err.message);
+                    });
             })
             .catch((err) => {
                 console.log("", err);
+                toast.error(err.message);
             });
     };
 
     return (
-        <div className="h-screen flex justify-center items-center">
+        <div className="relative h-screen flex justify-center items-center bg-black/45">
+            <div className="absolute h-full w-full top-0 overflow-hidden -z-1">
+                <img className="h-full w-full object-cover" src="https://cdn.pixabay.com/photo/2016/11/19/13/16/infrastructure-1839235_1280.jpg" alt="" />
+            </div>
             <div>
                 <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-                    <legend className="fieldset-legend">Register</legend>
+                    <legend className="fieldset-legend text-2xl">Register</legend>
 
                     <form action="" onSubmit={handleSubmit(handleRegister)}>
                         <label className="label mt-2">Name</label>
@@ -87,11 +130,10 @@ export default function Register() {
                             Register
                         </button>
                     </form>
+                    <SocialLogin phrase={"Signup"} />
                 </fieldset>
-                <div className="mt-5 text-secondary text-center">
-                    <Link to="/">
-                        Go to Home
-                    </Link>
+                <div className="mt-5 text-accent text-center">
+                    <Link to="/">Go to Home</Link>
                 </div>
             </div>
         </div>

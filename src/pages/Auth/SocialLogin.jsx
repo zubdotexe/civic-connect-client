@@ -1,16 +1,20 @@
 import { GrGoogle } from "react-icons/gr";
 import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router";
 
-export default function SocialLogin({phrase}) {
-    const { signInWGoogle } = useAuth();
+export default function SocialLogin({ phrase }) {
+    const { signInWGoogle, setLoading } = useAuth();
+    const navigate = useNavigate();
 
     const handleGoogleSignIn = () => {
         signInWGoogle()
             .then((result) => {
                 console.log("", result.user);
+                navigate("/");
             })
             .catch((err) => {
                 console.log("", err);
+                setLoading(false);
             });
     };
 
@@ -18,7 +22,7 @@ export default function SocialLogin({phrase}) {
         <div>
             <button
                 onClick={handleGoogleSignIn}
-                className="w-full btn bg-secondary text-black"
+                className="w-full btn btn-secondary text-black"
             >
                 <GrGoogle />
                 {phrase} with Google
