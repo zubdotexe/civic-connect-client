@@ -17,7 +17,8 @@ export default function IssueCard({ issue }) {
                 <p>{issue.description}</p>
                 <div className="flex space-x-3">
                     <p className="badge badge-soft badge-primary">
-                        {issue.category}
+                        {issue.category.charAt(0).toUpperCase() +
+                            issue.category.slice(1)}
                     </p>
                     <p
                         className={`text-sm font-medium ${
@@ -27,7 +28,10 @@ export default function IssueCard({ issue }) {
                                 ? "badge badge-soft badge-warning"
                                 : "badge badge-soft badge-success"
                         }`}
-                    >{issue.priority}</p>
+                    >
+                        {issue.priority.charAt(0).toUpperCase() +
+                            issue.priority.slice(1)}
+                    </p>
                 </div>
 
                 <div>
