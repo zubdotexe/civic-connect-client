@@ -94,7 +94,9 @@ export default function AllIssues() {
                         className="select select-neutral bg-base-200"
                         onChange={handlePickCategory}
                     >
-                        <option value="" disabled={true}>Pick a category</option>
+                        <option value="" disabled={true}>
+                            Pick a category
+                        </option>
                         {categories?.map((c) => (
                             <option key={c} value={c}>
                                 {c}
@@ -103,22 +105,25 @@ export default function AllIssues() {
                     </select>
                 </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-7">
-                {isLoading ? (
-                    <Loading />
-                ) : (
-                    issues.map((issue, idx) => (
+            {isLoading ? (
+                <Loading />
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-7">
+                    {issues.map((issue, idx) => (
                         <IssueCard key={idx} issue={issue} />
-                    ))
-                )}
-            </div>
+                    ))}
+                </div>
+            )}
+
             <div className="flex flex-wrap justify-center gap-3 mt-7">
                 <button
                     className="btn bg-neutral/30"
                     onClick={() => {
-                        setCurrPage((prev) =>
-                            prev === 0 ? setCurrPage(totalPages - 1) : prev - 1
-                        );
+                        setCurrPage((prev) => {
+                            if (prev === 0) {
+                                return totalPages - 1;
+                            } else return prev - 1;
+                        });
                     }}
                 >
                     <ArrowBigLeft />
