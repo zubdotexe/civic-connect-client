@@ -1,4 +1,4 @@
-import { HomeIcon, Settings2Icon } from "lucide-react";
+import { HomeIcon, ScrollText, Settings2Icon } from "lucide-react";
 import { GoReport } from "react-icons/go";
 import { GrSidebar } from "react-icons/gr";
 import { Link, Outlet } from "react-router";
@@ -58,6 +58,19 @@ export default function DashboardLayout() {
                                 <GoReport size={16} />
                                 <span className="is-drawer-close:hidden">
                                     Report Issue
+                                </span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                to="/dashboard/my-issues"
+                                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                data-tip="My Issues"
+                            >
+                                {/* Home icon */}
+                                <ScrollText size={16} />
+                                <span className="is-drawer-close:hidden">
+                                    My Issues
                                 </span>
                             </Link>
                         </li>

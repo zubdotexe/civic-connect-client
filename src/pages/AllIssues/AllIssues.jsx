@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import useaxiosInstance from "../../hooks/useAxios";
 import IssueCard from "../../components/IssueCard";
-import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import Loading from "../../components/Loading";
 
 export default function AllIssues() {
@@ -126,7 +126,7 @@ export default function AllIssues() {
                         });
                     }}
                 >
-                    <ArrowBigLeft />
+                    <ArrowLeft />
                 </button>
                 {[...Array(totalPages).keys()].map((key) => (
                     <button
@@ -148,7 +148,7 @@ export default function AllIssues() {
                         })
                     }
                 >
-                    <ArrowBigRight />
+                    <ArrowRight />
                 </button>
             </div>
         </div>
