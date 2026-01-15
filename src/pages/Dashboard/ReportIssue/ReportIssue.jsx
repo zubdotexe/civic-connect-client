@@ -68,6 +68,20 @@ export default function ReportIssue() {
                                     icon: "success",
                                 });
 
+                                const issueLog = {
+                                    issueId: result.data.insertedId,
+                                    issueStatus: "pending",
+                                };
+
+                                axiosInstance
+                                    .post("/issues/trackings", issueLog)
+                                    .then((res) => {
+                                        console.log("issue log inserted");
+                                    })
+                                    .catch((err) => {
+                                        console.log("", err);
+                                    });
+
                                 reset();
                                 setCategory("");
                             })
