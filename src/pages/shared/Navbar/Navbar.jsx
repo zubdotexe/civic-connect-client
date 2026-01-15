@@ -29,6 +29,11 @@ export default function Navbar() {
                 </NavLink>
             </li>
             <li>
+                <NavLink to="/dashboard/report-issue" className="mx-1">
+                    Report Issue
+                </NavLink>
+            </li>
+            <li>
                 <NavLink to="/staff/register" className="mx-1">
                     Apply as Staff
                 </NavLink>
