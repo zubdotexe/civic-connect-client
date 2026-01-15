@@ -6,6 +6,11 @@ import IssueDetails from "../pages/Issue/IssueDetails";
 import AuthLayout from "../layouts/AuthLayout";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
+import PrivateRoute from "./PrivateRoute";
+import NotFound from "../pages/NotFound/NotFound";
+import DashboardLayout from "../layouts/DashboardLayout";
+import ReportIssue from "../pages/Dashboard/ReportIssue/ReportIssue";
+import StaffRegister from "../pages/StaffRegister/StaffRegister";
 
 export const router = createBrowserRouter([
     {
@@ -22,7 +27,19 @@ export const router = createBrowserRouter([
             },
             {
                 path: "issues/:issueId",
-                Component: IssueDetails,
+                element: (
+                    <PrivateRoute>
+                        <IssueDetails />
+                    </PrivateRoute>
+                ),
+            },
+            {
+                path: "staff/register",
+                element: (
+                    <PrivateRoute>
+                        <StaffRegister />
+                    </PrivateRoute>
+                ),
             },
         ],
     },
