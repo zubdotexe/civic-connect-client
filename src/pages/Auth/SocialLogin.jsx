@@ -40,7 +40,7 @@ export default function SocialLogin({ phrase }) {
         <div>
             <button
                 onClick={handleGoogleSignIn}
-                className="w-full btn btn-secondary text-black"
+                className="w-full btn btn-secondary"
                 disabled={loading}
             >
                 <GrGoogle />

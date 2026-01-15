@@ -11,6 +11,7 @@ import NotFound from "../pages/NotFound/NotFound";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ReportIssue from "../pages/Dashboard/ReportIssue/ReportIssue";
 import StaffRegister from "../pages/StaffRegister/StaffRegister";
+import MyIssues from "../pages/Dashboard/MyIssues/MyIssues";
 
 export const router = createBrowserRouter([
     {
@@ -68,6 +69,10 @@ export const router = createBrowserRouter([
             {
                 path: "report-issue",
                 Component: ReportIssue,
+            },
+            {
+                path: "my-issues",
+                Component: MyIssues,
             },
         ],
     },

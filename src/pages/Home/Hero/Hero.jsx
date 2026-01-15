@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 
 export default function Hero() {
     return (
@@ -12,12 +13,18 @@ export default function Hero() {
                     them faster with a transparent, connected workflow.
                 </p>
                 <div className="flex gap-3">
-                    <button className="btn btn-primary text-lg">
+                    <Link
+                        to="/dashboard/report-issue"
+                        className="btn btn-primary text-lg"
+                    >
                         Report an Issue
-                    </button>
-                    <button className="btn btn-outline border-primary text-lg">
+                    </Link>
+                    <Link
+                        to="/issues"
+                        className="btn btn-outline border-primary text-lg"
+                    >
                         View All Issues
-                    </button>
+                    </Link>
                 </div>
             </div>
             <div className="relative flex-1 rounded-xl overflow-hidden">
