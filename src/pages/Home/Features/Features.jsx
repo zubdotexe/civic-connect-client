@@ -7,8 +7,8 @@ const divContainerVariants = {
 };
 
 const divCardVariants = {
-    hidden: { opacity: 0, y: 40 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { duration: 0.3, ease: "easeOut" } },
 };
 
 export default function Features() {
@@ -69,7 +69,7 @@ export default function Features() {
                     <motion.div
                         variants={divCardVariants}
                         key={idx}
-                        className="bg-base-200 hover:bg-base-300/65 hover:scale-102 p-5 text-center rounded-md shadow-xl"
+                        className="bg-base-200 transform transition-transform duration-300 delay-100 hover:bg-base-300/65 hover:scale-102 p-5 text-center rounded-md shadow-xl"
                     >
                         <p>{feature.icon}</p>
                         <h3 className="font-semibold text-2xl mt-2">

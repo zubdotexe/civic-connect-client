@@ -10,7 +10,7 @@ export default function Login() {
         handleSubmit,
         formState: { errors },
     } = useForm();
-    const { signInUser, loading, authMethod } = useAuth();
+    const { signInUser, loading, setLoading, authMethod } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -23,6 +23,7 @@ export default function Login() {
             })
             .catch((err) => {
                 toast.error(err.message);
+                setLoading(false);
             });
     };
 
@@ -69,11 +70,9 @@ export default function Login() {
                             disabled={loading}
                         >
                             Login{" "}
-                            {loading &&
-                                authMethod ===
-                                    "login" && (
-                                        <span className="loading loading-spinner text-accent"></span>
-                                    )}
+                            {loading && authMethod === "login" && (
+                                <span className="loading loading-spinner text-accent"></span>
+                            )}
                         </button>
                     </form>
                     <SocialLogin phrase={"Login"} />

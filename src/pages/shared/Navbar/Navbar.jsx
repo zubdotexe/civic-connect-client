@@ -5,7 +5,7 @@ import useAuth from "../../../hooks/useAuth";
 import { LogOut } from "lucide-react";
 
 export default function Navbar() {
-    const { user, logoutUser } = useAuth();
+    const { user, logoutUser, loading } = useAuth();
     const navigate = useNavigate();
 
     const handleSignOut = () => {
@@ -29,8 +29,8 @@ export default function Navbar() {
                 </NavLink>
             </li>
             <li>
-                <NavLink to="/volunteer" className="mx-1">
-                    Volunteer
+                <NavLink to="/staff/register" className="mx-1">
+                    Apply as Staff
                 </NavLink>
             </li>
         </>
@@ -79,12 +79,14 @@ export default function Navbar() {
                 <ul className="menu menu-horizontal px-1">{links}</ul>
             </div>
             <div className="navbar-end gap-2">
-                {user ? (
+                {loading ? (
+                    <span className="loading loading-spinner text-accent"></span>
+                ) : user ? (
                     <div className="dropdown dropdown-end cursor-pointer">
                         <div
                             tabIndex={0}
                             role="button"
-                            className="rounded-full w-9 h-9 overflow-hidden"
+                            className="rounded-full w-8 h-8 overflow-hidden"
                         >
                             <img
                                 className="w-full h-full object-cover"
@@ -100,13 +102,15 @@ export default function Navbar() {
                             tabIndex="-1"
                             className="dropdown-content menu bg-base-100 rounded-box z-10 w-52 p-2 shadow-sm space-y-2"
                         >
-                            <p className="font-semibold">{user.displayName || user.email}</p>
+                            <p className="font-semibold">
+                                {user.displayName || user.email}
+                            </p>
                             <Link to="/dashboard">Dashboard</Link>
                             <button
                                 className="btn btn-accent"
                                 onClick={handleSignOut}
                             >
-                                <LogOut size={16}/> Logout
+                                <LogOut size={16} /> Logout
                             </button>
                         </ul>
                     </div>
