@@ -110,7 +110,6 @@ export default function HowItWorks() {
                             </span>
                         </span>
                     </div>
-                    <hr />
                 </li>
             </ul>
         </div>

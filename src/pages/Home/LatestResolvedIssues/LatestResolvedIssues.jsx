@@ -21,7 +21,6 @@ const divCardVariants = {
 
 export default function LatestResolvedIssues() {
     const axiosInstance = useaxiosInstance();
-    const { loading } = useAuth();
 
     const { isLoading, data: issues = [] } = useQuery({
         queryKey: ["issues"],
@@ -31,12 +30,13 @@ export default function LatestResolvedIssues() {
             );
             return res.data;
         },
+        refetchOnMount: true,
     });
 
     return (
         <div className="max-w-375 mx-auto p-10 bg-base-200">
             <h2 className="text-3xl font-semibold">Latest Resolved Issues</h2>
-            {loading ? (
+            {isLoading ? (
                 <Loading />
             ) : (
                 <>
@@ -47,8 +47,11 @@ export default function LatestResolvedIssues() {
                         className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-7"
                     >
                         {issues.map((issue, idx) => (
-                            <motion.div variants={divCardVariants}>
-                                <IssueCard key={idx} issue={issue} />
+                            <motion.div
+                                key={issue._id}
+                                variants={divCardVariants}
+                            >
+                                <IssueCard issue={issue} />
                             </motion.div>
                         ))}
                     </motion.div>

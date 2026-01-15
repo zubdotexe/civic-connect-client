@@ -36,8 +36,6 @@ export default function Register() {
                     axiosInstance
                         .post(imgApiUrl, formData)
                         .then((result) => {
-                            console.log(result);
-
                             const userProfile = {
                                 displayName: data.name,
                                 photoURL: result.data.data.url,
@@ -45,8 +43,6 @@ export default function Register() {
 
                             updateUserProfile(userProfile)
                                 .then((result) => {
-                                    console.log("", result);
-
                                     const newUser = {
                                         email: data.email,
                                         ...userProfile,

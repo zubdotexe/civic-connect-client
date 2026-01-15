@@ -15,7 +15,6 @@ export default function Login() {
     const location = useLocation();
 
     const handleLogin = (data) => {
-        console.log("", data);
         signInUser(data.email, data.password)
             .then((result) => {
                 console.log("", result);

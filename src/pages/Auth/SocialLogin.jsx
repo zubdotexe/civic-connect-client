@@ -12,8 +12,6 @@ export default function SocialLogin({ phrase }) {
     const handleGoogleSignIn = () => {
         signInWGoogle()
             .then((result) => {
-                console.log("", result.user);
-
                 const newUser = {
                     displayName: result.user.displayName,
                     email: result.user.email,
