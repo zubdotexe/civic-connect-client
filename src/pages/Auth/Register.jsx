@@ -12,54 +12,103 @@ export default function Register() {
         formState: { errors },
     } = useForm();
 
-    const { registerUser, updateUserProfile, loading, authMethod } = useAuth();
+    const { registerUser, updateUserProfile, loading, setLoading, authMethod } =
+        useAuth();
     const navigate = useNavigate();
     const axiosInstance = useaxiosInstance();
 
     const handleRegister = (data) => {
-        console.log("", data);
         const profileImg = data.photo[0];
+        console.log("profileImg", profileImg);
 
         registerUser(data.email, data.password)
             .then((result) => {
                 console.log("", result.user);
 
-                const formData = new FormData();
-                formData.append("image", profileImg);
+                if (profileImg) {
+                    const formData = new FormData();
+                    formData.append("image", profileImg);
 
-                const imgApiUrl = `https://api.imgbb.com/1/upload?key=${
-                    import.meta.env.VITE_IMG_HOST_KEY
-                }`;
+                    const imgApiUrl = `https://api.imgbb.com/1/upload?key=${
+                        import.meta.env.VITE_IMG_HOST_KEY
+                    }`;
 
-                axiosInstance
-                    .post(imgApiUrl, formData)
-                    .then((result) => {
-                        console.log(result);
+                    axiosInstance
+                        .post(imgApiUrl, formData)
+                        .then((result) => {
+                            console.log(result);
 
-                        const userProfile = {
-                            displayName: data.name,
-                            photoURL: result.data.data.url,
-                        };
+                            const userProfile = {
+                                displayName: data.name,
+                                photoURL: result.data.data.url,
+                            };
 
-                        updateUserProfile(userProfile)
-                            .then((result) => {
-                                console.log("", result);
+                            updateUserProfile(userProfile)
+                                .then((result) => {
+                                    console.log("", result);
+
+                                    const newUser = {
+                                        email: data.email,
+                                        ...userProfile,
+                                    };
+
+                                    axiosInstance
+                                        .post("/users", newUser)
+                                        .then((res) => {
+                                            if (res.data.insertedId) {
+                                                console.log(
+                                                    "user inserted into db"
+                                                );
+
+                                                navigate("/");
+                                            }
+                                        })
+                                        .catch((err) => {
+                                            toast.error(err.message);
+                                            setLoading(false);
+                                        });
+                                    // .finally(setLoading(false));
+                                })
+                                .catch((err) => {
+                                    console.log("", err);
+                                    toast.error(err.message);
+                                    setLoading(false);
+                                });
+                            // .finally(setLoading(false));
+                        })
+                        .catch((err) => {
+                            console.log("err", err);
+                            toast.error(err.message);
+                            setLoading(false);
+                        });
+                    // .finally(setLoading(false));
+                } else {
+                    const newUser = {
+                        displayName: data.name,
+                        email: data.email,
+                    };
+
+                    axiosInstance
+                        .post("/users", newUser)
+                        .then((res) => {
+                            if (res.data.insertedId) {
+                                console.log("user inserted into db");
                                 navigate("/");
-                            })
-                            .catch((err) => {
-                                console.log("", err);
-                                toast.error(err.message);
-                            });
-                    })
-                    .catch((err) => {
-                        console.log("err", err);
-                        toast.error(err.message);
-                    });
+                            }
+                        })
+                        .catch((err) => {
+                            console.log("", err);
+                            toast.error(err.message);
+                            setLoading(false);
+                        });
+                }
             })
             .catch((err) => {
                 console.log("", err);
                 toast.error(err.message);
+                setLoading(false);
             });
+        // .finally(setLoading(false));
     };
 
     return (
