@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import useaxiosInstance from "../../../hooks/useAxios";
 import Swal from "sweetalert2";
 import useAuth from "../../../hooks/useAuth";
+import { useNavigate } from "react-router";
 
 const categories = [
     "water",
@@ -24,6 +25,7 @@ export default function ReportIssue() {
     const [category, setCategory] = useState("");
     const axiosInstance = useaxiosInstance();
     const { user } = useAuth();
+    const navigate = useNavigate();
 
     const handlePickCategory = (e) => {
         setCategory(e.target.value);
@@ -84,6 +86,8 @@ export default function ReportIssue() {
 
                                 reset();
                                 setCategory("");
+
+                                navigate("/dashboard/my-issues");
                             })
                             .catch((err) => {
                                 console.log("", err);
