@@ -107,9 +107,9 @@ export default function Navbar() {
                             tabIndex="-1"
                             className="dropdown-content menu bg-base-100 rounded-box z-10 w-52 p-2 shadow-sm space-y-2"
                         >
-                            <p className="font-semibold">
+                            <Link to="/dashboard/my-profile" className="font-semibold">
                                 {user.displayName || user.email}
-                            </p>
+                            </Link>
                             <Link to="/dashboard">Dashboard</Link>
                             <button
                                 className="btn btn-accent"

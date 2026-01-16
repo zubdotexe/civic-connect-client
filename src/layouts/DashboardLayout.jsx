@@ -1,5 +1,9 @@
-import { HomeIcon, ScrollText, Settings2Icon } from "lucide-react";
-import { GoReport } from "react-icons/go";
+import {
+    HomeIcon,
+    MessageSquareWarning,
+    ScrollText,
+    SquareUserRound,
+} from "lucide-react";
 import { GrSidebar } from "react-icons/gr";
 import { Link, Outlet } from "react-router";
 
@@ -55,7 +59,7 @@ export default function DashboardLayout() {
                                 data-tip="Report Issue"
                             >
                                 {/* Home icon */}
-                                <GoReport size={16} />
+                                <MessageSquareWarning size={16} />
                                 <span className="is-drawer-close:hidden">
                                     Report Issue
                                 </span>
@@ -77,16 +81,17 @@ export default function DashboardLayout() {
 
                         {/* List item */}
                         <li>
-                            <button
+                            <Link
+                                to="/dashboard/my-profile"
                                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                data-tip="Settings"
+                                data-tip="Profile"
                             >
                                 {/* Settings icon */}
-                                <Settings2Icon size={16} />
+                                <SquareUserRound size={16} />
                                 <span className="is-drawer-close:hidden">
-                                    Settings
+                                    Profile
                                 </span>
-                            </button>
+                            </Link>
                         </li>
                     </ul>
                 </div>
