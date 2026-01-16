@@ -37,7 +37,7 @@ export default function ReportIssue() {
         queryKey: ["userInfo", user?.email],
         queryFn: async () => {
             const res = await axiosInstance.get(`/users?email=${user?.email}`);
-            return res.data;
+            return res.data[0];
         },
     });
 
@@ -50,7 +50,6 @@ export default function ReportIssue() {
     });
 
     const totalIssues = data?.total ?? 0;
-    console.log("totalIssues", totalIssues);
 
     const handleReport = async (data) => {
         Swal.fire({
