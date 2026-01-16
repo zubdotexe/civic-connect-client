@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import useaxiosInstance from "../../../hooks/useAxios";
 import { CalendarPlus2, Gem, Mail } from "lucide-react";
@@ -8,18 +8,21 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import Loading from "../../../components/Loading";
 
 export default function UserProfile() {
-    const { user, setLoading, updateUserProfile } = useAuth();
+    const { user, updateUserProfile } = useAuth();
     const axiosInstance = useaxiosInstance();
     const modalRef = useRef();
+    const [infoUpdateLoding, setInfoUpdateLoading] = useState(false);
+
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
 
-    const { data: userInfo = {}, isLoading, refetch } = useQuery({
+    const { data: userInfo = {}, refetch } = useQuery({
         queryKey: ["userInfo", user?.email],
         queryFn: async () => {
             const res = await axiosInstance(`/users?email=${user?.email}`);
@@ -36,6 +39,7 @@ export default function UserProfile() {
     };
 
     const handleUpdateProfile = (data) => {
+        setInfoUpdateLoading(true);
         const profileImg = data.photo[0];
         console.log("data", data.name);
 
@@ -76,24 +80,28 @@ export default function UserProfile() {
                                     if (res.data.acknowledged) {
                                         console.log("user info updated");
                                         modalRef.current.close();
+                                        setInfoUpdateLoading(false);
                                     }
                                 })
                                 .catch((err) => {
                                     toast.error(err.message);
-                                    setLoading(false);
+                                    setInfoUpdateLoading(false);
                                 });
+                            // .finally(setInfoUpdateLoading(false));
                         })
                         .catch((err) => {
                             console.log("", err);
                             toast.error(err.message);
-                            setLoading(false);
+                            setInfoUpdateLoading(false);
                         });
+                    // .finally(setInfoUpdateLoading(false));
                 })
                 .catch((err) => {
                     console.log("err", err);
                     toast.error(err.message);
-                    setLoading(false);
+                    setInfoUpdateLoading(false);
                 });
+            // .finally(setInfoUpdateLoading(false));
         } else {
             axiosInstance
                 .patch(`/users/${userInfo?._id}`, dbProfile)
@@ -101,13 +109,17 @@ export default function UserProfile() {
                     if (res.data.acknowledged) {
                         console.log("user info updated");
                         modalRef.current.close();
+                        setInfoUpdateLoading(false);
                     }
                 })
                 .catch((err) => {
                     toast.error(err.message);
-                    setLoading(false);
+                    setInfoUpdateLoading(false);
                 });
+            // .finally(setInfoUpdateLoading(false));
         }
+
+        refetch();
     };
 
     useEffect(() => {
@@ -219,13 +231,24 @@ export default function UserProfile() {
                             />
                         </div>
                         <div className="mt-5 flex flex-wrap justify-end gap-3 items-center">
-                            <button type="submit" className="btn btn-primary">
-                                Update
+                            <button
+                                type="submit"
+                                className="btn btn-primary"
+                                disabled={infoUpdateLoding}
+                            >
+                                Update{" "}
+                                {infoUpdateLoding && (
+                                    <Loading
+                                        height="h-full"
+                                        color="text-accent"
+                                    />
+                                )}
                             </button>
                             <button
                                 type="button"
                                 onClick={() => handleModal("close")}
                                 className="btn"
+                                disabled={infoUpdateLoding}
                             >
                                 Cancel
                             </button>

@@ -5,6 +5,7 @@ import useaxiosInstance from "../../../hooks/useAxios";
 import { SquareChartGantt, SquarePen, Trash } from "lucide-react";
 import Loading from "../../../components/Loading";
 import { Link } from "react-router";
+import { useEffect } from "react";
 
 const categories = [
     "water",
@@ -37,6 +38,10 @@ export default function MyIssues() {
     const handlePickCategory = (e) => {
         setCategory(e.target.value);
     };
+
+    useEffect(() => {
+        document.title = "My Issues";
+    }, []);
 
     return (
         <div className="max-w-375 mx-auto p-10">
