@@ -3,7 +3,9 @@ import { useForm } from "react-hook-form";
 import useaxiosInstance from "../../../hooks/useAxios";
 import Swal from "sweetalert2";
 import useAuth from "../../../hooks/useAuth";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "../../../components/Loading";
 
 const categories = [
     "water",
@@ -30,6 +32,25 @@ export default function ReportIssue() {
     const handlePickCategory = (e) => {
         setCategory(e.target.value);
     };
+
+    const { data: userInfo = {}, isLoading: userLoading } = useQuery({
+        queryKey: ["userInfo", user?.email],
+        queryFn: async () => {
+            const res = await axiosInstance.get(`/users?email=${user?.email}`);
+            return res.data;
+        },
+    });
+
+    const { data, isLoading: userIssuesLoading } = useQuery({
+        queryKey: ["issues", user?.email],
+        queryFn: async () => {
+            const res = await axiosInstance.get(`/issues?email=${user?.email}`);
+            return res.data;
+        },
+    });
+
+    const totalIssues = data?.total ?? 0;
+    console.log("totalIssues", totalIssues);
 
     const handleReport = async (data) => {
         Swal.fire({
@@ -200,9 +221,22 @@ export default function ReportIssue() {
                             )}
                         </div>
 
-                        <button className="w-full btn btn-primary mt-4">
-                            Report
-                        </button>
+                        <div className="flex items-center justify-center">
+                            {userIssuesLoading ? (
+                                <span className="loading loading-spinner text-primary"></span>
+                            ) : !userInfo?.isPremium && totalIssues >= 3 ? (
+                                <Link
+                                    to="/dashboard/my-profile"
+                                    className="w-full btn btn-accent mt-4"
+                                >
+                                    Subscribe
+                                </Link>
+                            ) : (
+                                <button className="w-full btn btn-primary mt-4">
+                                    Report
+                                </button>
+                            )}
+                        </div>
                     </form>
                 </fieldset>
             </div>
