@@ -279,7 +279,8 @@ export default function ManageStaffs() {
                                 Add{" "}
                                 {staffloading && (
                                     <Loading
-                                        height="h-full"
+                                        height="h-auto"
+                                        width="w-auto"
                                         color="text-accent"
                                     />
                                 )}

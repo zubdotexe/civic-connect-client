@@ -197,7 +197,8 @@ export default function UserProfile() {
                                 Update{" "}
                                 {infoUpdateLoding && (
                                     <Loading
-                                        height="h-full"
+                                        height="h-auto"
+                                        width="w-auto"
                                         color="text-accent"
                                     />
                                 )}

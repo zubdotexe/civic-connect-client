@@ -3,6 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "./SocialLogin";
 import { toast } from "react-toastify";
+import Loading from "../../components/Loading";
 
 export default function Login() {
     const {
@@ -70,7 +71,7 @@ export default function Login() {
                         >
                             Login{" "}
                             {loading && authMethod === "login" && (
-                                <span className="loading loading-spinner text-accent"></span>
+                                <Loading height="h-auto" width="w-auto" color="text-accent" />
                             )}
                         </button>
                     </form>

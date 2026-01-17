@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router";
 import SocialLogin from "./SocialLogin";
 import useaxiosInstance from "../../hooks/useAxios";
 import { toast } from "react-toastify";
+import Loading from "../../components/Loading";
 
 export default function Register() {
     const {
@@ -183,7 +184,7 @@ export default function Register() {
                         >
                             Register{" "}
                             {loading && authMethod === "register" && (
-                                <span className="loading loading-spinner text-accent"></span>
+                                <Loading height="h-auto" width="w-auto" color="text-accent" />
                             )}
                         </button>
                     </form>

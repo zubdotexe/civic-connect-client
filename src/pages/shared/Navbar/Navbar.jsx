@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router";
 import civicConnLogo from "/civicConnect.png";
 import useAuth from "../../../hooks/useAuth";
 import { LogOut } from "lucide-react";
+import Loading from "../../../components/Loading";
 
 export default function Navbar() {
     const { user, logoutUser, loading } = useAuth();
@@ -85,7 +86,7 @@ export default function Navbar() {
             </div>
             <div className="navbar-end gap-2">
                 {loading ? (
-                    <span className="loading loading-spinner text-accent"></span>
+                    <Loading height="h-auto" width="w-auto" color="text-accent" />
                 ) : user ? (
                     <div className="dropdown dropdown-end cursor-pointer">
                         <div
@@ -107,7 +108,10 @@ export default function Navbar() {
                             tabIndex="-1"
                             className="dropdown-content menu bg-base-100 rounded-box z-10 w-52 p-2 shadow-sm space-y-2"
                         >
-                            <Link to="/dashboard/my-profile" className="font-semibold">
+                            <Link
+                                to="/dashboard/my-profile"
+                                className="font-semibold"
+                            >
                                 {user.displayName || user.email}
                             </Link>
                             <Link to="/dashboard">Dashboard</Link>

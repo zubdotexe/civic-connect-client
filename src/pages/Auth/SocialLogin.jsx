@@ -3,6 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
 import useaxiosInstance from "../../hooks/useAxios";
 import { toast } from "react-toastify";
+import Loading from "../../components/Loading";
 
 export default function SocialLogin({ phrase }) {
     const { signInWGoogle, setLoading, loading, authMethod } = useAuth();
@@ -46,7 +47,7 @@ export default function SocialLogin({ phrase }) {
                 <GrGoogle />
                 {phrase} with Google{" "}
                 {loading && authMethod === "google" && (
-                    <span className="loading loading-spinner text-accent"></span>
+                    <Loading height="h-auto" width="w-auto" color="text-accent" />
                 )}
             </button>
         </div>

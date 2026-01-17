@@ -222,7 +222,7 @@ export default function ReportIssue() {
 
                         <div className="flex items-center justify-center">
                             {userIssuesLoading ? (
-                                <span className="loading loading-spinner text-primary"></span>
+                                <Loading height="h-auto" width="w-auto" color="text-accent" />
                             ) : !userInfo?.isPremium && totalIssues >= 3 ? (
                                 <Link
                                     to="/dashboard/my-profile"
