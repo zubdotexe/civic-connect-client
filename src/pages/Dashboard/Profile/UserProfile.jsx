@@ -38,85 +38,43 @@ export default function UserProfile() {
         }
     };
 
-    const handleUpdateProfile = (data) => {
+    const handleUpdateProfile = async (data) => {
         setInfoUpdateLoading(true);
-        const profileImg = data.photo[0];
-        console.log("data", data.name);
 
-        const dbProfile = {
-            displayName: data.name,
-            photoURL: null,
-        };
+        const profileImg = data.photo?.[0];
+        const dbProfile = { displayName: data.name, photoURL: null };
+        const fbProfile = { displayName: data.name, photoURL: null };
 
-        const fbProfile = {
-            displayName: data.name,
-            photoURL: null,
-        };
+        try {
+            if (profileImg) {
+                const formData = new FormData();
+                formData.append("image", profileImg);
 
-        if (profileImg) {
-            const formData = new FormData();
-            formData.append("image", profileImg);
+                const result = await axiosInstance.post(
+                    `https://api.imgbb.com/1/upload?key=${
+                        import.meta.env.VITE_IMG_HOST_KEY
+                    }`,
+                    formData
+                );
 
-            const imgApiUrl = `https://api.imgbb.com/1/upload?key=${
-                import.meta.env.VITE_IMG_HOST_KEY
-            }`;
+                fbProfile.photoURL = result.data.data.url;
+                dbProfile.photoURL = result.data.data.url;
 
-            axiosInstance
-                .post(imgApiUrl, formData)
-                .then((result) => {
-                    // const userProfile = {
-                    //     displayName: data.name,
-                    //     photoURL: result.data.data.url,
-                    // };
+                await updateUserProfile(fbProfile);
+            }
 
-                    fbProfile.photoURL = result.data.data.url;
-                    dbProfile.photoURL = result.data.data.url;
-
-                    updateUserProfile(fbProfile)
-                        .then((result) => {
-                            axiosInstance
-                                .patch(`/users/${userInfo?._id}`, dbProfile)
-                                .then((res) => {
-                                    if (res.data.acknowledged) {
-                                        console.log("user info updated");
-                                        modalRef.current.close();
-                                        setInfoUpdateLoading(false);
-                                    }
-                                })
-                                .catch((err) => {
-                                    toast.error(err.message);
-                                    setInfoUpdateLoading(false);
-                                });
-                            // .finally(setInfoUpdateLoading(false));
-                        })
-                        .catch((err) => {
-                            console.log("", err);
-                            toast.error(err.message);
-                            setInfoUpdateLoading(false);
-                        });
-                    // .finally(setInfoUpdateLoading(false));
-                })
-                .catch((err) => {
-                    console.log("err", err);
-                    toast.error(err.message);
-                    setInfoUpdateLoading(false);
-                });
-            // .finally(setInfoUpdateLoading(false));
-        } else {
-            axiosInstance
-                .patch(`/users/${userInfo?._id}`, dbProfile)
-                .then((res) => {
-                    if (res.data.acknowledged) {
-                        console.log("user info updated");
-                        modalRef.current.close();
-                        setInfoUpdateLoading(false);
-                    }
-                })
-                .catch((err) => {
-                    toast.error(err.message);
-                    setInfoUpdateLoading(false);
-                });
-            // .finally(setInfoUpdateLoading(false));
+            const res = await axiosInstance.patch(
+                `/users/${userInfo?._id}`,
+                dbProfile
+            );
+            if (res.data.acknowledged) {
+                console.log("user info updated");
+                modalRef.current.close();
+            }
+        } catch (err) {
+            toast.error(err.message);
+        } finally {
+            setInfoUpdateLoading(false);
         }
 
         refetch();
@@ -133,7 +91,7 @@ export default function UserProfile() {
             <h2 className="text-3xl font-semibold">My Profile</h2>
             <div className="bg-base-200 shadow-md mt-5 p-5 rounded-md max-w-2xl mx-auto flex flex-col justify-between gap-5">
                 <div className="flex flex-col-reverse sm:flex-row gap-5 justify-between">
-                    <div className="w-32 h-32 overflow-hidden rounded-md">
+                    <div className="w-40 h-w-40 overflow-hidden rounded-md shadow-sm">
                         <img
                             className="w-full h-full"
                             src={user?.photoURL}

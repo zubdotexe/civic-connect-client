@@ -177,7 +177,10 @@ export default function Register() {
                         <Link to="/login" className="text-primary">
                             Login
                         </Link>
-                        <button className="w-full btn btn-primary mt-4">
+                        <button
+                            className="w-full btn btn-primary mt-4"
+                            disabled={loading}
+                        >
                             Register{" "}
                             {loading && authMethod === "register" && (
                                 <span className="loading loading-spinner text-accent"></span>
