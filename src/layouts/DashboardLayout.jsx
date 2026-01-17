@@ -1,5 +1,6 @@
 import {
     HomeIcon,
+    LucideUsersRound,
     MessageSquareWarning,
     ScrollText,
     SquareUserRound,
@@ -75,6 +76,19 @@ export default function DashboardLayout() {
                                 <ScrollText size={16} />
                                 <span className="is-drawer-close:hidden">
                                     My Issues
+                                </span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                to="/dashboard/manage-staffs"
+                                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                data-tip="Manage Staffs"
+                            >
+                                {/* Home icon */}
+                                <LucideUsersRound size={16} />
+                                <span className="is-drawer-close:hidden">
+                                    Manage Staffs
                                 </span>
                             </Link>
                         </li>

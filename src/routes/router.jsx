@@ -13,6 +13,7 @@ import ReportIssue from "../pages/Dashboard/ReportIssue/ReportIssue";
 import StaffRegister from "../pages/StaffRegister/StaffRegister";
 import MyIssues from "../pages/Dashboard/MyIssues/MyIssues";
 import UserProfile from "../pages/Dashboard/Profile/UserProfile";
+import ManageStaffs from "../pages/Dashboard/ManageStaffs/ManageStaffs";
 
 export const router = createBrowserRouter([
     {
@@ -32,14 +33,6 @@ export const router = createBrowserRouter([
                 element: (
                     <PrivateRoute>
                         <IssueDetails />
-                    </PrivateRoute>
-                ),
-            },
-            {
-                path: "staff/register",
-                element: (
-                    <PrivateRoute>
-                        <StaffRegister />
                     </PrivateRoute>
                 ),
             },
@@ -78,6 +71,10 @@ export const router = createBrowserRouter([
             {
                 path: "my-profile",
                 Component: UserProfile,
+            },
+            {
+                path: "manage-staffs",
+                Component: ManageStaffs,
             },
         ],
     },
