@@ -4,6 +4,7 @@ import {
     MessageSquareWarning,
     ScrollText,
     SquareUserRound,
+    UserRoundCheck,
 } from "lucide-react";
 import { GrSidebar } from "react-icons/gr";
 import { Link, Outlet } from "react-router";
@@ -89,6 +90,19 @@ export default function DashboardLayout() {
                                 <LucideUsersRound size={16} />
                                 <span className="is-drawer-close:hidden">
                                     Manage Staffs
+                                </span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                to="/dashboard/assign-staffs"
+                                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                data-tip="Assign Staffs"
+                            >
+                                {/* Home icon */}
+                                <UserRoundCheck size={16} />
+                                <span className="is-drawer-close:hidden">
+                                    Assign Staffs
                                 </span>
                             </Link>
                         </li>
