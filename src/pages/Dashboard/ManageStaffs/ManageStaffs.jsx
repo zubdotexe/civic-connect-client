@@ -162,6 +162,41 @@ export default function ManageStaffs() {
         }
     };
 
+    const handleDelStaff = (id) => {
+        console.log(id);
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, remove staff!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosInstance.delete(`/staffs/${id}`).then((res) => {
+                    console.log(res.data);
+
+                    if (res.data.deletedCount) {
+                        // refresh the data in the ui
+                        refetch();
+
+                        Swal.fire({
+                            title: "Removed!",
+                            text: "The staff has been removed",
+                            icon: "success",
+                        });
+                    }
+                });
+            }
+        });
+    };
+
+    useEffect(() => {
+        document.title = "Staff Management";
+    }, []);
+
     return (
         <div>
             <div className="max-w-375 mx-auto p-10">
@@ -232,8 +267,15 @@ export default function ManageStaffs() {
                                                 >
                                                     Update
                                                 </button>
-                                                <button className="btn btn-error">
-                                                    Delete
+                                                <button
+                                                    onClick={() =>
+                                                        handleDelStaff(
+                                                            staff._id,
+                                                        )
+                                                    }
+                                                    className="btn btn-error"
+                                                >
+                                                    Remove
                                                 </button>
                                             </div>
                                         </td>
