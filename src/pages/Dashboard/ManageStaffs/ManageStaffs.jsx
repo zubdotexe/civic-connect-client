@@ -9,19 +9,27 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
+import useImgUp from "../../../hooks/useImgUp";
 
 export default function ManageStaffs() {
     const axiosInstance = useaxiosInstance();
-    const modalRef = useRef();
+    const addModalRef = useRef();
+    const updateModalRef = useRef();
     const { registerUser, updateUserProfile, loading, setLoading } = useAuth();
     const [staffloading, setStaffLoading] = useState(false);
+    const [selectedStaff, setSelectedStaff] = useState(null);
+    const { uploadImage } = useImgUp();
 
     const {
-        register,
-        handleSubmit,
-        formState: { errors },
+        register: addRegister,
+        handleSubmit: addHandleSubmit,
+        formState: { errors: addErrors },
         reset,
     } = useForm();
+
+    const { register: updateRegister, handleSubmit: updateHandleSubmit } =
+        useForm();
+
     const {
         data: staffs = [],
         isLoading,
@@ -34,13 +42,21 @@ export default function ManageStaffs() {
         },
     });
 
-    console.log("staffs", staffs);
-
-    const handleModal = (task) => {
+    const handleAddModal = (task) => {
         if (task === "open") {
-            modalRef.current.showModal();
+            addModalRef.current.showModal();
         } else {
-            modalRef.current.close();
+            addModalRef.current.close();
+        }
+    };
+
+    const handleUpdateModal = (task, staff = null) => {
+        if (task === "open") {
+            updateModalRef.current.showModal();
+            setSelectedStaff(staff);
+        } else {
+            updateModalRef.current.close();
+            setSelectedStaff(null);
         }
     };
 
@@ -81,12 +97,12 @@ export default function ManageStaffs() {
 
             const userRes = await axiosInstance.post(
                 "/admin/create-staff",
-                newStaff
+                newStaff,
             );
 
             refetch();
             reset();
-            modalRef.current.close();
+            addModalRef.current.close();
             Swal.fire({
                 title: "Staff added!",
                 text: "You have successfully added a staff",
@@ -97,17 +113,54 @@ export default function ManageStaffs() {
             toast.error(
                 err?.response?.data?.message ||
                     err.message ||
-                    "Something went wrong"
+                    "Something went wrong",
             );
         } finally {
             setStaffLoading(false);
         }
     };
 
-    useEffect(() => {
-        console.log("ManageStaffs mounted");
-        return () => console.log("ManageStaffs unmounted");
-    }, []);
+    const handleUpdateStuff = async (data) => {
+        console.log("up", data);
+        setStaffLoading(true);
+
+        try {
+            const updatedStaffInfo = {};
+
+            if (data.name) updatedStaffInfo.displayName = data.name;
+            if (data.email) updatedStaffInfo.email = data.email;
+            if (data.phone) updatedStaffInfo.phone = data.phone;
+            if (data.photo) {
+                updatedStaffInfo.photoURL = await uploadImage(data.photo[0]);
+            }
+
+            const result = await axiosInstance.patch(
+                `/staffs/${selectedStaff._id}`,
+                updatedStaffInfo,
+            );
+
+            if (result.data.modifiedCount) {
+                Swal.fire({
+                    title: "Staff updated!",
+                    text: "Staff information has been updated",
+                    icon: "success",
+                });
+
+                refetch();
+                reset();
+                updateModalRef.current.close();
+            }
+        } catch (err) {
+            console.log("err", err);
+            toast.error(
+                err?.response?.data?.message ||
+                    err.message ||
+                    "Something went wrong",
+            );
+        } finally {
+            setStaffLoading(false);
+        }
+    };
 
     return (
         <div>
@@ -119,7 +172,7 @@ export default function ManageStaffs() {
 
                     <div className="flex gap-2">
                         <button
-                            onClick={() => handleModal("open")}
+                            onClick={() => handleAddModal("open")}
                             className="btn btn-secondary"
                         >
                             Add Staff
@@ -163,12 +216,20 @@ export default function ManageStaffs() {
 
                                         <td>
                                             {new Date(
-                                                staff.createdAt
+                                                staff.createdAt,
                                             ).toLocaleDateString()}
                                         </td>
                                         <td>
                                             <div className="flex flex-wrap gap-2">
-                                                <button className="btn btn-primary">
+                                                <button
+                                                    onClick={() =>
+                                                        handleUpdateModal(
+                                                            "open",
+                                                            staff,
+                                                        )
+                                                    }
+                                                    className="btn btn-primary"
+                                                >
                                                     Update
                                                 </button>
                                                 <button className="btn btn-error">
@@ -183,28 +244,30 @@ export default function ManageStaffs() {
                     </div>
                 )}
             </div>
+
+            {/* add staff info modal */}
             <dialog
-                ref={modalRef}
+                ref={addModalRef}
                 className="modal modal-bottom sm:modal-middle"
             >
                 <div className="modal-box w-full">
                     <legend className="fieldset-legend text-2xl">
-                        Update Profile Information
+                        Add Staff
                     </legend>
                     {/* <fieldset className="fieldset w-full border-base-300 rounded-box border p-4"> */}
                     <form
-                        onSubmit={handleSubmit(handleAddStaff)}
+                        onSubmit={addHandleSubmit(handleAddStaff)}
                         className="mt-5 space-y-3 w-full border-base-300 rounded-box border p-4"
                     >
                         <div className="flex flex-col gap-1">
                             <label className="label">Name</label>
                             <input
                                 type="text"
-                                {...register("name", { required: true })}
+                                {...addRegister("name", { required: true })}
                                 className="input w-full"
                                 placeholder="Enter Name"
                             />
-                            {errors.name?.type === "required" && (
+                            {addErrors.name?.type === "required" && (
                                 <p className="text-error font-semibold text-sm">
                                     Name is required
                                 </p>
@@ -214,11 +277,11 @@ export default function ManageStaffs() {
                             <label className="label">Email</label>
                             <input
                                 type="email"
-                                {...register("email", { required: true })}
+                                {...addRegister("email", { required: true })}
                                 className="input w-full"
                                 placeholder="Enter Email"
                             />
-                            {errors.email?.type === "required" && (
+                            {addErrors.email?.type === "required" && (
                                 <p className="text-error font-semibold text-sm">
                                     Email is required
                                 </p>
@@ -228,11 +291,11 @@ export default function ManageStaffs() {
                             <label className="label">Phone</label>
                             <input
                                 type="text"
-                                {...register("phone", { required: true })}
+                                {...addRegister("phone", { required: true })}
                                 className="input w-full"
                                 placeholder="Enter Phone"
                             />
-                            {errors.phone?.type === "required" && (
+                            {addErrors.phone?.type === "required" && (
                                 <p className="text-error font-semibold text-sm">
                                     Phone is required
                                 </p>
@@ -242,10 +305,10 @@ export default function ManageStaffs() {
                             <label className="label">Photo</label>
                             <input
                                 type="file"
-                                {...register("photo", { required: true })}
+                                {...addRegister("photo", { required: true })}
                                 className="file-input w-full"
                             />
-                            {errors.photo?.type === "required" && (
+                            {addErrors.photo?.type === "required" && (
                                 <p className="text-error font-semibold text-sm">
                                     Photo is required
                                 </p>
@@ -255,15 +318,11 @@ export default function ManageStaffs() {
                             <label className="label">Password</label>
                             <input
                                 type="password"
-                                {...register(
-                                    "password",
-                                    { required: true },
-                                    { required: true }
-                                )}
+                                {...addRegister("password", { required: true })}
                                 className="input w-full"
                                 placeholder="Enter Password"
                             />
-                            {errors.password?.type === "required" && (
+                            {addErrors.password?.type === "required" && (
                                 <p className="text-error font-semibold text-sm">
                                     Password is required
                                 </p>
@@ -287,7 +346,123 @@ export default function ManageStaffs() {
                             </button>
                             <button
                                 type="button"
-                                onClick={() => handleModal("close")}
+                                onClick={() => handleAddModal("close")}
+                                className="btn"
+                                disabled={staffloading}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                    {/* </fieldset> */}
+                    <div className="modal-action">
+                        {/* <button
+                                    onClick={() => handleModal("close")}
+                                    className="btn"
+                                >
+                                    Cancel
+                                </button> */}
+                    </div>
+                </div>
+            </dialog>
+
+            {/* update staff info modal */}
+            <dialog
+                ref={updateModalRef}
+                className="modal modal-bottom sm:modal-middle"
+            >
+                <div className="modal-box w-full">
+                    <legend className="fieldset-legend text-2xl">
+                        Update Staff Information
+                    </legend>
+                    {/* <fieldset className="fieldset w-full border-base-300 rounded-box border p-4"> */}
+                    <form
+                        onSubmit={updateHandleSubmit(handleUpdateStuff)}
+                        className="mt-5 space-y-3 w-full border-base-300 rounded-box border p-4"
+                    >
+                        <div className="flex flex-col gap-1">
+                            <label className="label">Name</label>
+                            <input
+                                type="text"
+                                {...updateRegister("name")}
+                                className="input w-full"
+                                defaultValue={selectedStaff?.displayName}
+                            />
+                            {/* {errors.name?.type === "required" && (
+                                <p className="text-error font-semibold text-sm">
+                                    Name is required
+                                </p>
+                            )} */}
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <label className="label">Email</label>
+                            <input
+                                type="email"
+                                {...updateRegister("email")}
+                                className="input w-full"
+                                defaultValue={selectedStaff?.email}
+                            />
+                            {/* {errors.email?.type === "required" && (
+                                <p className="text-error font-semibold text-sm">
+                                    Email is required
+                                </p>
+                            )} */}
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <label className="label">Phone</label>
+                            <input
+                                type="text"
+                                {...updateRegister("phone")}
+                                className="input w-full"
+                                defaultValue={selectedStaff?.phone}
+                            />
+                            {/* {errors.phone?.type === "required" && (
+                                <p className="text-error font-semibold text-sm">
+                                    Phone is required
+                                </p>
+                            )} */}
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <label className="label">Photo</label>
+                            <input
+                                type="file"
+                                {...updateRegister("photo")}
+                                className="file-input w-full"
+                            />
+                            {/* {errors.photo?.type === "required" && (
+                                <p className="text-error font-semibold text-sm">
+                                    Photo is required
+                                </p>
+                            )} */}
+                        </div>
+                        {/* <div className="flex flex-col gap-1">
+                            <label className="label">Password</label>
+                            <input
+                                type="password"
+                                {...updateRegister("password")}
+                                className="input w-full"
+                                placeholder="Enter Password"
+                            />
+                        </div> */}
+
+                        <div className="mt-5 flex flex-wrap justify-end gap-3 items-center">
+                            <button
+                                type="submit"
+                                className="btn btn-primary"
+                                disabled={staffloading}
+                            >
+                                Update{" "}
+                                {staffloading && (
+                                    <Loading
+                                        height="h-auto"
+                                        width="w-auto"
+                                        color="text-accent"
+                                    />
+                                )}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => handleUpdateModal("close")}
                                 className="btn"
                                 disabled={staffloading}
                             >
