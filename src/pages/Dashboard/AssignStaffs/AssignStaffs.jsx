@@ -1,15 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useaxiosInstance from "../../../hooks/useAxios";
 import Loading from "../../../components/Loading";
 import { Link } from "react-router";
+import { X } from "lucide-react";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 export default function AssignStaffs() {
     const axiosInstance = useaxiosInstance();
+    const modalRef = useRef();
+    const [selectedIssue, setSelectedIssue] = useState(null);
+    const [staffLoading, setStaffLoading] = useState(false);
+
     const {
         data: issues = [],
         isLoading: issuesLoading,
-        refetch,
+        refetch: issuesRefetch,
     } = useQuery({
         queryKey: ["issues", "pending"],
         queryFn: async () => {
@@ -22,6 +29,78 @@ export default function AssignStaffs() {
 
     const pendingIssues = issues.result ?? [];
     const totalIssues = issues.total ?? 0;
+
+    const {
+        data: availableStaffs = [],
+        refetch: staffsRefetch,
+        isLoading: staffsLoading,
+    } = useQuery({
+        queryKey: ["staffs", "available"],
+        queryFn: async () => {
+            const res = await axiosInstance.get(`/staffs?workStatus=available`);
+            return res.data;
+        },
+    });
+
+    const handleModal = (task, issue = null) => {
+        if (task === "open") {
+            modalRef.current.showModal();
+            setSelectedIssue(issue);
+        } else {
+            modalRef.current.close();
+        }
+    };
+
+    const handleAssignStaff = async (staff) => {
+        const assignedStaff = {
+            name: staff.displayName,
+            email: staff.email,
+        };
+
+        console.log("", selectedIssue);
+        setStaffLoading(true);
+
+        try {
+            const res = await axiosInstance.patch(
+                `/issues/${selectedIssue?._id}`,
+                assignedStaff,
+            );
+            if (res.data.acknowledged) {
+                Swal.fire({
+                    title: "Assigned!",
+                    text: "The staff has been assigned",
+                    icon: "success",
+                });
+
+                modalRef.current.close();
+
+                issuesRefetch();
+                staffsRefetch();
+            }
+
+            const issueLog = {
+                issueId: selectedIssue._id,
+                issueStatus: selectedIssue.status,
+            };
+            const trackingRes = axiosInstance.post(
+                "/issues/trackings",
+                issueLog,
+            );
+        } catch (err) {
+            console.log("err", err);
+            toast.error(
+                err?.response?.data?.message ||
+                    err.message ||
+                    "Something went wrong",
+            );
+        } finally {
+            setStaffLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        document.title = "Assign Staffs";
+    }, []);
 
     return (
         <div>
@@ -77,7 +156,15 @@ export default function AssignStaffs() {
                                         <td>{issue["reportedBy"].name}</td>
                                         <td>
                                             {issue["assignedStaff"].name || (
-                                                <button className="btn btn-secondary">
+                                                <button
+                                                    onClick={() =>
+                                                        handleModal(
+                                                            "open",
+                                                            issue,
+                                                        )
+                                                    }
+                                                    className="btn btn-secondary"
+                                                >
                                                     Assign Staff
                                                 </button>
                                             )}
@@ -100,6 +187,84 @@ export default function AssignStaffs() {
                     </div>
                 )}
             </div>
+
+            {/* Open the modal using document.getElementById('ID').showModal() method */}
+            <dialog
+                ref={modalRef}
+                className="modal modal-bottom sm:modal-middle"
+            >
+                <div className="modal-box w-full">
+                    <div className="flex justify-between items-center">
+                        <legend className="fieldset-legend text-2xl">
+                            Available Staffs ({availableStaffs.length})
+                        </legend>
+                        <button
+                            onClick={() => handleModal("close")}
+                            className="btn px-3 btn-error"
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
+                    {/* <fieldset className="fieldset w-full border-base-300 rounded-box border p-4"> */}
+                    {staffsLoading ? (
+                        <Loading />
+                    ) : availableStaffs.length === 0 ? (
+                        <div className="flex items-center justify-center h-24">
+                            <p className="text-xl text-gray-400">
+                                No Staffs Available
+                            </p>
+                        </div>
+                    ) : (
+                        <div className="mt-3 shadow-sm overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+                            <table className="table">
+                                {/* head */}
+                                <thead className="bg-base-200">
+                                    <tr>
+                                        <th></th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {/* row 1 */}
+                                    {availableStaffs.map((staff, idx) => (
+                                        <tr key={staff._id}>
+                                            <th>{idx + 1}</th>
+                                            <td>{staff.displayName}</td>
+                                            <td>{staff.email}</td>
+                                            <td>{staff.phone}</td>
+                                            <td>
+                                                <div className="flex flex-wrap gap-2">
+                                                    <button
+                                                        onClick={() =>
+                                                            handleAssignStaff(
+                                                                staff,
+                                                            )
+                                                        }
+                                                        className="btn btn-primary"
+                                                        disabled={staffLoading}
+                                                    >
+                                                        Assign{" "}
+                                                        {staffLoading && (
+                                                            <Loading
+                                                                height="h-auto"
+                                                                width="w-auto"
+                                                                color="text-accent"
+                                                            />
+                                                        )}
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div>
+            </dialog>
         </div>
     );
 }

@@ -141,7 +141,7 @@ export default function ManageStaffs() {
 
             if (result.data.modifiedCount) {
                 Swal.fire({
-                    title: "Staff updated!",
+                    title: "Staff Info Updated!",
                     text: "Staff information has been updated",
                     icon: "success",
                 });
