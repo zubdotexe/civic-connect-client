@@ -28,6 +28,7 @@ export default function ReportIssue() {
     const axiosInstance = useaxiosInstance();
     const { user } = useAuth();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const handlePickCategory = (e) => {
         setCategory(e.target.value);
@@ -62,6 +63,7 @@ export default function ReportIssue() {
             confirmButtonText: "Yes, report it!",
         }).then((result) => {
             if (result.isConfirmed) {
+                setLoading(true);
                 console.log("data", data);
 
                 const imageUrl = data.image[0];
@@ -76,8 +78,8 @@ export default function ReportIssue() {
                     .then(async (result) => {
                         data.image = result.data.data.url;
                         // adding name and email to payload
-                        data.email = user.email;
-                        data.name = user.displayName;
+                        data.email = userInfo.email;
+                        data.name = userInfo.displayName;
 
                         await axiosInstance
                             .post("/issues", data)
@@ -93,6 +95,7 @@ export default function ReportIssue() {
                                 const issueLog = {
                                     issueId: result.data.insertedId,
                                     issueStatus: "pending",
+                                    issueNote: "Issue reported by citizen",
                                 };
 
                                 axiosInstance
@@ -102,7 +105,8 @@ export default function ReportIssue() {
                                     })
                                     .catch((err) => {
                                         console.log("", err);
-                                    });
+                                    })
+                                    .finally(() => setLoading(false));
 
                                 reset();
                                 setCategory("");
@@ -111,11 +115,13 @@ export default function ReportIssue() {
                             })
                             .catch((err) => {
                                 console.log("", err);
-                            });
+                            })
+                            .finally(() => setLoading(false));
                     })
                     .catch((err) => {
                         console.log("", err);
-                    });
+                    })
+                    .finally(() => setLoading(false));
             }
         });
     };
@@ -222,7 +228,11 @@ export default function ReportIssue() {
 
                         <div className="flex items-center justify-center">
                             {userIssuesLoading ? (
-                                <Loading height="h-auto" width="w-auto" color="text-accent" />
+                                <Loading
+                                    height="h-auto"
+                                    width="w-auto"
+                                    color="text-accent"
+                                />
                             ) : !userInfo?.isPremium && totalIssues >= 3 ? (
                                 <Link
                                     to="/dashboard/my-profile"
@@ -231,8 +241,18 @@ export default function ReportIssue() {
                                     Subscribe
                                 </Link>
                             ) : (
-                                <button className="w-full btn btn-primary mt-4">
-                                    Report
+                                <button
+                                    className="w-full btn btn-primary mt-4"
+                                    disabled={loading}
+                                >
+                                    Report{" "}
+                                    {loading && (
+                                        <Loading
+                                            height="h-auto"
+                                            width="w-auto"
+                                            color="text-accent"
+                                        />
+                                    )}
                                 </button>
                             )}
                         </div>

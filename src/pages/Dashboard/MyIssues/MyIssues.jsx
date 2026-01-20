@@ -6,6 +6,8 @@ import { SquareChartGantt, SquarePen, Trash } from "lucide-react";
 import Loading from "../../../components/Loading";
 import { Link } from "react-router";
 import { useEffect } from "react";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 const categories = [
     "water",
@@ -21,11 +23,11 @@ export default function MyIssues() {
     const { user } = useAuth();
     const axiosInstance = useaxiosInstance();
     const [category, setCategory] = useState("");
-    const { data, isLoading } = useQuery({
+    const { data, isLoading, refetch } = useQuery({
         queryKey: ["issues", category, { email: user?.email }],
         queryFn: async () => {
             const res = await axiosInstance.get(
-                `/issues?email=${user?.email}&category=${category}`
+                `/issues?email=${user?.email}&category=${category}`,
             );
             return res.data;
         },
@@ -33,10 +35,43 @@ export default function MyIssues() {
 
     const issues = data?.result ?? [];
     const totalIssues = data?.total ?? 0;
-    console.log("issues", issues);
+    const [loading, setLoading] = useState(false);
 
     const handlePickCategory = (e) => {
         setCategory(e.target.value);
+    };
+
+    const handleDeleteIssue = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setLoading(true);
+                try {
+                    const res = axiosInstance.delete(`/issues/${id}`);
+                    if (res.acknowledged) {
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Your file has been deleted.",
+                            icon: "success",
+                        });
+
+                        refetch();
+                    }
+                } catch (err) {
+                    console.log("", err);
+                    toast.error(err.message);
+                } finally {
+                    setLoading(true);
+                }
+            }
+        });
     };
 
     useEffect(() => {
@@ -112,19 +147,11 @@ export default function MyIssues() {
                                     <td>{issue.priority}</td>
                                     <td>
                                         {new Date(
-                                            issue.createdAt
+                                            issue.createdAt,
                                         ).toLocaleDateString()}
                                     </td>
                                     <td>
                                         <div className="flex flex-wrap gap-2">
-                                            <div
-                                                className="tooltip"
-                                                data-tip="Edit Issue"
-                                            >
-                                                <button className="btn btn-secondary">
-                                                    <SquarePen size={16} />
-                                                </button>
-                                            </div>
                                             <div
                                                 className="tooltip"
                                                 data-tip="View Issue"
@@ -138,14 +165,44 @@ export default function MyIssues() {
                                                     />
                                                 </Link>
                                             </div>
-                                            <div
-                                                className="tooltip"
-                                                data-tip="Delete Issue"
-                                            >
-                                                <button className="btn btn-error">
-                                                    <Trash size={16} />
-                                                </button>
-                                            </div>
+                                            {issue.status === "pending" && (
+                                                <>
+                                                    <div
+                                                        className="tooltip"
+                                                        data-tip="Edit Issue"
+                                                    >
+                                                        <button className="btn btn-secondary">
+                                                            <SquarePen
+                                                                size={16}
+                                                            />
+                                                        </button>
+                                                    </div>
+
+                                                    <div
+                                                        className="tooltip"
+                                                        data-tip="Delete Issue"
+                                                    >
+                                                        <button
+                                                            onClick={() =>
+                                                                handleDeleteIssue(
+                                                                    issue._id,
+                                                                )
+                                                            }
+                                                            className="btn btn-error"
+                                                            disabled={loading}
+                                                        >
+                                                            <Trash size={16} />{" "}
+                                                            {loading && (
+                                                                <Loading
+                                                                    height="h-auto"
+                                                                    width="w-auto"
+                                                                    color="text-accent"
+                                                                />
+                                                            )}
+                                                        </button>
+                                                    </div>
+                                                </>
+                                            )}
                                         </div>
                                     </td>
                                 </tr>
