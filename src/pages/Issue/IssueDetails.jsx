@@ -39,7 +39,7 @@ export default function IssueDetails() {
         queryKey: ["issueTracking", { issueId: issue?._id }],
         queryFn: async () => {
             const res = await axiosInstance.get(
-                `/issues/trackings/${issue?._id}`
+                `/issues/trackings/${issue?._id}`,
             );
 
             return res.data;
@@ -129,8 +129,8 @@ export default function IssueDetails() {
                                             issue?.priority === "high"
                                                 ? "text-red-600"
                                                 : issue?.priority === "medium"
-                                                ? "text-yellow-600"
-                                                : "text-green-600"
+                                                  ? "text-yellow-600"
+                                                  : "text-green-600"
                                         }`}
                                     >
                                         {issue?.priority
@@ -202,13 +202,13 @@ export default function IssueDetails() {
                                 <p>
                                     <strong>Created at:</strong>{" "}
                                     {new Date(
-                                        issue?.createdAt
+                                        issue?.createdAt,
                                     ).toLocaleDateString()}
                                 </p>
                                 <p>
                                     <strong>Last updated:</strong>{" "}
                                     {new Date(
-                                        issue?.updatedAt
+                                        issue?.updatedAt,
                                     ).toLocaleDateString()}
                                 </p>
                             </div>
@@ -228,15 +228,13 @@ export default function IssueDetails() {
                 >
                     <h2 className="text-xl font-semibold">Issue Timeline</h2>
                     <ul className="timeline timeline-vertical">
-                        {issueLogs.map((log, idx) => (
-                            <li>
+                        {[...issueLogs].reverse().map((log, idx) => (
+                            <li key={idx}>
                                 {idx !== 0 && <hr />}
                                 <div className="timeline-start">
-                                    {new Date(
-                                        log.createdAt
-                                    ).toLocaleDateString()}
-                                </div>
-                                <div className="timeline-middle">
+                                    {/* {new Date(
+                                        log.createdAt,
+                                    ).toLocaleDateString()} */}
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20"
@@ -250,10 +248,51 @@ export default function IssueDetails() {
                                         />
                                     </svg>
                                 </div>
-                                <div className="timeline-end bg-base-200 font-semibold timeline-box">
-                                    {log.issueStatus.charAt(0).toUpperCase() +
-                                        log.issueStatus.slice(1)}
+
+                                <div className="timeline-middle bg-base-200 p-4 mt-3 rounded-md">
+                                    {/* <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                        fill="currentColor"
+                                        className="h-5 w-5"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                            clipRule="evenodd"
+                                        />
+                                    </svg> */}
+
+                                    <p>{log.issueNote}</p>
+                                    <div className="flex justify-between items-center mt-2">
+                                        <p
+                                            className={`badge ${log.issueStatus === "pending" ? "badge-accent" : log.issueStatus === "in-progress" ? "badge-primary" : log.issueStatus === "resolved" ? "badge-warning" : "badge-secondary"}`}
+                                        >
+                                            {log.issueStatus
+                                                .charAt(0)
+                                                .toUpperCase() +
+                                                log.issueStatus.slice(1)}
+                                        </p>
+                                        <p className="text-sm text-neutral">
+                                            {new Date(
+                                                log.createdAt,
+                                            ).toLocaleDateString()}
+                                        </p>
+                                    </div>
                                 </div>
+                                {/* <div className="timeline-end bg-base-200 font-semibold timeline-box">
+                                    <p>
+                                        {new Date(
+                                            log.createdAt,
+                                        ).toLocaleDateString()}
+                                    </p>
+                                    <p>
+                                        {log.issueStatus
+                                            .charAt(0)
+                                            .toUpperCase() +
+                                            log.issueStatus.slice(1)}
+                                    </p>
+                                </div> */}
                                 {idx !== issueLogs.length - 1 && <hr />}
                             </li>
                         ))}

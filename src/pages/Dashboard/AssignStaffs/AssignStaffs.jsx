@@ -81,6 +81,7 @@ export default function AssignStaffs() {
             const issueLog = {
                 issueId: selectedIssue._id,
                 issueStatus: selectedIssue.status,
+                issueNote: `Issue assigned to Staff: ${staff.displayName}`,
             };
             const trackingRes = axiosInstance.post(
                 "/issues/trackings",
