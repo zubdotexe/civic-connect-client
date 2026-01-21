@@ -1,4 +1,5 @@
 import {
+    ClipboardList,
     HomeIcon,
     LucideUsersRound,
     MessageSquareWarning,
@@ -103,6 +104,19 @@ export default function DashboardLayout() {
                                 <UserRoundCheck size={16} />
                                 <span className="is-drawer-close:hidden">
                                     Assign Staffs
+                                </span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                to="/dashboard/assigned-issues"
+                                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                data-tip="Assigned Issues"
+                            >
+                                {/* Home icon */}
+                                <ClipboardList size={16} />
+                                <span className="is-drawer-close:hidden">
+                                    Assigned Issues
                                 </span>
                             </Link>
                         </li>

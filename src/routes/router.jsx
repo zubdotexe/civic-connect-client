@@ -15,6 +15,7 @@ import MyIssues from "../pages/Dashboard/MyIssues/MyIssues";
 import UserProfile from "../pages/Dashboard/Profile/UserProfile";
 import ManageStaffs from "../pages/Dashboard/ManageStaffs/ManageStaffs";
 import AssignStaffs from "../pages/Dashboard/AssignStaffs/AssignStaffs";
+import AssignedIssues from "../pages/Dashboard/AssignedIssues/AssignedIssues";
 
 export const router = createBrowserRouter([
     {
@@ -80,6 +81,10 @@ export const router = createBrowserRouter([
             {
                 path: "assign-staffs",
                 Component: AssignStaffs,
+            },
+            {
+                path: "assigned-issues",
+                Component: AssignedIssues,
             },
         ],
     },
