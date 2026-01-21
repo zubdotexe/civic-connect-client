@@ -5,10 +5,20 @@ import useaxiosInstance from "../../../hooks/useAxios";
 import Loading from "../../../components/Loading";
 import { useRef } from "react";
 import { useState } from "react";
-import { X } from "lucide-react";
+import { Trash, X } from "lucide-react";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
+
+const categories = [
+    "water",
+    "roads",
+    "lightning",
+    "sanitation",
+    "sidewalks",
+    "traffic",
+    "parks",
+];
 
 export default function AssignedIssues() {
     const { user } = useAuth();
@@ -17,6 +27,7 @@ export default function AssignedIssues() {
     const [selectedIssue, setSelectedIssue] = useState(null);
     const [currentStatus, setCurrentStatus] = useState(null);
     const STATUS_ORDER = ["in-progress", "working", "resolved", "closed"];
+    const [category, setCategory] = useState("");
 
     const disabled = (status) => {
         return (
@@ -29,10 +40,10 @@ export default function AssignedIssues() {
         isLoading,
         refetch,
     } = useQuery({
-        queryKey: ["issues", user?.email],
+        queryKey: ["issues", user?.email, category],
         queryFn: async () => {
             const res = await axiosInstance.get(
-                `/issues?staffEmail=${user?.email}`,
+                `/issues?staffEmail=${user?.email}&exceptStatus=closed&category=${category}`,
             );
 
             return res.data;
@@ -98,6 +109,8 @@ export default function AssignedIssues() {
         }
     };
 
+    const handlePickCategory = (e) => setCategory(e.target.value);
+
     useEffect(() => {
         document.title = `Assigned Issues ${user?.displayName}`;
         setCurrentStatus(selectedIssue?.status);
@@ -109,6 +122,29 @@ export default function AssignedIssues() {
                 <h2 className="text-3xl font-semibold">
                     Assigned Issues ({totalAssignedIssues})
                 </h2>
+
+                <div className="flex gap-2">
+                    <button
+                        onClick={() => setCategory("")}
+                        className="btn btn-error"
+                    >
+                        <Trash size={16} />
+                    </button>
+                    <select
+                        value={category}
+                        className="select select-neutral bg-base-200"
+                        onChange={handlePickCategory}
+                    >
+                        <option value="" disabled={true}>
+                            Pick a category
+                        </option>
+                        {categories?.map((c) => (
+                            <option key={c} value={c}>
+                                {c.charAt(0).toUpperCase() + c.slice(1)}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </div>
 
             {isLoading ? (
