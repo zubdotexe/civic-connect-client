@@ -1,6 +1,7 @@
 import {
     ClipboardList,
     HomeIcon,
+    ListChecks,
     LucideUsersRound,
     MessageSquareWarning,
     ScrollText,
@@ -117,6 +118,19 @@ export default function DashboardLayout() {
                                 <ClipboardList size={16} />
                                 <span className="is-drawer-close:hidden">
                                     Assigned Issues
+                                </span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                to="/dashboard/completed-issues"
+                                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                data-tip="Completed Issues"
+                            >
+                                {/* Home icon */}
+                                <ListChecks size={16} />
+                                <span className="is-drawer-close:hidden">
+                                    Completed Issues
                                 </span>
                             </Link>
                         </li>

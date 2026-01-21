@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import useaxiosInstance from "../../hooks/useAxios";
 import IssueCard from "../../components/IssueCard";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Trash } from "lucide-react";
 import Loading from "../../components/Loading";
 
 export default function AllIssues() {
@@ -87,7 +87,7 @@ export default function AllIssues() {
                         onClick={() => setCategory("")}
                         className="btn btn-error"
                     >
-                        Remove Filter
+                        <Trash size={16} />
                     </button>
                     <select
                         value={category}
