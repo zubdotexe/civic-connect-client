@@ -25,8 +25,6 @@ export default function AssignStaffs() {
         },
     });
 
-    console.log("data", issues);
-
     const pendingIssues = issues.result ?? [];
     const totalIssues = issues.total ?? 0;
 
@@ -179,6 +177,21 @@ export default function AssignStaffs() {
                                                 >
                                                     View Details
                                                 </Link>
+                                                <button
+                                                    onClick={() =>
+                                                        handleModal(
+                                                            "open",
+                                                            issue,
+                                                        )
+                                                    }
+                                                    className="btn btn-secondary"
+                                                    disabled={
+                                                        issue["assignedStaff"]
+                                                            .name
+                                                    }
+                                                >
+                                                    Assign Staff
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>

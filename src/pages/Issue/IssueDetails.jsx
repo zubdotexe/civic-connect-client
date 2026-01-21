@@ -1,10 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import useaxiosInstance from "../../hooks/useAxios";
 import NotFound from "../NotFound/NotFound";
 import Loading from "../../components/Loading";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import useAuth from "../../hooks/useAuth";
+import { Star } from "lucide-react";
+import { toast } from "react-toastify";
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -23,11 +27,16 @@ const childVariants = {
 
 export default function IssueDetails() {
     const { issueId } = useParams();
-    // console.log("issueId", issueId);
-
+    const { user } = useAuth();
+    const navigate = useNavigate();
     const axiosInstance = useaxiosInstance();
+    const [loading, setLoading] = useState(false);
 
-    const { isLoading, data: issue } = useQuery({
+    const {
+        isLoading,
+        data: issue,
+        refetch,
+    } = useQuery({
         queryKey: ["issue", issueId],
         queryFn: async () => {
             const res = await axiosInstance.get(`/issues/${issueId}`);
@@ -52,6 +61,33 @@ export default function IssueDetails() {
         working: "badge-warning",
         resolved: "badge-success",
         closed: "badge-neutral",
+    };
+
+    const handleUpvote = async () => {
+        if (!user) return navigate("/login");
+        setLoading(true);
+
+        const upvote = {
+            userEmail: user?.email,
+        };
+
+        try {
+            const res = await axiosInstance.patch(
+                `/issues/${issue._id}/upvote`,
+                upvote,
+            );
+            if (res.data.alreadyUpvoted) {
+                toast.error("Already upvoted");
+            } else {
+                toast.success(res.data.message);
+            }
+        } catch (err) {
+            console.log("err", err);
+            toast.error(err.message);
+        } finally {
+            setLoading(false);
+            refetch();
+        }
     };
 
     useEffect(() => {
@@ -92,9 +128,28 @@ export default function IssueDetails() {
 
                         <div className="space-y-4">
                             {/* Title and basic info */}
-                            <h1 className="text-3xl font-semibold text-gray-800">
-                                {issue?.title}
-                            </h1>
+                            <div className="flex justify-between items-center gap-3">
+                                <h1 className="text-3xl font-semibold text-gray-800">
+                                    {issue?.title}
+                                </h1>
+                                <button
+                                    onClick={handleUpvote}
+                                    className="btn btn-sm btn-accent"
+                                    disabled={
+                                        user?.email ===
+                                            issue.reportedBy.email || loading
+                                    }
+                                >
+                                    <Star size={14} />{" "}
+                                    {loading && (
+                                        <Loading
+                                            height="h-auto"
+                                            width="w-auto"
+                                            color="text-primary"
+                                        />
+                                    )}
+                                </button>
+                            </div>
                             <p className="text-lg text-gray-600">
                                 {issue?.location}
                             </p>
@@ -150,10 +205,8 @@ export default function IssueDetails() {
                                         Status:
                                     </span>
                                     <span
-                                        className={`text-sm font-medium ${
-                                            issue?.status === "resolved"
-                                                ? "text-green-600"
-                                                : "text-red-600"
+                                        className={`text-sm font-medium badge ${
+                                            statusColor[issue?.status]
                                         }`}
                                     >
                                         {issue?.status.charAt(0).toUpperCase() +
@@ -255,7 +308,7 @@ export default function IssueDetails() {
                                     </svg>
                                 </div>
 
-                                <div className="timeline-middle shadow-sm w-2xs bg-base-200 hover:bg-base-300 p-4 rounded-md">
+                                <div className="timeline-middle shadow-sm sm:w-2xs bg-base-200 hover:bg-base-300 p-4 rounded-md">
                                     <p>{log.issueNote}</p>
                                     <div className="flex justify-between items-center gap-3 mt-2">
                                         <p
