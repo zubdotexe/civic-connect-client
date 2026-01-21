@@ -1,7 +1,45 @@
+import { Star } from "lucide-react";
 import React from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import useAuth from "../hooks/useAuth";
+import useaxiosInstance from "../hooks/useAxios";
+import { toast } from "react-toastify";
+import { useState } from "react";
+import Loading from "./Loading";
 
-export default function IssueCard({ issue }) {
+export default function IssueCard({ issue, refetch }) {
+    const { user } = useAuth();
+    const navigate = useNavigate();
+    const axiosInstance = useaxiosInstance();
+    const [loading, setLoading] = useState(false);
+
+    const handleUpvote = async () => {
+        if (!user) return navigate("/login");
+        setLoading(true);
+
+        const upvote = {
+            userEmail: user?.email,
+        };
+
+        try {
+            const res = await axiosInstance.patch(
+                `/issues/${issue._id}/upvote`,
+                upvote,
+            );
+            if (res.data.alreadyUpvoted) {
+                toast.error("Already upvoted");
+            } else {
+                toast.success(res.data.message);
+            }
+        } catch (err) {
+            console.log("err", err);
+            toast.error(err.message);
+        } finally {
+            setLoading(false);
+            refetch();
+        }
+    };
+
     return (
         <div className="card bg-base-100 transform transition-transform duration-300 delay-100 hover:scale-101 shadow-sm h-full">
             <div className="card-body">
@@ -25,8 +63,8 @@ export default function IssueCard({ issue }) {
                             issue?.priority === "high"
                                 ? "badge badge-soft badge-error"
                                 : issue?.priority === "medium"
-                                ? "badge badge-soft badge-warning"
-                                : "badge badge-soft badge-success"
+                                  ? "badge badge-soft badge-warning"
+                                  : "badge badge-soft badge-success"
                         }`}
                     >
                         {issue.priority.charAt(0).toUpperCase() +
@@ -35,8 +73,31 @@ export default function IssueCard({ issue }) {
                 </div>
 
                 <div>
-                    <p className="font-semibold">Upvotes</p>
-                    <p className="text-xl">{issue.upvoteCount}</p>
+                    <div className="flex gap-3 justify-between items-center">
+                        <div>
+                            <p className="font-semibold">Upvotes</p>
+                            <p className="text-xl">
+                                {issue.upvotes?.length || 0}
+                            </p>
+                        </div>
+                        <button
+                            onClick={handleUpvote}
+                            className="btn btn-sm btn-accent"
+                            disabled={
+                                user?.email === issue.reportedBy.email ||
+                                loading
+                            }
+                        >
+                            <Star size={14} />{" "}
+                            {loading && (
+                                <Loading
+                                    height="h-auto"
+                                    width="w-auto"
+                                    color="text-primary"
+                                />
+                            )}
+                        </button>
+                    </div>
                     <p className="font-semibold mt-3">Location</p>
                     <p>{issue.location}</p>
                 </div>

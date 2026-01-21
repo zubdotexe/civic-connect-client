@@ -25,13 +25,13 @@ export default function AllIssues() {
         setCategory(e.target.value);
     };
 
-    const { data, isLoading } = useQuery({
+    const { data, isLoading, refetch } = useQuery({
         queryKey: ["issues", currPage, searchText, category],
         queryFn: async () => {
             const res = await axiosInstance.get(
                 `/issues?limit=${limit}&skip=${
                     currPage * limit
-                }&search=${searchText}&category=${category}`
+                }&search=${searchText}&category=${category}`,
             );
             // console.log("", data);
 
@@ -51,7 +51,7 @@ export default function AllIssues() {
         queryFn: async () => {
             const res = await axiosInstance.get("/issues");
             const categoriesData = res?.data?.result?.map(
-                (issue) => issue.category
+                (issue) => issue.category,
             );
             // console.log('', categoriesData);
             return [...new Set(categoriesData)];
@@ -62,11 +62,11 @@ export default function AllIssues() {
     // console.log('', isLoading);
 
     useEffect(() => {
-        (document.title = "All Issues"),
+        ((document.title = "All Issues"),
             window.scrollTo({
                 top: 0,
                 behavior: "smooth",
-            });
+            }));
     }, []);
 
     return (
@@ -110,7 +110,7 @@ export default function AllIssues() {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-7">
                     {issues.map((issue, idx) => (
-                        <IssueCard key={idx} issue={issue} />
+                        <IssueCard key={idx} issue={issue} refetch={refetch} />
                     ))}
                 </div>
             )}
