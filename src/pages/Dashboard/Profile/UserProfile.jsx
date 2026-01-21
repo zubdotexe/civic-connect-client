@@ -25,8 +25,13 @@ export default function UserProfile() {
     const { data: userInfo = {}, refetch } = useQuery({
         queryKey: ["userInfo", user?.email],
         queryFn: async () => {
-            const res = await axiosInstance(`/users?email=${user?.email}`);
-            return res.data[0];
+            let res;
+            if (user?.email.endsWith("civicconnect.com")) {
+                res = await axiosInstance(`/staffs?email=${user?.email}`);
+            } else {
+                res = await axiosInstance(`/users?email=${user?.email}`);
+            }
+            return res.data[0] || [];
         },
     });
 
@@ -54,7 +59,7 @@ export default function UserProfile() {
                     `https://api.imgbb.com/1/upload?key=${
                         import.meta.env.VITE_IMG_HOST_KEY
                     }`,
-                    formData
+                    formData,
                 );
 
                 fbProfile.photoURL = result.data.data.url;
@@ -63,10 +68,19 @@ export default function UserProfile() {
                 await updateUserProfile(fbProfile);
             }
 
-            const res = await axiosInstance.patch(
-                `/users/${userInfo?._id}`,
-                dbProfile
-            );
+            let res;
+            if (user?.email.endsWith("civicconnect.com")) {
+                res = await axiosInstance.patch(
+                    `/users/${userInfo?._id}`,
+                    dbProfile,
+                );
+            } else {
+                res = await axiosInstance.patch(
+                    `/staffs/${userInfo?._id}`,
+                    dbProfile,
+                );
+            }
+
             if (res.data.acknowledged) {
                 console.log("user info updated");
                 modalRef.current.close();
@@ -125,7 +139,7 @@ export default function UserProfile() {
                             <CalendarPlus2 />
                             {userInfo
                                 ? new Date(
-                                      userInfo?.createdAt
+                                      userInfo?.createdAt,
                                   ).toLocaleDateString()
                                 : "Loading..."}
                         </div>
