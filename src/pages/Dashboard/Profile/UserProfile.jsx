@@ -71,12 +71,12 @@ export default function UserProfile() {
             let res;
             if (user?.email.endsWith("civicconnect.com")) {
                 res = await axiosInstance.patch(
-                    `/users/${userInfo?._id}`,
+                    `/staffs/${userInfo?._id}`,
                     dbProfile,
                 );
             } else {
                 res = await axiosInstance.patch(
-                    `/staffs/${userInfo?._id}`,
+                    `/users/${userInfo?._id}`,
                     dbProfile,
                 );
             }
@@ -92,6 +92,25 @@ export default function UserProfile() {
         }
 
         refetch();
+    };
+
+    const handleSubscription = async () => {
+        setInfoUpdateLoading(true);
+        const user = {
+            id: userInfo?._id,
+            email: userInfo?.email,
+        };
+        try {
+            const res = await axiosInstance.post(
+                "/payments/subscribe/checkout",
+                user,
+            );
+            window.location.href = res.data.url;
+            setInfoUpdateLoading(false);
+        } catch (err) {
+            toast.error(err.message);
+            setInfoUpdateLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -152,8 +171,18 @@ export default function UserProfile() {
                                 {userInfo?.isPremium ? "Yes" : "No"}
                             </div>
                             {!userInfo?.isPremium && (
-                                <button className="btn btn-accent">
-                                    Subscribe Today!
+                                <button
+                                    className="btn btn-accent"
+                                    onClick={handleSubscription}
+                                >
+                                    Subscribe Today!{" "}
+                                    {infoUpdateLoding && (
+                                        <Loading
+                                            height="h-auto"
+                                            width="w-auto"
+                                            color="text-primary"
+                                        />
+                                    )}
                                 </button>
                             )}
                         </div>

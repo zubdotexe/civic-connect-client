@@ -17,6 +17,8 @@ import ManageStaffs from "../pages/Dashboard/ManageStaffs/ManageStaffs";
 import AssignStaffs from "../pages/Dashboard/AssignStaffs/AssignStaffs";
 import AssignedIssues from "../pages/Dashboard/AssignedIssues/AssignedIssues";
 import CompletedIssues from "../pages/Dashboard/CompletedIssues/CompletedIssues";
+import PaymentSuccess from "../pages/Dashboard/Payments/PaymentSuccess";
+import PaymentCancelled from "../pages/Dashboard/Payments/PaymentCancelled";
 
 export const router = createBrowserRouter([
     {
@@ -90,6 +92,14 @@ export const router = createBrowserRouter([
             {
                 path: "completed-issues",
                 Component: CompletedIssues,
+            },
+            {
+                path: "payment-success",
+                Component: PaymentSuccess,
+            },
+            {
+                path: "payment-cancelled",
+                Component: PaymentCancelled,
             },
         ],
     },
