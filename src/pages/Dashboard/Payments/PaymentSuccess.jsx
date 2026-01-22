@@ -1,5 +1,5 @@
 import React from "react";
-import { useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import useaxiosInstance from "../../../hooks/useAxios";
 import { useEffect } from "react";
 
@@ -26,9 +26,10 @@ export default function PaymentSuccess() {
 
     return (
         <div className="p-10">
-            <div className="p-5 flex flex-col h-36 gap-3 bg-base-200 justify-center items-center rounded-md">
+            <div className="p-5 box-content flex flex-col h-36 gap-3 bg-base-200 justify-center items-center rounded-md">
                 <h2 className="text-2xl font-semibold">Payment Successful</h2>
                 <p className="text-3xl">Congrats for being a premium user!</p>
+                <Link to="/dashboard/my-profile" className="btn btn-secondary">Go to Profile</Link>
             </div>
         </div>
     );

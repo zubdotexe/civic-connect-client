@@ -110,11 +110,11 @@ export default function Navbar() {
                         >
                             <Link
                                 to="/dashboard/my-profile"
-                                className="font-semibold"
+                                className="font-semibold hover:bg-base-200 p-1"
                             >
                                 {user.displayName || user.email}
                             </Link>
-                            <Link to="/dashboard">Dashboard</Link>
+                            <Link to="/dashboard" className="hover:bg-base-200 p-1">Dashboard</Link>
                             <button
                                 className="btn btn-accent"
                                 onClick={handleSignOut}

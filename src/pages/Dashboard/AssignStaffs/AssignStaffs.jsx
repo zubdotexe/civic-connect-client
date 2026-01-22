@@ -20,7 +20,7 @@ export default function AssignStaffs() {
     } = useQuery({
         queryKey: ["issues", "pending"],
         queryFn: async () => {
-            const res = await axiosInstance.get(`/issues?status=pending`);
+            const res = await axiosInstance.get(`/issues`);
             return res.data;
         },
     });
@@ -106,7 +106,7 @@ export default function AssignStaffs() {
             <div className="max-w-375 mx-auto p-10">
                 <div className="flex flex-wrap gap-3 justify-between">
                     <h2 className="text-3xl font-semibold">
-                        Pending Issues ({totalIssues})
+                        All Issues ({totalIssues})
                     </h2>
                 </div>
 
@@ -154,19 +154,8 @@ export default function AssignStaffs() {
                                         </td>
                                         <td>{issue["reportedBy"].name}</td>
                                         <td>
-                                            {issue["assignedStaff"].name || (
-                                                <button
-                                                    onClick={() =>
-                                                        handleModal(
-                                                            "open",
-                                                            issue,
-                                                        )
-                                                    }
-                                                    className="btn btn-secondary"
-                                                >
-                                                    Assign Staff
-                                                </button>
-                                            )}
+                                            {issue["assignedStaff"].name ||
+                                                "N/A"}
                                         </td>
 
                                         <td>
@@ -192,6 +181,11 @@ export default function AssignStaffs() {
                                                 >
                                                     Assign Staff
                                                 </button>
+                                                {issue.status === "pending" && (
+                                                    <button className="btn btn-error">
+                                                        Reject
+                                                    </button>
+                                                )}
                                             </div>
                                         </td>
                                     </tr>
