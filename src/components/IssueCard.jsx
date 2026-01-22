@@ -59,12 +59,15 @@ export default function IssueCard({ issue, refetch }) {
                             issue.category.slice(1)}
                     </p>
                     <p
-                        className={`text-sm font-medium ${
+                        className={`text-sm font-medium badge badge-soft ${
+                            // issue?.priority === "high"
+                            //     ? "badge badge-soft badge-error"
+                            //     : issue?.priority === "medium"
+                            //       ? "badge badge-soft badge-warning"
+                            //       : "badge badge-soft badge-success"
                             issue?.priority === "high"
-                                ? "badge badge-soft badge-error"
-                                : issue?.priority === "medium"
-                                  ? "badge badge-soft badge-warning"
-                                  : "badge badge-soft badge-success"
+                                ? "badge-error"
+                                : "badge-warning"
                         }`}
                     >
                         {issue.priority.charAt(0).toUpperCase() +
@@ -80,23 +83,22 @@ export default function IssueCard({ issue, refetch }) {
                                 {issue.upvotes?.length || 0}
                             </p>
                         </div>
-                        <button
-                            onClick={handleUpvote}
-                            className="btn btn-sm btn-accent"
-                            disabled={
-                                user?.email === issue.reportedBy.email ||
-                                loading
-                            }
-                        >
-                            <Star size={14} />{" "}
-                            {loading && (
-                                <Loading
-                                    height="h-auto"
-                                    width="w-auto"
-                                    color="text-primary"
-                                />
-                            )}
-                        </button>
+                        {user?.email !== issue.reportedBy.email && (
+                            <button
+                                onClick={handleUpvote}
+                                className="btn btn-sm btn-accent"
+                                disabled={loading}
+                            >
+                                <Star size={14} />{" "}
+                                {loading && (
+                                    <Loading
+                                        height="h-auto"
+                                        width="w-auto"
+                                        color="text-primary"
+                                    />
+                                )}
+                            </button>
+                        )}
                     </div>
                     <p className="font-semibold mt-3">Location</p>
                     <p>{issue.location}</p>

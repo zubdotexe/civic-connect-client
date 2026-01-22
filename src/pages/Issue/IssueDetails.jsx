@@ -7,7 +7,7 @@ import Loading from "../../components/Loading";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
-import { Star } from "lucide-react";
+import { Rocket, Star, UserIcon } from "lucide-react";
 import { toast } from "react-toastify";
 
 const containerVariants = {
@@ -90,6 +90,38 @@ export default function IssueDetails() {
         }
     };
 
+    const { data: userInfo = {} } = useQuery({
+        queryKey: ["userInfo", user?.email],
+        queryFn: async () => {
+            let res;
+            if (user?.email.endsWith("civicconnect.com")) {
+                res = await axiosInstance(`/staffs?email=${user?.email}`);
+            } else {
+                res = await axiosInstance(`/users?email=${user?.email}`);
+            }
+            return res.data[0] || [];
+        },
+    });
+
+    const handleBoost = async () => {
+        setLoading(true);
+        const boostInfo = {
+            userId: userInfo?._id,
+            issueId: issue?._id,
+            email: userInfo?.email,
+        };
+        try {
+            const res = await axiosInstance.post(
+                "/payments/boost-issue/checkout",
+                boostInfo,
+            );
+            window.location.href = res.data.url;
+        } catch (err) {
+            toast.error(err.message);
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         if (issue?.title) {
             document.title = issue.title;
@@ -132,23 +164,43 @@ export default function IssueDetails() {
                                 <h1 className="text-3xl font-semibold text-gray-800">
                                     {issue?.title}
                                 </h1>
-                                <button
-                                    onClick={handleUpvote}
-                                    className="btn btn-sm btn-accent"
-                                    disabled={
-                                        user?.email ===
-                                            issue.reportedBy.email || loading
-                                    }
-                                >
-                                    <Star size={14} />{" "}
-                                    {loading && (
-                                        <Loading
-                                            height="h-auto"
-                                            width="w-auto"
-                                            color="text-primary"
-                                        />
+                                <div className="flex items-center gap-2">
+                                    {issue.reportedBy.email === user?.email && (
+                                        <button
+                                            onClick={handleBoost}
+                                            className="btn btn-primary btn-sm"
+                                            disabled={
+                                                loading || issue?.isBoosted
+                                            }
+                                        >
+                                            <Rocket size={14} />
+                                            Boost
+                                            {loading && (
+                                                <Loading
+                                                    height="h-auto"
+                                                    width="w-auto"
+                                                    color="text-white"
+                                                />
+                                            )}
+                                        </button>
                                     )}
-                                </button>
+                                    {user?.email !== issue.reportedBy.email && (
+                                        <button
+                                            onClick={handleUpvote}
+                                            className="btn btn-sm btn-accent"
+                                            disabled={loading}
+                                        >
+                                            <Star size={14} />
+                                            {loading && (
+                                                <Loading
+                                                    height="h-auto"
+                                                    width="w-auto"
+                                                    color="text-primary"
+                                                />
+                                            )}
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                             <p className="text-lg text-gray-600">
                                 {issue?.location}
@@ -186,12 +238,15 @@ export default function IssueDetails() {
                                         Priority:
                                     </span>
                                     <span
-                                        className={`text-sm font-medium ${
+                                        className={`text-sm font-medium badge ${
+                                            // issue?.priority === "high"
+                                            //     ? "text-red-600"
+                                            //     : issue?.priority === "medium"
+                                            //       ? "text-green-600"
+                                            //       : "text-green-600"
                                             issue?.priority === "high"
-                                                ? "text-red-600"
-                                                : issue?.priority === "medium"
-                                                  ? "text-yellow-600"
-                                                  : "text-green-600"
+                                                ? "badge-error"
+                                                : "badge-warning"
                                         }`}
                                     >
                                         {issue?.priority
@@ -219,7 +274,7 @@ export default function IssueDetails() {
                                         Upvotes:
                                     </span>
                                     <span className="">
-                                        {issue?.upvoteCount}
+                                        {issue?.upvotes?.length || 0}
                                     </span>
                                 </div>
                             </div>
