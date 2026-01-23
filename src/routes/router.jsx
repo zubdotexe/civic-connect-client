@@ -20,6 +20,7 @@ import CompletedIssues from "../pages/Dashboard/CompletedIssues/CompletedIssues"
 import PaymentSuccess from "../pages/Dashboard/Payments/PaymentSuccess";
 import PaymentCancelled from "../pages/Dashboard/Payments/PaymentCancelled";
 import BoostPaymentSuccess from "../pages/Dashboard/Payments/BoostPaymentSuccess";
+import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 
 export const router = createBrowserRouter([
     {
@@ -66,6 +67,10 @@ export const router = createBrowserRouter([
             </PrivateRoute>
         ),
         children: [
+            {
+                index: true,
+                Component: DashboardHome,
+            },
             {
                 path: "report-issue",
                 Component: ReportIssue,
