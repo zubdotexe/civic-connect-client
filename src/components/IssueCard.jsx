@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import Loading from "./Loading";
 
-export default function IssueCard({ issue, refetch }) {
+export default function IssueCard({ issue, refetch, isLoading }) {
     const { user } = useAuth();
     const navigate = useNavigate();
     const axiosInstance = useaxiosInstance();
@@ -43,14 +43,18 @@ export default function IssueCard({ issue, refetch }) {
     return (
         <div className="card bg-base-100 transform transition-transform duration-300 delay-100 hover:scale-101 shadow-sm h-full">
             <div className="card-body">
-                <figure>
-                    <img
-                        // src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                        src={issue.image}
-                        className="rounded-sm h-48 w-full"
-                        alt="Shoes"
-                    />
-                </figure>
+                {isLoading ? (
+                    <Loading height="h-auto" width="w-auto" />
+                ) : (
+                    <figure>
+                        <img
+                            // src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                            src={issue.image}
+                            className="rounded-sm h-48 w-full"
+                            alt={issue.image}
+                        />
+                    </figure>
+                )}
                 <h2 className="card-title">{issue.title}</h2>
                 <p>{issue.description}</p>
                 <div className="flex space-x-3">

@@ -110,7 +110,12 @@ export default function AllIssues() {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-7">
                     {issues.map((issue, idx) => (
-                        <IssueCard key={idx} issue={issue} refetch={refetch} />
+                        <IssueCard
+                            key={idx}
+                            issue={issue}
+                            refetch={refetch}
+                            isLoading={isLoading}
+                        />
                     ))}
                 </div>
             )}

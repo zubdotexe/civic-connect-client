@@ -22,7 +22,11 @@ export default function UserProfile() {
         formState: { errors },
     } = useForm();
 
-    const { data: userInfo = {}, refetch } = useQuery({
+    const {
+        data: userInfo = {},
+        refetch,
+        isLoading,
+    } = useQuery({
         queryKey: ["userInfo", user?.email],
         queryFn: async () => {
             let res;
@@ -125,11 +129,15 @@ export default function UserProfile() {
             <div className="bg-base-200 shadow-md mt-5 p-5 rounded-md max-w-2xl mx-auto flex flex-col justify-between gap-5">
                 <div className="flex flex-col-reverse sm:flex-row gap-5 justify-between">
                     <div className="w-40 h-w-40 overflow-hidden rounded-md shadow-sm">
-                        <img
-                            className="w-full h-full"
-                            src={user?.photoURL}
-                            alt=""
-                        />
+                        {isLoading ? (
+                            <Loading height="h-auto" width="w-auto" />
+                        ) : (
+                            <img
+                                className="w-full h-full"
+                                src={user?.photoURL}
+                                alt=""
+                            />
+                        )}
                     </div>
 
                     <button
@@ -162,30 +170,32 @@ export default function UserProfile() {
                                   ).toLocaleDateString()
                                 : "Loading..."}
                         </div>
-                        <div className="flex items-center gap-3">
-                            <div
-                                className="flex gap-3 tooltip"
-                                data-tip="Subscribed"
-                            >
-                                <MdOutlineWorkspacePremium size={24} />
-                                {userInfo?.isPremium ? "Yes" : "No"}
-                            </div>
-                            {!userInfo?.isPremium && (
-                                <button
-                                    className="btn btn-accent"
-                                    onClick={handleSubscription}
+                        {!user?.email.endsWith("@civicconnect.com") && (
+                            <div className="flex items-center gap-3">
+                                <div
+                                    className="flex gap-3 tooltip"
+                                    data-tip="Subscribed"
                                 >
-                                    Subscribe Today!{" "}
-                                    {infoUpdateLoding && (
-                                        <Loading
-                                            height="h-auto"
-                                            width="w-auto"
-                                            color="text-neutral"
-                                        />
-                                    )}
-                                </button>
-                            )}
-                        </div>
+                                    <MdOutlineWorkspacePremium size={24} />
+                                    {userInfo?.isPremium ? "Yes" : "No"}
+                                </div>
+                                {!userInfo?.isPremium && (
+                                    <button
+                                        className="btn btn-accent"
+                                        onClick={handleSubscription}
+                                    >
+                                        Subscribe Today!{" "}
+                                        {infoUpdateLoding && (
+                                            <Loading
+                                                height="h-auto"
+                                                width="w-auto"
+                                                color="text-neutral"
+                                            />
+                                        )}
+                                    </button>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
