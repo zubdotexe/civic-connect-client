@@ -3,6 +3,7 @@ import {
     ClipboardList,
     HomeIcon,
     ListChecks,
+    LogOut,
     LucideUsersRound,
     MessageSquareWarning,
     ScrollText,
@@ -10,9 +11,16 @@ import {
     UserRoundCheck,
 } from "lucide-react";
 import { GrSidebar } from "react-icons/gr";
-import { Link, Outlet } from "react-router";
+import { Link, Outlet, useNavigate } from "react-router";
+import civicConnLogo from "/civicConnect.png";
+import useAuth from "../hooks/useAuth";
 
 export default function DashboardLayout() {
+    const { logoutUser } = useAuth();
+    const navigate = useNavigate();
+    const handleLogOut = () => {
+        logoutUser().then(navigate("/login"));
+    };
     return (
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -27,7 +35,14 @@ export default function DashboardLayout() {
                         {/* Sidebar toggle icon */}
                         <GrSidebar />
                     </label>
-                    <div className="px-4">CivicConnect</div>
+                    <div className="w-full px-4 flex justify-end">
+                        <button
+                            onClick={handleLogOut}
+                            className="btn btn-ghost btn-error"
+                        >
+                            <LogOut size={16} /> Logout
+                        </button>
+                    </div>
                 </nav>
                 {/* Page content here */}
                 <Outlet />
@@ -50,9 +65,19 @@ export default function DashboardLayout() {
                                 data-tip="Homepage"
                             >
                                 {/* Home icon */}
-                                <HomeIcon size={16} />
+                                {/* <HomeIcon size={16} /> */}
+                                <img
+                                    src={civicConnLogo}
+                                    alt=""
+                                    className="is-drawer-open:w-12 is-drawer-open:h-12"
+                                />
                                 <span className="is-drawer-close:hidden">
-                                    Homepage
+                                    <span className="text-xl font-semibold transition-all duration-300">
+                                        Civic
+                                        <span className="font-bold text-primary">
+                                            Connect
+                                        </span>
+                                    </span>
                                 </span>
                             </Link>
                         </li>

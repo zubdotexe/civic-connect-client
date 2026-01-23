@@ -180,7 +180,7 @@ export default function UserProfile() {
                                         <Loading
                                             height="h-auto"
                                             width="w-auto"
-                                            color="text-primary"
+                                            color="text-neutral"
                                         />
                                     )}
                                 </button>

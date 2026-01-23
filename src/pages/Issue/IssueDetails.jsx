@@ -366,14 +366,16 @@ export default function IssueDetails() {
                                 <div className="timeline-middle shadow-sm sm:w-2xs bg-base-200 hover:bg-base-300 p-4 rounded-md">
                                     <p>{log.issueNote}</p>
                                     <div className="flex justify-between items-center gap-3 mt-2">
-                                        <p
-                                            className={`badge ${statusColor[log.issueStatus]}`}
-                                        >
-                                            {log.issueStatus
-                                                .charAt(0)
-                                                .toUpperCase() +
-                                                log.issueStatus.slice(1)}
-                                        </p>
+                                        {log.issueStatus && (
+                                            <p
+                                                className={`badge ${statusColor[log.issueStatus]}`}
+                                            >
+                                                {log.issueStatus
+                                                    ?.charAt(0)
+                                                    .toUpperCase() +
+                                                    log.issueStatus?.slice(1)}
+                                            </p>
+                                        )}
                                         <p className="text-sm text-neutral">
                                             {new Date(
                                                 log.createdAt,
