@@ -27,19 +27,19 @@ export default function UserDashboard() {
                 <Loading height="h-auto" width="w-auto" />
             ) : (
                 <div className="grid sm:grid-cols-3 mt-5 gap-3">
-                    <div className="sm:col-span-3 bg-base-200 hover:bg-base-300 shadow-sm rounded-md p-5 flex flex-col items-center">
+                    <div className="sm:col-span-3 bg-base-200 hover:bg-base-300 transition-color duration-300 shadow-sm rounded-md p-5 flex flex-col items-center">
                         <h2 className="stat-title text-xl">Total Submitted</h2>
                         <p className="stat-value">
                             {adminStats.totalIssues || 0}
                         </p>
                     </div>
-                    <div className="bg-base-200 hover:bg-base-300 shadow-sm rounded-md p-5 flex flex-col items-center">
+                    <div className="bg-base-200 hover:bg-base-300 transition-color duration-300 shadow-sm rounded-md p-5 flex flex-col items-center">
                         <h2 className="stat-title text-xl">Total Pending</h2>
                         <p className="stat-value">
                             {adminStats.byStatus?.pending || 0}
                         </p>
                     </div>
-                    <div className="bg-base-200 hover:bg-base-300 shadow-sm rounded-md p-5 flex flex-col items-center">
+                    <div className="bg-base-200 hover:bg-base-300 transition-color duration-300 shadow-sm rounded-md p-5 flex flex-col items-center">
                         <h2 className="stat-title text-xl">
                             Total In-progress
                         </h2>
@@ -47,25 +47,25 @@ export default function UserDashboard() {
                             {adminStats.byStatus?.["in-progress"] || 0}
                         </p>
                     </div>
-                    <div className="bg-base-200 hover:bg-base-300 shadow-sm rounded-md p-5 flex flex-col items-center">
+                    <div className="bg-base-200 hover:bg-base-300 transition-color duration-300 shadow-sm rounded-md p-5 flex flex-col items-center">
                         <h2 className="stat-title text-xl">Total Working</h2>
                         <p className="stat-value">
                             {adminStats.byStatus?.["working"] || 0}
                         </p>
                     </div>
-                    <div className="bg-base-200 hover:bg-base-300 shadow-sm rounded-md p-5 flex flex-col items-center">
+                    <div className="bg-base-200 hover:bg-base-300 transition-color duration-300 shadow-sm rounded-md p-5 flex flex-col items-center">
                         <h2 className="stat-title text-xl">Total Resolved</h2>
                         <p className="stat-value">
                             {adminStats.byStatus?.["resolved"] || 0}
                         </p>
                     </div>
-                    <div className="bg-base-200 hover:bg-base-300 shadow-sm rounded-md p-5 flex flex-col items-center">
+                    <div className="bg-base-200 hover:bg-base-300 transition-color duration-300 shadow-sm rounded-md p-5 flex flex-col items-center">
                         <h2 className="stat-title text-xl">Total Closed</h2>
                         <p className="stat-value">
                             {adminStats.byStatus?.["closed"] || 0}
                         </p>
                     </div>
-                    <div className="bg-base-200 hover:bg-base-300 shadow-sm rounded-md p-5 flex flex-col items-center">
+                    <div className="bg-base-200 hover:bg-base-300 transition-color duration-300 shadow-sm rounded-md p-5 flex flex-col items-center">
                         <h2 className="stat-title text-xl">Total Rejected</h2>
                         <p className="stat-value">
                             {adminStats.byStatus?.rejected || 0}
@@ -76,7 +76,7 @@ export default function UserDashboard() {
                         {adminStats.latestIssues.map((issue) => (
                             <div
                                 key={issue._id}
-                                className="mt-3 flex flex-wrap gap-3 justify-between items-center rounded-md bg-base-300 hover:bg-gray-500/15 p-3"
+                                className="mt-3 flex flex-wrap gap-3 justify-between items-center rounded-md bg-base-300 hover:bg-gray-500/15 transition-color duration-300 p-3"
                             >
                                 <h2 className="font-bold">{issue.title}</h2>
                                 <Link
@@ -93,7 +93,7 @@ export default function UserDashboard() {
                         {adminStats.latestUsers.map((user) => (
                             <div
                                 key={user._id}
-                                className="mt-3 rounded-md bg-base-300 hover:bg-gray-500/15 p-3"
+                                className="mt-3 rounded-md bg-base-300 hover:bg-gray-500/15 transition-color duration-300 p-3"
                             >
                                 <div className="flex gap-1 items-center">
                                     <h2 className="font-semibold">
@@ -117,7 +117,7 @@ export default function UserDashboard() {
                         {adminStats.latestPayments.map((payment) => (
                             <div
                                 key={payment._id}
-                                className="mt-3 rounded-md bg-base-300 hover:bg-gray-500/15 p-3"
+                                className="mt-3 rounded-md bg-base-300 hover:bg-gray-500/15 transition-color duration-300 p-3"
                             >
                                 <div className={`border-l-4 ${payment?.type === "SUBSCRIPTION" ? "border-primary" : "border-accent"} pl-2`}>
                                     <h2 className="font-semibold">
@@ -137,7 +137,7 @@ export default function UserDashboard() {
                 <Loading height="h-auto" width="w-auto" />
             ) : (
                 <div className="mt-5">
-                    <div className="bg-base-200 hover:bg-base-300 shadow-sm rounded-md p-5 flex flex-col items-center">
+                    <div className="bg-base-200 hover:bg-base-300 transition-color duration-300 shadow-sm rounded-md p-5 flex flex-col items-center">
                         <h2 className="stat-title text-xl">Total Received</h2>
                         <p className="stat-value">
                             ৳ {adminStats.totalReceived || 0}

@@ -26,13 +26,13 @@ export default function StaffDashboard() {
                 <Loading height="h-auto" width="w-auto" />
             ) : (
                 <div className="grid sm:grid-cols-2 mt-5 gap-3">
-                    <div className="bg-base-200 hover:bg-base-300 shadow-sm rounded-md p-5 flex flex-col items-center">
+                    <div className="bg-base-200 hover:bg-base-300 transition-color duration-300 shadow-sm rounded-md p-5 flex flex-col items-center">
                         <h2 className="stat-title text-xl">Total Assigned</h2>
                         <p className="stat-value">
                             {userStats.totalAssignedIssues || 0}
                         </p>
                     </div>
-                    <div className="bg-base-200 hover:bg-base-300 shadow-sm rounded-md p-5 flex flex-col items-center">
+                    <div className="bg-base-200 hover:bg-base-300 transition-color duration-300 shadow-sm rounded-md p-5 flex flex-col items-center">
                         <h2 className="stat-title text-xl">Total Resolved</h2>
                         <p className="stat-value">
                             {userStats.byStatus?.resolved || 0}
@@ -53,7 +53,7 @@ export default function StaffDashboard() {
                             {userStats.todayTasksResult.map((task) => (
                                 <div
                                     key={task._id}
-                                    className="mt-3 flex flex-wrap gap-3 justify-between items-center rounded-md bg-base-300 hover:bg-gray-500/15 p-3"
+                                    className="mt-3 flex flex-wrap gap-3 justify-between items-center rounded-md bg-base-300 hover:bg-gray-500/15 transition-color duration-300 p-3"
                                 >
                                     <h2 className="font-bold">{task.title}</h2>
                                     <Link
@@ -75,7 +75,7 @@ export default function StaffDashboard() {
                 <Loading height="h-auto" width="w-auto" />
             ) : (
                 <div className="mt-5">
-                    <div className="bg-base-200 hover:bg-base-300 shadow-sm rounded-md p-5 flex flex-col items-center">
+                    <div className="bg-base-200 hover:bg-base-300 transition-color duration-300 shadow-sm rounded-md p-5 flex flex-col items-center">
                         <h2 className="stat-title text-xl">Total Paid</h2>
                         <p className="stat-value">{userStats.totalPaid || 0}</p>
                     </div>

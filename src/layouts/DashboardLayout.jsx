@@ -61,18 +61,16 @@ export default function DashboardLayout() {
                         <li>
                             <Link
                                 to="/"
-                                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                className="flex items-center gap-3 transition-all duration-300 is-drawer-close:tooltip is-drawer-close:tooltip-right"
                                 data-tip="Homepage"
                             >
-                                {/* Home icon */}
-                                {/* <HomeIcon size={16} /> */}
                                 <img
                                     src={civicConnLogo}
-                                    alt=""
-                                    className="is-drawer-open:w-12 is-drawer-open:h-12"
+                                    alt="Civic Connect Logo"
+                                    className="transition-all duration-300 is-drawer-open:w-12 is-drawer-open:h-12 w-4 h-4"
                                 />
-                                <span className="is-drawer-close:hidden">
-                                    <span className="text-xl font-semibold transition-all duration-300">
+                                <span className="transition-all duration-300 overflow-hidden is-drawer-close:w-0 is-drawer-close:opacity-0 is-drawer-open:w-auto is-drawer-open:opacity-100">
+                                    <span className="text-xl font-semibold whitespace-nowrap">
                                         Civic
                                         <span className="font-bold text-primary">
                                             Connect
