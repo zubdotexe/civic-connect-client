@@ -1,4 +1,5 @@
 import {
+    ChartNoAxesCombined,
     ClipboardList,
     HomeIcon,
     ListChecks,
@@ -52,6 +53,19 @@ export default function DashboardLayout() {
                                 <HomeIcon size={16} />
                                 <span className="is-drawer-close:hidden">
                                     Homepage
+                                </span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                to="/dashboard"
+                                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                data-tip="Dashboard"
+                            >
+                                {/* Home icon */}
+                                <ChartNoAxesCombined size={16} />
+                                <span className="is-drawer-close:hidden">
+                                    Dashboard
                                 </span>
                             </Link>
                         </li>
