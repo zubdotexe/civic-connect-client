@@ -14,7 +14,6 @@ import StaffRegister from "../pages/StaffRegister/StaffRegister";
 import MyIssues from "../pages/Dashboard/MyIssues/MyIssues";
 import UserProfile from "../pages/Dashboard/Profile/UserProfile";
 import ManageStaffs from "../pages/Dashboard/ManageStaffs/ManageStaffs";
-import AssignStaffs from "../pages/Dashboard/AssignStaffs/AssignStaffs";
 import AssignedIssues from "../pages/Dashboard/AssignedIssues/AssignedIssues";
 import CompletedIssues from "../pages/Dashboard/CompletedIssues/CompletedIssues";
 import PaymentSuccess from "../pages/Dashboard/Payments/PaymentSuccess";
@@ -22,6 +21,7 @@ import PaymentCancelled from "../pages/Dashboard/Payments/PaymentCancelled";
 import BoostPaymentSuccess from "../pages/Dashboard/Payments/BoostPaymentSuccess";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import ManageUsers from "../pages/Dashboard/ManageUsers/ManageUsers";
+import ManageIssues from "../pages/Dashboard/ManageIssues/ManageIssues";
 
 export const router = createBrowserRouter([
     {
@@ -93,8 +93,8 @@ export const router = createBrowserRouter([
                 Component: ManageStaffs,
             },
             {
-                path: "assign-staffs",
-                Component: AssignStaffs,
+                path: "manage-issues",
+                Component: ManageIssues,
             },
             {
                 path: "assigned-issues",

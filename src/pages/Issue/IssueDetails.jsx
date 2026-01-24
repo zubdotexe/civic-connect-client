@@ -176,7 +176,9 @@ export default function IssueDetails() {
                                             onClick={handleBoost}
                                             className="btn btn-primary btn-sm"
                                             disabled={
-                                                loading || issue?.isBoosted
+                                                loading ||
+                                                issue?.isBoosted ||
+                                                issue?.status === "rejected"
                                             }
                                         >
                                             <Rocket size={14} />
@@ -369,7 +371,7 @@ export default function IssueDetails() {
                                     </svg>
                                 </div>
 
-                                <div className="timeline-middle shadow-sm sm:w-2xs bg-base-200 hover:bg-base-300 p-4 rounded-md">
+                                <div className="timeline-middle shadow-sm sm:w-2xs bg-base-200 hover:bg-base-300 transition-color duration-300 p-4 rounded-md">
                                     <p>{log.issueNote}</p>
                                     <div className="flex justify-between items-center gap-3 mt-2">
                                         {log.issueStatus && (
