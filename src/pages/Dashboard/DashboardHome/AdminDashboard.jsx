@@ -16,8 +16,6 @@ export default function UserDashboard() {
         },
     });
 
-    console.log("userStats", adminStats);
-
     return (
         <div>
             <h1 className="bg-base-200 rounded-md p-5 text-4xl font-semibold">
@@ -119,11 +117,13 @@ export default function UserDashboard() {
                                 key={payment._id}
                                 className="mt-3 rounded-md bg-base-300 hover:bg-gray-500/15 transition-color duration-300 p-3"
                             >
-                                <div className={`border-l-4 ${payment?.type === "SUBSCRIPTION" ? "border-primary" : "border-accent"} pl-2`}>
+                                <div
+                                    className={`border-l-4 ${payment?.type === "SUBSCRIPTION" ? "border-primary" : "border-accent"} pl-2`}
+                                >
                                     <h2 className="font-semibold">
                                         {payment?.type}{" "}
                                     </h2>
-                                    <p>{payment.amount}</p>
+                                    <p>৳ {payment.amount}</p>
                                 </div>
                             </div>
                         ))}

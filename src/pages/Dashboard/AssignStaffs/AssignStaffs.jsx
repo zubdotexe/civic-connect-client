@@ -97,6 +97,44 @@ export default function AssignStaffs() {
         }
     };
 
+    const handleRejectIssue = async (issue) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, reject",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const update = {
+                        status: "rejected",
+                        issueId: issue._id,
+                        issueStatus: "rejected",
+                        issueNote: "Issue has been rejected",
+                    };
+                    const res = await axiosInstance.patch(
+                        `/issues/${issue._id}/change-status`,
+                        update,
+                    );
+                    if (res.data.acknowledged) {
+                        issuesRefetch();
+                        Swal.fire({
+                            title: "Updated!",
+                            text: `The issue has been rejected`,
+                            icon: "success",
+                        });
+                    }
+                } catch (err) {
+                    console.log("err", err);
+                    toast.error(err.message);
+                }
+            }
+        });
+    };
+
     useEffect(() => {
         document.title = "Assign Staffs";
     }, []);
@@ -176,13 +214,22 @@ export default function AssignStaffs() {
                                                     className="btn btn-secondary"
                                                     disabled={
                                                         issue["assignedStaff"]
-                                                            .name
+                                                            .name ||
+                                                        issue.status ===
+                                                            "rejected"
                                                     }
                                                 >
                                                     Assign Staff
                                                 </button>
                                                 {issue.status === "pending" && (
-                                                    <button className="btn btn-error">
+                                                    <button
+                                                        onClick={() =>
+                                                            handleRejectIssue(
+                                                                issue,
+                                                            )
+                                                        }
+                                                        className="btn btn-error"
+                                                    >
                                                         Reject
                                                     </button>
                                                 )}

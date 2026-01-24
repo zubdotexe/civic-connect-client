@@ -63,6 +63,7 @@ export default function IssueDetails() {
         working: "badge-warning",
         resolved: "badge-success",
         closed: "badge-neutral",
+        rejected: "badge-error",
     };
 
     const handleUpvote = async () => {

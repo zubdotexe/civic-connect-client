@@ -11,7 +11,7 @@ export default function useBlockChecker(externalUserInfo, showModal = true) {
         queryKey: ["userInfo", user?.email],
         queryFn: async () => {
             const res = await axiosInstance.get(`/users?email=${user?.email}`);
-            return res.data[0];
+            return res.data[0] || {};
         },
     });
 
