@@ -1,23 +1,28 @@
 import React from "react";
 import UserDashboard from "./UserDashboard";
-import useAuth from "../../../hooks/useAuth";
+
 import StaffDashboard from "./StaffDashboard";
 import AdminDashboard from "./AdminDashboard";
+import useRole from "../../../hooks/useRole";
+import Loading from "../../../components/Loading";
 
 export default function DashboardHome() {
-    const { user } = useAuth();
+    const { role, roleLoading } = useRole();
+
+    const checkRole = () => {
+        switch (role) {
+            case "admin":
+                return <AdminDashboard />;
+            case "staff":
+                return <StaffDashboard />;
+            case "user":
+                return <UserDashboard />;
+        }
+    };
 
     return (
         <div className="max-w-375 mx-auto p-10">
-            {user?.email.endsWith("@civicconnect.com") ? (
-                user?.email.startsWith("admin") ? (
-                    <AdminDashboard />
-                ) : (
-                    <StaffDashboard />
-                )
-            ) : (
-                <UserDashboard />
-            )}
+            {roleLoading ? <Loading /> : checkRole()}
         </div>
     );
 }
