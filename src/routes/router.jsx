@@ -21,6 +21,7 @@ import PaymentSuccess from "../pages/Dashboard/Payments/PaymentSuccess";
 import PaymentCancelled from "../pages/Dashboard/Payments/PaymentCancelled";
 import BoostPaymentSuccess from "../pages/Dashboard/Payments/BoostPaymentSuccess";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
+import ManageUsers from "../pages/Dashboard/ManageUsers/ManageUsers";
 
 export const router = createBrowserRouter([
     {
@@ -82,6 +83,10 @@ export const router = createBrowserRouter([
             {
                 path: "my-profile",
                 Component: UserProfile,
+            },
+            {
+                path: "manage-users",
+                Component: ManageUsers,
             },
             {
                 path: "manage-staffs",
