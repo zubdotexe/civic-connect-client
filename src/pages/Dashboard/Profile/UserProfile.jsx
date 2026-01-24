@@ -14,7 +14,7 @@ import useBlockChecker from "../../../hooks/useBlockChecker";
 
 export default function UserProfile() {
     const { user, updateUserProfile } = useAuth();
-    const { role } = useRole();
+    const { role, roleLoading } = useRole();
     const axiosInstance = useAxiosInstance();
     const modalRef = useRef();
     const [infoUpdateLoding, setInfoUpdateLoading] = useState(false);
@@ -34,8 +34,10 @@ export default function UserProfile() {
         queryFn: async () => {
             let res;
             if (role === "user") {
+                console.log("role", role);
                 res = await axiosInstance(`/users?email=${user?.email}`);
-            } else {
+            } else if (role === "staff") {
+                console.log("role", role);
                 res = await axiosInstance(`/staffs?email=${user?.email}`);
             }
             return res.data[0] || [];
@@ -83,7 +85,7 @@ export default function UserProfile() {
                     `/users/${userInfo?._id}`,
                     dbProfile,
                 );
-            } else {
+            } else if (role === "staff") {
                 res = await axiosInstance.patch(
                     `/staffs/${userInfo?._id}`,
                     dbProfile,
@@ -151,80 +153,91 @@ export default function UserProfile() {
                     </span>
                 </div>
             )}
-            <h2 className="text-3xl font-semibold">My Profile</h2>
-            <div className="bg-base-200 shadow-md mt-5 p-5 rounded-md max-w-2xl mx-auto flex flex-col justify-between gap-5">
-                <div className="flex flex-col-reverse sm:flex-row gap-5 justify-between">
-                    <div className="w-40 h-w-40 overflow-hidden rounded-md shadow-sm">
-                        {isLoading ? (
-                            <Loading height="h-auto" width="w-auto" />
-                        ) : (
-                            <img
-                                className="w-full h-full"
-                                src={user?.photoURL}
-                                alt=""
-                            />
-                        )}
-                    </div>
-
-                    <button
-                        onClick={() => handleModal("open")}
-                        className="btn btn-secondary"
-                    >
-                        Edit Profile
-                    </button>
-                </div>
-
-                <div>
-                    <div className="flex gap-3 items-center">
-                        <h3 className="text-2xl font-semibold">
-                            {userInfo?.displayName}{" "}
-                        </h3>
-                        {userInfo?.isPremium && <Gem />}
-                    </div>
-                    <div className="mt-3 space-y-2">
-                        <div
-                            className="flex gap-3 tooltip wrap-anywhere"
-                            data-tip="Email"
-                        >
-                            <Mail /> {user?.email}
-                        </div>
-                        <div className="flex gap-3 tooltip" data-tip="Joined">
-                            <CalendarPlus2 />
-                            {userInfo
-                                ? new Date(
-                                      userInfo?.createdAt,
-                                  ).toLocaleDateString()
-                                : "Loading..."}
-                        </div>
-                        {role === "user" && (
-                            <div className="flex items-center gap-3">
-                                <div
-                                    className="flex gap-3 tooltip"
-                                    data-tip="Subscribed"
-                                >
-                                    <MdOutlineWorkspacePremium size={24} />
-                                    {userInfo?.isPremium ? "Yes" : "No"}
-                                </div>
-                                {!userInfo?.isPremium && (
-                                    <button
-                                        className="btn btn-accent"
-                                        onClick={handleSubscription}
-                                    >
-                                        Subscribe Today!{" "}
-                                        {infoUpdateLoding && (
-                                            <Loading
-                                                height="h-auto"
-                                                width="w-auto"
-                                                color="text-neutral"
-                                            />
-                                        )}
-                                    </button>
+            {isLoading || roleLoading ? (
+                <Loading />
+            ) : (
+                <>
+                    <h2 className="text-3xl font-semibold">My Profile</h2>
+                    <div className="bg-base-200 shadow-md mt-5 p-5 rounded-md max-w-2xl mx-auto flex flex-col justify-between gap-5">
+                        <div className="flex flex-col-reverse sm:flex-row gap-5 justify-between">
+                            <div className="w-40 h-w-40 overflow-hidden rounded-md shadow-sm">
+                                {isLoading ? (
+                                    <Loading height="h-auto" width="w-auto" />
+                                ) : (
+                                    <img
+                                        className="w-full h-full"
+                                        src={user?.photoURL}
+                                        alt=""
+                                    />
                                 )}
                             </div>
-                        )}
+
+                            <button
+                                onClick={() => handleModal("open")}
+                                className="btn btn-secondary"
+                            >
+                                Edit Profile
+                            </button>
+                        </div>
+
+                        <div>
+                            <div className="flex gap-3 items-center">
+                                <h3 className="text-2xl font-semibold">
+                                    {userInfo?.displayName}{" "}
+                                </h3>
+                                {userInfo?.isPremium && <Gem />}
+                            </div>
+                            <div className="mt-3 space-y-2">
+                                <div
+                                    className="flex gap-3 tooltip wrap-anywhere"
+                                    data-tip="Email"
+                                >
+                                    <Mail /> {user?.email}
+                                </div>
+                                <div
+                                    className="flex gap-3 tooltip"
+                                    data-tip="Joined"
+                                >
+                                    <CalendarPlus2 />
+                                    {userInfo
+                                        ? new Date(
+                                              userInfo?.createdAt,
+                                          ).toLocaleDateString()
+                                        : "Loading..."}
+                                </div>
+                                {role === "user" && (
+                                    <div className="flex items-center gap-3">
+                                        <div
+                                            className="flex gap-3 tooltip"
+                                            data-tip="Subscribed"
+                                        >
+                                            <MdOutlineWorkspacePremium
+                                                size={24}
+                                            />
+                                            {userInfo?.isPremium ? "Yes" : "No"}
+                                        </div>
+                                        {!userInfo?.isPremium && (
+                                            <button
+                                                className="btn btn-accent"
+                                                onClick={handleSubscription}
+                                            >
+                                                Subscribe Today!{" "}
+                                                {infoUpdateLoding && (
+                                                    <Loading
+                                                        height="h-auto"
+                                                        width="w-auto"
+                                                        color="text-neutral"
+                                                    />
+                                                )}
+                                            </button>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </>
+            )}
 
             {/* Open the modal using document.getElementById('ID').showModal() method */}
             <dialog

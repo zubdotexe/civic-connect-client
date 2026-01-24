@@ -15,6 +15,7 @@ import { GrSidebar } from "react-icons/gr";
 import { Link, Outlet, useNavigate } from "react-router";
 import civicConnLogo from "/civicConnect.png";
 import useAuth from "../hooks/useAuth";
+import useBlockChecker from "../hooks/useBlockChecker";
 
 export default function DashboardLayout() {
     const { logoutUser } = useAuth();
@@ -22,6 +23,8 @@ export default function DashboardLayout() {
     const handleLogOut = () => {
         logoutUser().then(navigate("/login"));
     };
+    const { isBlocked } = useBlockChecker();
+
     return (
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -194,9 +197,15 @@ export default function DashboardLayout() {
                                 data-tip="Profile"
                             >
                                 {/* Settings icon */}
-                                <SquareUserRound size={16} />
+                                <SquareUserRound
+                                    className="relative"
+                                    size={16}
+                                />{" "}
+                                {isBlocked && (
+                                    <span className="absolute top-0 right-0 w-2 h-2 rounded-full bg-red-500"></span>
+                                )}
                                 <span className="is-drawer-close:hidden">
-                                    Profile
+                                    Profile{" "}
                                 </span>
                             </Link>
                         </li>
