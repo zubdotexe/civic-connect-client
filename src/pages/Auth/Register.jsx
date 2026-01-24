@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import { Link, useNavigate } from "react-router";
 import SocialLogin from "./SocialLogin";
-import useaxiosInstance from "../../hooks/useAxios";
+import useAxiosInstance from "../../hooks/useAxios";
 import { toast } from "react-toastify";
 import Loading from "../../components/Loading";
 
@@ -16,7 +16,7 @@ export default function Register() {
     const { registerUser, updateUserProfile, loading, setLoading, authMethod } =
         useAuth();
     const navigate = useNavigate();
-    const axiosInstance = useaxiosInstance();
+    const axiosInstance = useAxiosInstance();
 
     const handleRegister = (data) => {
         const profileImg = data.photo[0];

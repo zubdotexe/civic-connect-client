@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import useaxiosInstance from "../../../hooks/useAxios";
+import useAxiosInstance from "../../../hooks/useAxios";
 import IssueCard from "../../../components/IssueCard";
 import { Link } from "react-router";
 import useAuth from "../../../hooks/useAuth";
@@ -20,7 +20,7 @@ const divCardVariants = {
 };
 
 export default function LatestResolvedIssues() {
-    const axiosInstance = useaxiosInstance();
+    const axiosInstance = useAxiosInstance();
 
     const { isLoading, data: issues = [] } = useQuery({
         queryKey: ["issues"],

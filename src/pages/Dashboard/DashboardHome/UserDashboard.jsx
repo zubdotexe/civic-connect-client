@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
-import useaxiosInstance from "../../../hooks/useAxios";
+import useAxiosInstance from "../../../hooks/useAxios";
 import Loading from "../../../components/Loading";
 
 export default function UserDashboard() {
     const { user } = useAuth();
-    const axiosInstance = useaxiosInstance();
+    const axiosInstance = useAxiosInstance();
 
     const { data: userStats = {}, isLoading } = useQuery({
         queryKey: ["userStats", user?.email],

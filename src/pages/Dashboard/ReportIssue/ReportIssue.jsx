@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import useaxiosInstance from "../../../hooks/useAxios";
+import useAxiosInstance from "../../../hooks/useAxios";
 import Swal from "sweetalert2";
 import useAuth from "../../../hooks/useAuth";
 import { Link, useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../components/Loading";
+import useBlockChecker from "../../../hooks/useBlockChecker";
 
 const categories = [
     "water",
@@ -25,7 +26,7 @@ export default function ReportIssue() {
         formState: { errors },
     } = useForm();
     const [category, setCategory] = useState("");
-    const axiosInstance = useaxiosInstance();
+    const axiosInstance = useAxiosInstance();
     const { user } = useAuth();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -42,6 +43,8 @@ export default function ReportIssue() {
         },
     });
 
+    const { showBlockModal } = useBlockChecker(userInfo);
+
     const { data, isLoading: userIssuesLoading } = useQuery({
         queryKey: ["issues", user?.email],
         queryFn: async () => {
@@ -53,6 +56,8 @@ export default function ReportIssue() {
     const totalIssues = data?.total ?? 0;
 
     const handleReport = async (data) => {
+        if (showBlockModal()) return;
+
         Swal.fire({
             title: "Are you sure?",
             // text: "You won't be able to revert this!",

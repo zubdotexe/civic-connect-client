@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import useaxiosInstance from "../../hooks/useAxios";
+import useAxiosInstance from "../../hooks/useAxios";
 import IssueCard from "../../components/IssueCard";
 import { ArrowLeft, ArrowRight, Trash } from "lucide-react";
 import Loading from "../../components/Loading";
 
 export default function AllIssues() {
-    const axiosInstance = useaxiosInstance();
+    const axiosInstance = useAxiosInstance();
     // const [totalIssues, setTotalIssues] = useState(0);
     // const [totalPages, setTotalPages] = useState(0);
     const limit = 6;

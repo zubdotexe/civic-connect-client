@@ -1,7 +1,7 @@
 import React from "react";
 import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
-import useaxiosInstance from "../../../hooks/useAxios";
+import useAxiosInstance from "../../../hooks/useAxios";
 import Loading from "../../../components/Loading";
 import { useRef } from "react";
 import { useState } from "react";
@@ -22,7 +22,7 @@ const categories = [
 
 export default function AssignedIssues() {
     const { user } = useAuth();
-    const axiosInstance = useaxiosInstance();
+    const axiosInstance = useAxiosInstance();
     const modalRef = useRef();
     const [selectedIssue, setSelectedIssue] = useState(null);
     const [currentStatus, setCurrentStatus] = useState(null);

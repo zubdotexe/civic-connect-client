@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
-import useaxiosInstance from "../../hooks/useAxios";
+import useAxiosInstance from "../../hooks/useAxios";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
@@ -23,7 +23,7 @@ export default function StaffRegister() {
         formState: { errors },
     } = useForm();
     const { user } = useAuth();
-    const axiosInstance = useaxiosInstance();
+    const axiosInstance = useAxiosInstance();
 
     const handleStaffReg = (data) => {
         const newStaff = {

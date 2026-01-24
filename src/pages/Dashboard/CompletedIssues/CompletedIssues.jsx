@@ -1,13 +1,13 @@
 import React from "react";
 import Loading from "../../../components/Loading";
 import useAuth from "../../../hooks/useAuth";
-import useaxiosInstance from "../../../hooks/useAxios";
+import useAxiosInstance from "../../../hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router";
 
 export default function CompletedIssues() {
     const { user } = useAuth();
-    const axiosInstance = useaxiosInstance();
+    const axiosInstance = useAxiosInstance();
 
     const { data: issues = [], isLoading } = useQuery({
         queryKey: ["issues", user?.email],

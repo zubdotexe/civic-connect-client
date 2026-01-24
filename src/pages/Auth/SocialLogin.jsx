@@ -1,14 +1,14 @@
 import { GrGoogle } from "react-icons/gr";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
-import useaxiosInstance from "../../hooks/useAxios";
+import useAxiosInstance from "../../hooks/useAxios";
 import { toast } from "react-toastify";
 import Loading from "../../components/Loading";
 
 export default function SocialLogin({ phrase }) {
     const { signInWGoogle, setLoading, loading, authMethod } = useAuth();
     const navigate = useNavigate();
-    const axiosInstance = useaxiosInstance();
+    const axiosInstance = useAxiosInstance();
 
     const handleGoogleSignIn = () => {
         signInWGoogle()

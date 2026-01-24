@@ -1,11 +1,11 @@
 import React from "react";
 import { Link, useSearchParams } from "react-router";
-import useaxiosInstance from "../../../hooks/useAxios";
+import useAxiosInstance from "../../../hooks/useAxios";
 import { useEffect } from "react";
 
 export default function PaymentSuccess() {
     const [searchParams] = useSearchParams();
-    const axiosInstance = useaxiosInstance();
+    const axiosInstance = useAxiosInstance();
     const sessionId = searchParams.get("session_id");
 
     useEffect(() => {

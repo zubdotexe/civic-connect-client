@@ -1,8 +1,8 @@
 import React from "react";
-import useaxiosInstance from "./useAxios";
+import useAxiosInstance from "./useAxios";
 
 export default function useImgUp() {
-    const axiosInstance = useaxiosInstance();
+    const axiosInstance = useAxiosInstance();
 
     const uploadImage = async (file) => {
         if (!file) return null;
