@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
-import useaxiosInstance from "../../../hooks/useAxios";
+import useAxiosInstance from "../../../hooks/useAxios";
 import { CalendarPlus2, Gem, Mail } from "lucide-react";
 import { MdOutlineWorkspacePremium } from "react-icons/md";
 import { useEffect } from "react";
@@ -9,10 +9,13 @@ import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import Loading from "../../../components/Loading";
+import useRole from "../../../hooks/useRole";
+import useBlockChecker from "../../../hooks/useBlockChecker";
 
 export default function UserProfile() {
     const { user, updateUserProfile } = useAuth();
-    const axiosInstance = useaxiosInstance();
+    const { role } = useRole();
+    const axiosInstance = useAxiosInstance();
     const modalRef = useRef();
     const [infoUpdateLoding, setInfoUpdateLoading] = useState(false);
 
@@ -30,14 +33,16 @@ export default function UserProfile() {
         queryKey: ["userInfo", user?.email],
         queryFn: async () => {
             let res;
-            if (user?.email.endsWith("civicconnect.com")) {
-                res = await axiosInstance(`/staffs?email=${user?.email}`);
-            } else {
+            if (role === "user") {
                 res = await axiosInstance(`/users?email=${user?.email}`);
+            } else {
+                res = await axiosInstance(`/staffs?email=${user?.email}`);
             }
             return res.data[0] || [];
         },
     });
+
+    const { isBlocked } = useBlockChecker(userInfo);
 
     const handleModal = (task) => {
         if (task === "open") {
@@ -73,14 +78,14 @@ export default function UserProfile() {
             }
 
             let res;
-            if (user?.email.endsWith("civicconnect.com")) {
+            if (role === "user") {
                 res = await axiosInstance.patch(
-                    `/staffs/${userInfo?._id}`,
+                    `/users/${userInfo?._id}`,
                     dbProfile,
                 );
             } else {
                 res = await axiosInstance.patch(
-                    `/users/${userInfo?._id}`,
+                    `/staffs/${userInfo?._id}`,
                     dbProfile,
                 );
             }
@@ -125,6 +130,27 @@ export default function UserProfile() {
 
     return (
         <div className="max-w-375 mx-auto p-10">
+            {isBlocked && (
+                <div role="alert" className="alert alert-error mb-10">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6 shrink-0 stroke-current"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                        />
+                    </svg>
+                    <span>
+                        Looks like your account is blocked. Please contact the
+                        authorities.
+                    </span>
+                </div>
+            )}
             <h2 className="text-3xl font-semibold">My Profile</h2>
             <div className="bg-base-200 shadow-md mt-5 p-5 rounded-md max-w-2xl mx-auto flex flex-col justify-between gap-5">
                 <div className="flex flex-col-reverse sm:flex-row gap-5 justify-between">
@@ -170,7 +196,7 @@ export default function UserProfile() {
                                   ).toLocaleDateString()
                                 : "Loading..."}
                         </div>
-                        {!user?.email.endsWith("@civicconnect.com") && (
+                        {role === "user" && (
                             <div className="flex items-center gap-3">
                                 <div
                                     className="flex gap-3 tooltip"

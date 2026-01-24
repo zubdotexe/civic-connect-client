@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
-import useaxiosInstance from "../../../hooks/useAxios";
+import useAxiosInstance from "../../../hooks/useAxios";
 import { SquareChartGantt, SquarePen, Trash } from "lucide-react";
 import Loading from "../../../components/Loading";
 import { Link } from "react-router";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import useBlockChecker from "../../../hooks/useBlockChecker";
 
 const categories = [
     "water",
@@ -21,7 +22,7 @@ const categories = [
 
 export default function MyIssues() {
     const { user } = useAuth();
-    const axiosInstance = useaxiosInstance();
+    const axiosInstance = useAxiosInstance();
     const [category, setCategory] = useState("");
     const { data, isLoading, refetch } = useQuery({
         queryKey: ["issues", category, { email: user?.email }],
@@ -36,9 +37,14 @@ export default function MyIssues() {
     const issues = data?.result ?? [];
     const totalIssues = data?.total ?? 0;
     const [loading, setLoading] = useState(false);
+    const { showBlockModal } = useBlockChecker();
 
     const handlePickCategory = (e) => {
         setCategory(e.target.value);
+    };
+
+    const handleEditIssue = () => {
+        if (showBlockModal()) return;
     };
 
     const handleDeleteIssue = (id) => {
@@ -171,7 +177,12 @@ export default function MyIssues() {
                                                         className="tooltip"
                                                         data-tip="Edit Issue"
                                                     >
-                                                        <button className="btn btn-secondary">
+                                                        <button
+                                                            onClick={
+                                                                handleEditIssue
+                                                            }
+                                                            className="btn btn-secondary"
+                                                        >
                                                             <SquarePen
                                                                 size={16}
                                                             />

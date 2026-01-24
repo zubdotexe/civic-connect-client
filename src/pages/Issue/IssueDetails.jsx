@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import useaxiosInstance from "../../hooks/useAxios";
+import useAxiosInstance from "../../hooks/useAxios";
 import NotFound from "../NotFound/NotFound";
 import Loading from "../../components/Loading";
 import { motion } from "framer-motion";
@@ -9,6 +9,7 @@ import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import { Rocket, Star, UserIcon } from "lucide-react";
 import { toast } from "react-toastify";
+import useBlockChecker from "../../hooks/useBlockChecker";
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -29,8 +30,9 @@ export default function IssueDetails() {
     const { issueId } = useParams();
     const { user } = useAuth();
     const navigate = useNavigate();
-    const axiosInstance = useaxiosInstance();
+    const axiosInstance = useAxiosInstance();
     const [loading, setLoading] = useState(false);
+    const { showBlockModal } = useBlockChecker();
 
     const {
         isLoading,
@@ -65,6 +67,7 @@ export default function IssueDetails() {
 
     const handleUpvote = async () => {
         if (!user) return navigate("/login");
+        if (showBlockModal()) return;
         setLoading(true);
 
         const upvote = {
@@ -90,25 +93,27 @@ export default function IssueDetails() {
         }
     };
 
-    const { data: userInfo = {} } = useQuery({
-        queryKey: ["userInfo", user?.email],
-        queryFn: async () => {
-            let res;
-            if (user?.email.endsWith("civicconnect.com")) {
-                res = await axiosInstance(`/staffs?email=${user?.email}`);
-            } else {
-                res = await axiosInstance(`/users?email=${user?.email}`);
-            }
-            return res.data[0] || [];
-        },
-    });
+    // const { data: userInfo = {} } = useQuery({
+    //     queryKey: ["userInfo", user?.email],
+    //     queryFn: async () => {
+    //         let res;
+    //         if (user?.email.endsWith("civicconnect.com")) {
+    //             res = await axiosInstance(`/staffs?email=${user?.email}`);
+    //         } else {
+    //             res = await axiosInstance(`/users?email=${user?.email}`);
+    //         }
+    //         return res.data[0] || [];
+    //     },
+    // });
 
     const handleBoost = async () => {
         setLoading(true);
+        if (showBlockModal()) return;
+
         const boostInfo = {
-            userId: userInfo?._id,
+            // userId: userInfo?._id,
             issueId: issue?._id,
-            email: userInfo?.email,
+            email: user?.email,
         };
         try {
             const res = await axiosInstance.post(

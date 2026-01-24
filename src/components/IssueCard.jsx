@@ -2,19 +2,22 @@ import { Star } from "lucide-react";
 import React from "react";
 import { Link, useNavigate } from "react-router";
 import useAuth from "../hooks/useAuth";
-import useaxiosInstance from "../hooks/useAxios";
+import useAxiosInstance from "../hooks/useAxios";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import Loading from "./Loading";
+import useBlockChecker from "../hooks/useBlockChecker";
 
 export default function IssueCard({ issue, refetch, isLoading }) {
     const { user } = useAuth();
     const navigate = useNavigate();
-    const axiosInstance = useaxiosInstance();
+    const axiosInstance = useAxiosInstance();
     const [loading, setLoading] = useState(false);
+    const { showBlockModal } = useBlockChecker();
 
     const handleUpvote = async () => {
         if (!user) return navigate("/login");
+        if (showBlockModal()) return;
         setLoading(true);
 
         const upvote = {
