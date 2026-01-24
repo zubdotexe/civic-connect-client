@@ -165,7 +165,7 @@ export default function ReportIssue() {
                             <textarea
                                 type="text"
                                 {...register("description", { required: true })}
-                                className="input h-15 w-full"
+                                className="textarea textarea-boarded h-15 w-full"
                                 placeholder="Description"
                             />
                             {errors?.description?.type === "required" && (
@@ -180,10 +180,10 @@ export default function ReportIssue() {
                                 Category
                             </label>
                             <select
-                                value={category}
+                                // value={category}
                                 {...register("category", { required: true })}
                                 className="select select-neutral bg-base-200 w-full"
-                                onChange={handlePickCategory}
+                                // onChange={handlePickCategory}
                             >
                                 <option value="" disabled={true}>
                                     Pick a category

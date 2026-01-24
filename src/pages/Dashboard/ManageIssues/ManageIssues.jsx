@@ -7,7 +7,7 @@ import { X } from "lucide-react";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 
-export default function AssignStaffs() {
+export default function ManageIssues() {
     const axiosInstance = useAxiosInstance();
     const modalRef = useRef();
     const [selectedIssue, setSelectedIssue] = useState(null);

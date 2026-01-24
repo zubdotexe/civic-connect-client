@@ -106,15 +106,15 @@ export default function Navbar() {
                         </div>
                         <ul
                             tabIndex="-1"
-                            className="dropdown-content menu bg-base-100 rounded-box z-10 w-52 p-2 shadow-sm space-y-2"
+                            className="dropdown-content menu bg-base-100 rounded-box z-10 w-52 p-2 shadow-sm"
                         >
                             <Link
                                 to="/dashboard/my-profile"
-                                className="font-semibold hover:bg-base-200 p-1"
+                                className="font-semibold hover:bg-base-200 rounded-md transition-color duration-300 p-2"
                             >
                                 {user.displayName || user.email}
                             </Link>
-                            <Link to="/dashboard" className="hover:bg-base-200 p-1">Dashboard</Link>
+                            <Link to="/dashboard" className="hover:bg-base-200 rounded-md transition-color duration-300 p-2">Dashboard</Link>
                             <button
                                 className="btn btn-accent"
                                 onClick={handleSignOut}
