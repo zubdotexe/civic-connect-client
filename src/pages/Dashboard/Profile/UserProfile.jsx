@@ -34,10 +34,8 @@ export default function UserProfile() {
         queryFn: async () => {
             let res;
             if (role === "user") {
-                console.log("role", role);
                 res = await axiosInstance(`/users?email=${user?.email}`);
             } else if (role === "staff") {
-                console.log("role", role);
                 res = await axiosInstance(`/staffs?email=${user?.email}`);
             }
             return res.data[0] || [];
@@ -163,12 +161,16 @@ export default function UserProfile() {
                             <div className="w-40 h-w-40 overflow-hidden rounded-md shadow-sm">
                                 {isLoading ? (
                                     <Loading height="h-auto" width="w-auto" />
-                                ) : (
+                                ) : user?.photoURL ? (
                                     <img
                                         className="w-full h-full"
                                         src={user?.photoURL}
                                         alt=""
                                     />
+                                ) : (
+                                    <div className="w-ful h-full bg-base-300 p-10 text-center text-neutral font-semibold">
+                                        <p>Image Not Available</p>
+                                    </div>
                                 )}
                             </div>
 
@@ -291,7 +293,7 @@ export default function UserProfile() {
                                     <Loading
                                         height="h-auto"
                                         width="w-auto"
-                                        color="text-accent"
+                                        color="text-white"
                                     />
                                 )}
                             </button>

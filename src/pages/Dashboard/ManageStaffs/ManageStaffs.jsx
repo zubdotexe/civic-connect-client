@@ -382,7 +382,7 @@ export default function ManageStaffs() {
                                     <Loading
                                         height="h-auto"
                                         width="w-auto"
-                                        color="text-accent"
+                                        color="text-white"
                                     />
                                 )}
                             </button>
@@ -471,21 +471,7 @@ export default function ManageStaffs() {
                                 {...updateRegister("photo")}
                                 className="file-input w-full"
                             />
-                            {/* {errors.photo?.type === "required" && (
-                                <p className="text-error font-semibold text-sm">
-                                    Photo is required
-                                </p>
-                            )} */}
                         </div>
-                        {/* <div className="flex flex-col gap-1">
-                            <label className="label">Password</label>
-                            <input
-                                type="password"
-                                {...updateRegister("password")}
-                                className="input w-full"
-                                placeholder="Enter Password"
-                            />
-                        </div> */}
 
                         <div className="mt-5 flex flex-wrap justify-end gap-3 items-center">
                             <button
@@ -498,7 +484,7 @@ export default function ManageStaffs() {
                                     <Loading
                                         height="h-auto"
                                         width="w-auto"
-                                        color="text-accent"
+                                        color="text-white"
                                     />
                                 )}
                             </button>
@@ -512,15 +498,6 @@ export default function ManageStaffs() {
                             </button>
                         </div>
                     </form>
-                    {/* </fieldset> */}
-                    <div className="modal-action">
-                        {/* <button
-                                    onClick={() => handleModal("close")}
-                                    className="btn"
-                                >
-                                    Cancel
-                                </button> */}
-                    </div>
                 </div>
             </dialog>
         </div>

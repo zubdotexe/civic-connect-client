@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosInstance from "../../../hooks/useAxios";
@@ -9,6 +9,8 @@ import { useEffect } from "react";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import useBlockChecker from "../../../hooks/useBlockChecker";
+import { useForm } from "react-hook-form";
+import useImgUp from "../../../hooks/useImgUp";
 
 const categories = [
     "water",
@@ -24,6 +26,11 @@ export default function MyIssues() {
     const { user } = useAuth();
     const axiosInstance = useAxiosInstance();
     const [category, setCategory] = useState("");
+    const updateModalRef = useRef();
+    const [selectedIssue, setSelectedIssue] = useState(null);
+    const { register, handleSubmit, reset } = useForm();
+    const { uploadImage } = useImgUp();
+
     const { data, isLoading, refetch } = useQuery({
         queryKey: ["issues", category, { email: user?.email }],
         queryFn: async () => {
@@ -41,10 +48,6 @@ export default function MyIssues() {
 
     const handlePickCategory = (e) => {
         setCategory(e.target.value);
-    };
-
-    const handleEditIssue = () => {
-        if (showBlockModal()) return;
     };
 
     const handleDeleteIssue = (id) => {
@@ -78,6 +81,64 @@ export default function MyIssues() {
                 }
             }
         });
+    };
+
+    const handleUpdateModal = (task, issue = null) => {
+        if (task === "open") {
+            if (showBlockModal()) return;
+            updateModalRef.current.showModal();
+            setSelectedIssue(issue);
+        } else {
+            updateModalRef.current.close();
+            setSelectedIssue(null);
+        }
+    };
+
+    const handleUpdateIssue = async (data) => {
+        console.log("data", data);
+
+        setLoading(true);
+
+        try {
+            const updatedIssueInfo = {};
+
+            if (data.title) updatedIssueInfo.title = data.title;
+            if (data.description)
+                updatedIssueInfo.description = data.description;
+            if (data.category) updatedIssueInfo.category = data.category;
+            if (data.image) {
+                updatedIssueInfo.photoURL = await uploadImage(data.image[0]);
+            }
+            if (data.location) {
+                updatedIssueInfo.location = data.location;
+            }
+
+            const result = await axiosInstance.patch(
+                `/issues/${selectedIssue._id}`,
+                updatedIssueInfo,
+            );
+
+            if (result.data.acknowledged) {
+                Swal.fire({
+                    title: "Issue Edited!",
+                    text: "Issue has been edited",
+                    icon: "success",
+                });
+
+                refetch();
+                reset();
+                updateModalRef.current.close();
+            }
+        } catch (err) {
+            console.log("err", err);
+            toast.error(
+                err?.response?.data?.message ||
+                    err.message ||
+                    "Something went wrong",
+            );
+        } finally {
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -178,8 +239,11 @@ export default function MyIssues() {
                                                         data-tip="Edit Issue"
                                                     >
                                                         <button
-                                                            onClick={
-                                                                handleEditIssue
+                                                            onClick={() =>
+                                                                handleUpdateModal(
+                                                                    "open",
+                                                                    issue,
+                                                                )
                                                             }
                                                             className="btn btn-secondary"
                                                         >
@@ -222,6 +286,110 @@ export default function MyIssues() {
                     </table>
                 </div>
             )}
+
+            <dialog
+                ref={updateModalRef}
+                className="modal modal-bottom sm:modal-middle"
+            >
+                <div className="modal-box w-full">
+                    <legend className="fieldset-legend text-2xl">
+                        Edit Issue
+                    </legend>
+                    {/* <fieldset className="fieldset w-full border-base-300 rounded-box border p-4"> */}
+                    <form
+                        onSubmit={handleSubmit(handleUpdateIssue)}
+                        className="mt-5 space-y-3 w-full border-base-300 rounded-box border p-4"
+                    >
+                        <div className="flex flex-col gap-1">
+                            <label className="label">Title</label>
+                            <input
+                                type="text"
+                                {...register("title")}
+                                className="input w-full"
+                                defaultValue={selectedIssue?.title}
+                            />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <label className="label">Description</label>
+                            <textarea
+                                type="text"
+                                {...register("description")}
+                                className="textarea textarea-boarded w-full"
+                                defaultValue={selectedIssue?.description}
+                            />
+                        </div>
+                        <div className="space-y-1">
+                            <label className="label mt-2">Category</label>
+                            <select
+                                {...register("category", { required: true })}
+                                defaultValue={selectedIssue?.category || ""}
+                                className="select select-neutral bg-base-200 w-full"
+                            >
+                                <option value={selectedIssue?.category}>
+                                    {selectedIssue?.category
+                                        ? `${selectedIssue.category.charAt(0).toUpperCase() + selectedIssue.category.slice(1)}`
+                                        : ""}
+                                </option>
+
+                                {categories
+                                    ?.filter(
+                                        (c) => c !== selectedIssue?.category,
+                                    )
+                                    ?.map((c) => (
+                                        <option key={c} value={c}>
+                                            {c.charAt(0).toUpperCase() +
+                                                c.slice(1)}
+                                        </option>
+                                    ))}
+                            </select>
+                        </div>
+                        <div className="space-y-1">
+                            <label className="label mt-2">Image</label>
+                            <input
+                                type="file"
+                                {...register("image")}
+                                className="file-input w-full"
+                                placeholder="Image"
+                            />
+                        </div>
+
+                        <div className="flex flex-col gap-1">
+                            <label className="label">Location</label>
+                            <input
+                                type="text"
+                                {...register("location")}
+                                className="input w-full"
+                                defaultValue={selectedIssue?.location}
+                            />
+                        </div>
+
+                        <div className="mt-5 flex flex-wrap justify-end gap-3 items-center">
+                            <button
+                                type="submit"
+                                className="btn btn-primary"
+                                disabled={loading}
+                            >
+                                Update{" "}
+                                {loading && (
+                                    <Loading
+                                        height="h-auto"
+                                        width="w-auto"
+                                        color="text-white"
+                                    />
+                                )}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => handleUpdateModal("close")}
+                                className="btn"
+                                disabled={loading}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </dialog>
         </div>
     );
 }
