@@ -255,7 +255,7 @@ export default function ReportIssue() {
                                         <Loading
                                             height="h-auto"
                                             width="w-auto"
-                                            color="text-accent"
+                                            color="text-white"
                                         />
                                     )}
                                 </button>

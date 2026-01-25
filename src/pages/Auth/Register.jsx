@@ -184,7 +184,7 @@ export default function Register() {
                         >
                             Register{" "}
                             {loading && authMethod === "register" && (
-                                <Loading height="h-auto" width="w-auto" color="text-accent" />
+                                <Loading height="h-auto" width="w-auto" color="text-white" />
                             )}
                         </button>
                     </form>

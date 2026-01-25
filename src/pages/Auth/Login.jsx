@@ -71,7 +71,7 @@ export default function Login() {
                         >
                             Login{" "}
                             {loading && authMethod === "login" && (
-                                <Loading height="h-auto" width="w-auto" color="text-accent" />
+                                <Loading height="h-auto" width="w-auto" color="text-white" />
                             )}
                         </button>
                     </form>

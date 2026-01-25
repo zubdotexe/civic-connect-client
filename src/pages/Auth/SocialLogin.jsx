@@ -47,7 +47,7 @@ export default function SocialLogin({ phrase }) {
                 <GrGoogle />
                 {phrase} with Google{" "}
                 {loading && authMethod === "google" && (
-                    <Loading height="h-auto" width="w-auto" color="text-accent" />
+                    <Loading height="h-auto" width="w-auto" color="text-white" />
                 )}
             </button>
         </div>

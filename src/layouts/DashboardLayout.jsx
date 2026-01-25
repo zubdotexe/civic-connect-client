@@ -1,14 +1,13 @@
 import {
+    BriefcaseBusiness,
     ChartNoAxesCombined,
     ClipboardList,
-    HomeIcon,
     ListChecks,
     LogOut,
     LucideUsersRound,
     MessageSquareWarning,
     ScrollText,
     SquareUserRound,
-    UserRoundCheck,
     UserRoundCog,
 } from "lucide-react";
 import { GrSidebar } from "react-icons/gr";
@@ -151,14 +150,14 @@ export default function DashboardLayout() {
                         </li>
                         <li>
                             <Link
-                                to="/dashboard/assign-staffs"
+                                to="/dashboard/manage-issues"
                                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                data-tip="Assign Staffs"
+                                data-tip="Manage Issues"
                             >
                                 {/* Home icon */}
-                                <UserRoundCheck size={16} />
+                                <BriefcaseBusiness size={16} />
                                 <span className="is-drawer-close:hidden">
-                                    Assign Staffs
+                                    Manage Issues
                                 </span>
                             </Link>
                         </li>

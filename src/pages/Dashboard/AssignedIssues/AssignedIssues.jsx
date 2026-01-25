@@ -202,7 +202,8 @@ export default function AssignedIssues() {
                                                     handleModal("open", issue)
                                                 }
                                                 disabled={
-                                                    issue.status === "closed"
+                                                    issue.status === "closed" ||
+                                                    issue.status === "rejected"
                                                 }
                                             >
                                                 Change Status
