@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import UserDashboard from "./UserDashboard";
 
 import StaffDashboard from "./StaffDashboard";
@@ -19,6 +19,10 @@ export default function DashboardHome() {
                 return <UserDashboard />;
         }
     };
+
+    useEffect(() => {
+        document.title = `${role?.charAt(0).toUpperCase() + role?.slice(1)} Dashboard`;
+    }, []);
 
     return (
         <div className="max-w-375 mx-auto p-10">

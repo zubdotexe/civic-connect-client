@@ -112,7 +112,7 @@ export default function AssignedIssues() {
     const handlePickCategory = (e) => setCategory(e.target.value);
 
     useEffect(() => {
-        document.title = `Assigned Issues ${user?.displayName}`;
+        document.title = "Assigned Issues";
         setCurrentStatus(selectedIssue?.status);
     }, [selectedIssue]);
 

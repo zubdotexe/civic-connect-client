@@ -73,14 +73,14 @@ const Invoice = forwardRef(({ userInfo, payments }, ref) => {
                                     <th
                                         style={{
                                             paddingTop: "10px",
-                                            paddingBottom: "10px",
+                                            paddingBottom: "10px", paddingLeft: "10px",
                                             textAlign: "left",
                                         }}
                                     ></th>
                                     <th
                                         style={{
                                             paddingTop: "10px",
-                                            paddingBottom: "10px",
+                                            paddingBottom: "10px", paddingLeft: "10px",
                                             textAlign: "left",
                                         }}
                                     >
@@ -89,7 +89,7 @@ const Invoice = forwardRef(({ userInfo, payments }, ref) => {
                                     <th
                                         style={{
                                             paddingTop: "10px",
-                                            paddingBottom: "10px",
+                                            paddingBottom: "10px", paddingLeft: "10px",
                                             textAlign: "left",
                                         }}
                                     >
@@ -98,7 +98,16 @@ const Invoice = forwardRef(({ userInfo, payments }, ref) => {
                                     <th
                                         style={{
                                             paddingTop: "10px",
-                                            paddingBottom: "10px",
+                                            paddingBottom: "10px", paddingLeft: "10px",
+                                            textAlign: "left",
+                                        }}
+                                    >
+                                        Issue ID
+                                    </th>
+                                    <th
+                                        style={{
+                                            paddingTop: "10px",
+                                            paddingBottom: "10px", paddingLeft: "10px",
                                             textAlign: "left",
                                         }}
                                     >
@@ -113,7 +122,7 @@ const Invoice = forwardRef(({ userInfo, payments }, ref) => {
                                         <td
                                             style={{
                                                 paddingTop: "10px",
-                                                paddingBottom: "10px",
+                                                paddingBottom: "10px", paddingLeft: "10px",
                                                 borderBottom:
                                                     "1px solid #bfbfbf",
                                             }}
@@ -123,7 +132,7 @@ const Invoice = forwardRef(({ userInfo, payments }, ref) => {
                                         <td
                                             style={{
                                                 paddingTop: "10px",
-                                                paddingBottom: "10px",
+                                                paddingBottom: "10px", paddingLeft: "10px",
                                                 borderBottom:
                                                     "1px solid #bfbfbf",
                                             }}
@@ -133,7 +142,7 @@ const Invoice = forwardRef(({ userInfo, payments }, ref) => {
                                         <td
                                             style={{
                                                 paddingTop: "10px",
-                                                paddingBottom: "10px",
+                                                paddingBottom: "10px", paddingLeft: "10px",
                                                 borderBottom:
                                                     "1px solid #bfbfbf",
                                             }}
@@ -145,7 +154,17 @@ const Invoice = forwardRef(({ userInfo, payments }, ref) => {
                                         <td
                                             style={{
                                                 paddingTop: "10px",
-                                                paddingBottom: "10px",
+                                                paddingBottom: "10px", paddingLeft: "10px",
+                                                borderBottom:
+                                                    "1px solid #bfbfbf",
+                                            }}
+                                        >
+                                            {payment.issueId || "N/A"}
+                                        </td>
+                                        <td
+                                            style={{
+                                                paddingTop: "10px",
+                                                paddingBottom: "10px", paddingLeft: "10px",
                                                 borderBottom:
                                                     "1px solid #bfbfbf",
                                             }}

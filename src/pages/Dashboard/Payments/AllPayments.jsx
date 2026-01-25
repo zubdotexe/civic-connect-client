@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useAxiosInstance from "../../../hooks/useAxios";
 import Loading from "../../../components/Loading";
 import { Download } from "lucide-react";
@@ -8,6 +8,7 @@ import Invoice from "../../../components/Invoice";
 
 export default function AllPayments() {
     const axiosInstance = useAxiosInstance();
+
     const {
         data: payments = [],
         isLoading,
@@ -23,6 +24,8 @@ export default function AllPayments() {
     const [selectedPayment, setSelectedPayment] = useState([]);
     const invoiceRef = useRef();
     const { download } = useInvoiceDownload();
+    const [loading, setLoading] = useState(false);
+
     const { data: userInfo } = useQuery({
         enabled: !!selectedPayment,
         queryKey: ["userInfo", selectedPayment[0]?.userEmail],
@@ -34,17 +37,19 @@ export default function AllPayments() {
         },
     });
 
-    const [loading, setLoading] = useState(false);
-
     const handleDownload = async (payment) => {
         setLoading(true);
         setSelectedPayment([payment]);
 
         setTimeout(() => {
-            download(invoiceRef, `invoice-${payment._id}.pdf`);
+            download(invoiceRef, `invoice-${payment._id.slice(-7)}.pdf`);
             setLoading(false);
         }, 100);
     };
+
+    useEffect(() => {
+        document.title = "All Payments";
+    }, []);
 
     return (
         <div>

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosInstance from "../../../hooks/useAxios";
-import { CalendarPlus2, Gem, Mail } from "lucide-react";
+import { CalendarPlus2, Download, Gem, Mail } from "lucide-react";
 import { MdOutlineWorkspacePremium } from "react-icons/md";
 import { useEffect } from "react";
 import { useRef } from "react";
@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 import Loading from "../../../components/Loading";
 import useRole from "../../../hooks/useRole";
 import useBlockChecker from "../../../hooks/useBlockChecker";
+import useInvoiceDownload from "../../../hooks/useInvoiceDownload";
+import Invoice from "../../../components/Invoice";
 
 export default function UserProfile() {
     const { user, updateUserProfile } = useAuth();
@@ -18,27 +20,26 @@ export default function UserProfile() {
     const axiosInstance = useAxiosInstance();
     const modalRef = useRef();
     const [infoUpdateLoding, setInfoUpdateLoading] = useState(false);
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+    const { register, handleSubmit } = useForm();
+    const [loading, setLoading] = useState(false);
+    const { download } = useInvoiceDownload();
+    const invoiceRef = useRef();
 
     const {
         data: userInfo = {},
         refetch,
         isLoading,
     } = useQuery({
-        queryKey: ["userInfo", user?.email],
+        enabled: !!user?.email && !!role,
+        queryKey: ["userInfo", user?.email, role],
         queryFn: async () => {
             let res;
             if (role === "user") {
                 res = await axiosInstance(`/users?email=${user?.email}`);
-            } else if (role === "staff") {
+            } else if (role === "staff" || role === "admin") {
                 res = await axiosInstance(`/staffs?email=${user?.email}`);
             }
-            return res.data[0] || [];
+            return res.data[0] || {};
         },
     });
 
@@ -122,6 +123,28 @@ export default function UserProfile() {
         }
     };
 
+    const { data: payments = [] } = useQuery({
+        queryKey: ["payments", user?.email],
+        queryFn: async () => {
+            const res = await axiosInstance.get(
+                `/payments?userEmail=${user?.email}`,
+            );
+            return res.data;
+        },
+    });
+
+    console.log("payments", payments);
+
+    const handleDownload = async () => {
+        setLoading(true);
+        // setSelectedPayment([payment]);
+
+        setTimeout(() => {
+            download(invoiceRef, `invoice-${userInfo?._id.slice(-7)}.pdf`);
+            setLoading(false);
+        }, 100);
+    };
+
     useEffect(() => {
         if (userInfo?.displayName) {
             document.title = `Profile | ${userInfo?.displayName}`;
@@ -168,15 +191,17 @@ export default function UserProfile() {
                                         alt=""
                                     />
                                 ) : (
-                                    <div className="w-ful h-full bg-base-300 p-10 text-center text-neutral font-semibold">
-                                        <p>Image Not Available</p>
+                                    <div className="w-40 h-40 bg-base-300 p-2 flex justify-center items-center text-neutral font-semibold">
+                                        <p className="text-center">
+                                            Image Not Available
+                                        </p>
                                     </div>
                                 )}
                             </div>
 
                             <button
                                 onClick={() => handleModal("open")}
-                                className="btn btn-secondary"
+                                className="btn btn-primary"
                             >
                                 Edit Profile
                             </button>
@@ -190,17 +215,16 @@ export default function UserProfile() {
                                 {userInfo?.isPremium && <Gem />}
                             </div>
                             <div className="mt-3 space-y-2">
-                                <div
-                                    className="flex gap-3 tooltip wrap-anywhere"
-                                    data-tip="Email"
-                                >
-                                    <Mail /> {user?.email}
+                                <div className="flex gap-3 wrap-anywhere">
+                                    <div className="tooltip" data-tip="Email">
+                                        <Mail />
+                                    </div>{" "}
+                                    {user?.email}
                                 </div>
-                                <div
-                                    className="flex gap-3 tooltip"
-                                    data-tip="Joined"
-                                >
-                                    <CalendarPlus2 />
+                                <div className="flex gap-3">
+                                    <div className="tooltip" data-tip="Joined">
+                                        <CalendarPlus2 />
+                                    </div>
                                     {userInfo
                                         ? new Date(
                                               userInfo?.createdAt,
@@ -233,6 +257,27 @@ export default function UserProfile() {
                                                 )}
                                             </button>
                                         )}
+                                    </div>
+                                )}
+                                {payments.length > 0 && (
+                                    <div className="bg-base-300 rounded-sm p-5 mt-5 space-y-2">
+                                        <h3 className="text-sm font-semibold text-gray-600">
+                                            Invoice Available
+                                        </h3>
+                                        <button
+                                            onClick={handleDownload}
+                                            className="btn btn-secondary"
+                                            disabled={loading}
+                                        >
+                                            <Download size={16} /> Invoice{" "}
+                                            {loading && (
+                                                <Loading
+                                                    height="h-auto"
+                                                    width="w-auto"
+                                                    color="text-white"
+                                                />
+                                            )}
+                                        </button>
                                     </div>
                                 )}
                             </div>
@@ -318,6 +363,16 @@ export default function UserProfile() {
                     </div>
                 </div>
             </dialog>
+
+            {loading && (
+                <div className="absolute w-250 -left-250 top-0">
+                    <Invoice
+                        ref={invoiceRef}
+                        userInfo={userInfo}
+                        payments={payments}
+                    />
+                </div>
+            )}
         </div>
     );
 }

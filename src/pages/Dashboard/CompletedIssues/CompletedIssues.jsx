@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Loading from "../../../components/Loading";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosInstance from "../../../hooks/useAxios";
@@ -22,6 +22,10 @@ export default function CompletedIssues() {
 
     const completedIssues = issues?.result ?? [];
     const totalCompletedIssues = issues?.total ?? 0;
+
+    useEffect(() => {
+        document.title = "Completed Issues";
+    }, []);
 
     return (
         <div className="max-w-375 mx-auto p-10">

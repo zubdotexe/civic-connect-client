@@ -136,7 +136,7 @@ export default function ManageIssues() {
     };
 
     useEffect(() => {
-        document.title = "Assign Staffs";
+        document.title = "Issue Management";
     }, []);
 
     return (

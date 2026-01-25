@@ -23,6 +23,7 @@ import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import ManageUsers from "../pages/Dashboard/ManageUsers/ManageUsers";
 import ManageIssues from "../pages/Dashboard/ManageIssues/ManageIssues";
 import AllPayments from "../pages/Dashboard/Payments/AllPayments";
+import Invoice from "../components/Invoice";
 
 export const router = createBrowserRouter([
     {
@@ -120,6 +121,10 @@ export const router = createBrowserRouter([
             {
                 path: "all-payments",
                 Component: AllPayments,
+            },
+            {
+                path: "invoice",
+                Component: Invoice,
             },
         ],
     },
