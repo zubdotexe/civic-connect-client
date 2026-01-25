@@ -70,7 +70,17 @@ export default function UserDashboard() {
                         </p>
                     </div>
                     <div className="mt-7 bg-base-200 shadow-sm rounded-md p-5">
-                        <h2 className="stat-title text-xl">Latest Issues</h2>
+                        <div className="flex gap-3 items-center justify-between">
+                            <h2 className="stat-title text-xl">
+                                Latest Issues
+                            </h2>
+                            <Link
+                                to="/dashboard/manage-issues"
+                                className="btn btn-ghost btn-success"
+                            >
+                                View all
+                            </Link>
+                        </div>
                         {adminStats.latestIssues.map((issue) => (
                             <div
                                 key={issue._id}
@@ -87,7 +97,17 @@ export default function UserDashboard() {
                         ))}
                     </div>
                     <div className="mt-7 bg-base-200 shadow-sm rounded-md p-5">
-                        <h2 className="stat-title text-xl">New Users</h2>
+                        <div className="flex gap-3 items-center justify-between">
+                            <h2 className="stat-title text-xl">
+                                New Users
+                            </h2>
+                            <Link
+                                to="/dashboard/manage-users"
+                                className="btn btn-ghost btn-success"
+                            >
+                                View all
+                            </Link>
+                        </div>
                         {adminStats.latestUsers.map((user) => (
                             <div
                                 key={user._id}
@@ -111,7 +131,17 @@ export default function UserDashboard() {
                         ))}
                     </div>
                     <div className="mt-7 bg-base-200 shadow-sm rounded-md p-5">
-                        <h2 className="stat-title text-xl">Latest Payments</h2>
+                        <div className="flex gap-3 items-center justify-between">
+                            <h2 className="stat-title text-xl">
+                                Latest Payments
+                            </h2>
+                            <Link
+                                to="/dashboard/all-payments"
+                                className="btn btn-ghost btn-success"
+                            >
+                                View all
+                            </Link>
+                        </div>
                         {adminStats.latestPayments.map((payment) => (
                             <div
                                 key={payment._id}

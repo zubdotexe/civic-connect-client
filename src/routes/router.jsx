@@ -22,6 +22,7 @@ import BoostPaymentSuccess from "../pages/Dashboard/Payments/BoostPaymentSuccess
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import ManageUsers from "../pages/Dashboard/ManageUsers/ManageUsers";
 import ManageIssues from "../pages/Dashboard/ManageIssues/ManageIssues";
+import AllPayments from "../pages/Dashboard/Payments/AllPayments";
 
 export const router = createBrowserRouter([
     {
@@ -115,6 +116,10 @@ export const router = createBrowserRouter([
             {
                 path: "payment-cancelled",
                 Component: PaymentCancelled,
+            },
+            {
+                path: "all-payments",
+                Component: AllPayments,
             },
         ],
     },
