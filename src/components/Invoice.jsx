@@ -1,10 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import civicConnLogo from "../../public/civicconnect.png";
-import useAuth from "../hooks/useAuth";
-import useAxiosInstance from "../hooks/useAxios";
 import { forwardRef, useRef } from "react";
-import html2canvas from "html2canvas";
-import { jsPDF } from "jspdf";
 
 const Invoice = forwardRef(({ userInfo, payments }, ref) => {
     return (
@@ -73,14 +67,16 @@ const Invoice = forwardRef(({ userInfo, payments }, ref) => {
                                     <th
                                         style={{
                                             paddingTop: "10px",
-                                            paddingBottom: "10px", paddingLeft: "10px",
+                                            paddingBottom: "10px",
+                                            paddingLeft: "10px",
                                             textAlign: "left",
                                         }}
                                     ></th>
                                     <th
                                         style={{
                                             paddingTop: "10px",
-                                            paddingBottom: "10px", paddingLeft: "10px",
+                                            paddingBottom: "10px",
+                                            paddingLeft: "10px",
                                             textAlign: "left",
                                         }}
                                     >
@@ -89,7 +85,8 @@ const Invoice = forwardRef(({ userInfo, payments }, ref) => {
                                     <th
                                         style={{
                                             paddingTop: "10px",
-                                            paddingBottom: "10px", paddingLeft: "10px",
+                                            paddingBottom: "10px",
+                                            paddingLeft: "10px",
                                             textAlign: "left",
                                         }}
                                     >
@@ -98,7 +95,8 @@ const Invoice = forwardRef(({ userInfo, payments }, ref) => {
                                     <th
                                         style={{
                                             paddingTop: "10px",
-                                            paddingBottom: "10px", paddingLeft: "10px",
+                                            paddingBottom: "10px",
+                                            paddingLeft: "10px",
                                             textAlign: "left",
                                         }}
                                     >
@@ -107,7 +105,8 @@ const Invoice = forwardRef(({ userInfo, payments }, ref) => {
                                     <th
                                         style={{
                                             paddingTop: "10px",
-                                            paddingBottom: "10px", paddingLeft: "10px",
+                                            paddingBottom: "10px",
+                                            paddingLeft: "10px",
                                             textAlign: "left",
                                         }}
                                     >
@@ -122,7 +121,8 @@ const Invoice = forwardRef(({ userInfo, payments }, ref) => {
                                         <td
                                             style={{
                                                 paddingTop: "10px",
-                                                paddingBottom: "10px", paddingLeft: "10px",
+                                                paddingBottom: "10px",
+                                                paddingLeft: "10px",
                                                 borderBottom:
                                                     "1px solid #bfbfbf",
                                             }}
@@ -132,7 +132,8 @@ const Invoice = forwardRef(({ userInfo, payments }, ref) => {
                                         <td
                                             style={{
                                                 paddingTop: "10px",
-                                                paddingBottom: "10px", paddingLeft: "10px",
+                                                paddingBottom: "10px",
+                                                paddingLeft: "10px",
                                                 borderBottom:
                                                     "1px solid #bfbfbf",
                                             }}
@@ -142,7 +143,8 @@ const Invoice = forwardRef(({ userInfo, payments }, ref) => {
                                         <td
                                             style={{
                                                 paddingTop: "10px",
-                                                paddingBottom: "10px", paddingLeft: "10px",
+                                                paddingBottom: "10px",
+                                                paddingLeft: "10px",
                                                 borderBottom:
                                                     "1px solid #bfbfbf",
                                             }}
@@ -154,7 +156,8 @@ const Invoice = forwardRef(({ userInfo, payments }, ref) => {
                                         <td
                                             style={{
                                                 paddingTop: "10px",
-                                                paddingBottom: "10px", paddingLeft: "10px",
+                                                paddingBottom: "10px",
+                                                paddingLeft: "10px",
                                                 borderBottom:
                                                     "1px solid #bfbfbf",
                                             }}
@@ -164,7 +167,8 @@ const Invoice = forwardRef(({ userInfo, payments }, ref) => {
                                         <td
                                             style={{
                                                 paddingTop: "10px",
-                                                paddingBottom: "10px", paddingLeft: "10px",
+                                                paddingBottom: "10px",
+                                                paddingLeft: "10px",
                                                 borderBottom:
                                                     "1px solid #bfbfbf",
                                             }}
