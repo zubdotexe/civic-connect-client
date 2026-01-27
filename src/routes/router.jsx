@@ -24,6 +24,8 @@ import ManageUsers from "../pages/Dashboard/ManageUsers/ManageUsers";
 import ManageIssues from "../pages/Dashboard/ManageIssues/ManageIssues";
 import AllPayments from "../pages/Dashboard/Payments/AllPayments";
 import Invoice from "../components/Invoice";
+import StaffRoute from "./StaffRoute";
+import AdminRoute from "./AdminRoute";
 
 export const router = createBrowserRouter([
     {
@@ -88,23 +90,43 @@ export const router = createBrowserRouter([
             },
             {
                 path: "manage-users",
-                Component: ManageUsers,
+                element: (
+                    <AdminRoute>
+                        <ManageUsers />
+                    </AdminRoute>
+                ),
             },
             {
                 path: "manage-staffs",
-                Component: ManageStaffs,
+                element: (
+                    <AdminRoute>
+                        <ManageStaffs />
+                    </AdminRoute>
+                ),
             },
             {
                 path: "manage-issues",
-                Component: ManageIssues,
+                element: (
+                    <AdminRoute>
+                        <ManageIssues />
+                    </AdminRoute>
+                ),
             },
             {
                 path: "assigned-issues",
-                Component: AssignedIssues,
+                element: (
+                    <StaffRoute>
+                        <AssignedIssues />
+                    </StaffRoute>
+                ),
             },
             {
                 path: "completed-issues",
-                Component: CompletedIssues,
+                element: (
+                    <StaffRoute>
+                        <CompletedIssues />
+                    </StaffRoute>
+                ),
             },
             {
                 path: "payment-success",
@@ -120,7 +142,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: "all-payments",
-                Component: AllPayments,
+                element: (
+                    <AdminRoute>
+                        <AllPayments />
+                    </AdminRoute>
+                ),
             },
             {
                 path: "invoice",

@@ -16,6 +16,7 @@ import { Link, Outlet, useNavigate } from "react-router";
 import civicConnLogo from "/civicConnect.png";
 import useAuth from "../hooks/useAuth";
 import useBlockChecker from "../hooks/useBlockChecker";
+import useRole from "../hooks/useRole";
 
 export default function DashboardLayout() {
     const { logoutUser } = useAuth();
@@ -24,6 +25,7 @@ export default function DashboardLayout() {
         logoutUser().then(navigate("/login"));
     };
     const { isBlocked } = useBlockChecker();
+    const { role } = useRole();
 
     return (
         <div className="drawer lg:drawer-open">
@@ -123,84 +125,92 @@ export default function DashboardLayout() {
                                 </span>
                             </Link>
                         </li>
-                        <li>
-                            <Link
-                                to="/dashboard/manage-users"
-                                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                data-tip="Manage Users"
-                            >
-                                {/* Home icon */}
-                                <LucideUsersRound size={16} />
-                                <span className="is-drawer-close:hidden">
-                                    Manage Users
-                                </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to="/dashboard/manage-staffs"
-                                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                data-tip="Manage Staffs"
-                            >
-                                {/* Home icon */}
-                                <UserRoundCog size={16} />
-                                <span className="is-drawer-close:hidden">
-                                    Manage Staffs
-                                </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to="/dashboard/manage-issues"
-                                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                data-tip="Manage Issues"
-                            >
-                                {/* Home icon */}
-                                <BriefcaseBusiness size={16} />
-                                <span className="is-drawer-close:hidden">
-                                    Manage Issues
-                                </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to="/dashboard/assigned-issues"
-                                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                data-tip="Assigned Issues"
-                            >
-                                {/* Home icon */}
-                                <ClipboardList size={16} />
-                                <span className="is-drawer-close:hidden">
-                                    Assigned Issues
-                                </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to="/dashboard/completed-issues"
-                                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                data-tip="Completed Issues"
-                            >
-                                {/* Home icon */}
-                                <ListChecks size={16} />
-                                <span className="is-drawer-close:hidden">
-                                    Completed Issues
-                                </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to="/dashboard/all-payments"
-                                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                data-tip="All Payments"
-                            >
-                                {/* Home icon */}
-                                <HandCoins size={16} />
-                                <span className="is-drawer-close:hidden">
-                                    All Payments
-                                </span>
-                            </Link>
-                        </li>
+                        {role === "admin" && (
+                            <>
+                                <li>
+                                    <Link
+                                        to="/dashboard/manage-users"
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="Manage Users"
+                                    >
+                                        {/* Home icon */}
+                                        <LucideUsersRound size={16} />
+                                        <span className="is-drawer-close:hidden">
+                                            Manage Users
+                                        </span>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to="/dashboard/manage-staffs"
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="Manage Staffs"
+                                    >
+                                        {/* Home icon */}
+                                        <UserRoundCog size={16} />
+                                        <span className="is-drawer-close:hidden">
+                                            Manage Staffs
+                                        </span>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to="/dashboard/manage-issues"
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="Manage Issues"
+                                    >
+                                        {/* Home icon */}
+                                        <BriefcaseBusiness size={16} />
+                                        <span className="is-drawer-close:hidden">
+                                            Manage Issues
+                                        </span>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to="/dashboard/all-payments"
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="All Payments"
+                                    >
+                                        {/* Home icon */}
+                                        <HandCoins size={16} />
+                                        <span className="is-drawer-close:hidden">
+                                            All Payments
+                                        </span>
+                                    </Link>
+                                </li>
+                            </>
+                        )}
+                        {role === "staff" && (
+                            <>
+                                <li>
+                                    <Link
+                                        to="/dashboard/assigned-issues"
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="Assigned Issues"
+                                    >
+                                        {/* Home icon */}
+                                        <ClipboardList size={16} />
+                                        <span className="is-drawer-close:hidden">
+                                            Assigned Issues
+                                        </span>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to="/dashboard/completed-issues"
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="Completed Issues"
+                                    >
+                                        {/* Home icon */}
+                                        <ListChecks size={16} />
+                                        <span className="is-drawer-close:hidden">
+                                            Completed Issues
+                                        </span>
+                                    </Link>
+                                </li>
+                            </>
+                        )}
 
                         {/* List item */}
                         <li>
