@@ -1,17 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import useAuth from "../../../hooks/useAuth";
-import useAxiosInstance from "../../../hooks/useAxios";
 import Loading from "../../../components/Loading";
 import { Link } from "react-router";
 import { Gem } from "lucide-react";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 export default function UserDashboard() {
-    const axiosInstance = useAxiosInstance();
+    const axiosSecure = useAxiosSecure();
 
     const { data: adminStats = {}, isLoading } = useQuery({
         queryKey: ["adminStats"],
         queryFn: async () => {
-            const res = await axiosInstance.get(`/stats/admin`);
+            const res = await axiosSecure.get(`/stats/admin`);
             return res.data;
         },
     });
@@ -98,9 +97,7 @@ export default function UserDashboard() {
                     </div>
                     <div className="mt-7 bg-base-200 shadow-sm rounded-md p-5">
                         <div className="flex gap-3 items-center justify-between">
-                            <h2 className="stat-title text-xl">
-                                New Users
-                            </h2>
+                            <h2 className="stat-title text-xl">New Users</h2>
                             <Link
                                 to="/dashboard/manage-users"
                                 className="btn btn-ghost btn-success"

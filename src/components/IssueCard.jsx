@@ -2,16 +2,16 @@ import { Star } from "lucide-react";
 import React from "react";
 import { Link, useNavigate } from "react-router";
 import useAuth from "../hooks/useAuth";
-import useAxiosInstance from "../hooks/useAxios";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import Loading from "./Loading";
 import useBlockChecker from "../hooks/useBlockChecker";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 export default function IssueCard({ issue, refetch, isLoading }) {
     const { user } = useAuth();
     const navigate = useNavigate();
-    const axiosInstance = useAxiosInstance();
+    const axiosSecure = useAxiosSecure();
     const [loading, setLoading] = useState(false);
     const { showBlockModal } = useBlockChecker();
 
@@ -25,7 +25,7 @@ export default function IssueCard({ issue, refetch, isLoading }) {
         };
 
         try {
-            const res = await axiosInstance.patch(
+            const res = await axiosSecure.patch(
                 `/issues/${issue._id}/upvote`,
                 upvote,
             );

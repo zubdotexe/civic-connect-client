@@ -1,16 +1,16 @@
 import Swal from "sweetalert2";
 import useAuth from "./useAuth";
 import { useQuery } from "@tanstack/react-query";
-import useAxiosInstance from "./useAxios";
+import useAxiosSecure from "./useAxiosSecure";
 
 export default function useBlockChecker(externalUserInfo, showModal = true) {
     const { user } = useAuth();
-    const axiosInstance = useAxiosInstance();
+    const axiosSecure = useAxiosSecure();
     const { data: fetchedUserInfo = {} } = useQuery({
         enabled: !externalUserInfo,
         queryKey: ["userInfo", user?.email],
         queryFn: async () => {
-            const res = await axiosInstance.get(`/users?email=${user?.email}`);
+            const res = await axiosSecure.get(`/users?email=${user?.email}`);
             return res.data[0] || {};
         },
     });

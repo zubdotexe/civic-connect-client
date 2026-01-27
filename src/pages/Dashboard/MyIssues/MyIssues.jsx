@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
-import useAxiosInstance from "../../../hooks/useAxios";
 import { SquareChartGantt, SquarePen, Trash } from "lucide-react";
 import Loading from "../../../components/Loading";
 import { Link } from "react-router";
@@ -11,6 +10,7 @@ import { toast } from "react-toastify";
 import useBlockChecker from "../../../hooks/useBlockChecker";
 import { useForm } from "react-hook-form";
 import useImgUp from "../../../hooks/useImgUp";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const categories = [
     "water",
@@ -24,7 +24,7 @@ const categories = [
 
 export default function MyIssues() {
     const { user } = useAuth();
-    const axiosInstance = useAxiosInstance();
+    const axiosSecure = useAxiosSecure();
     const [category, setCategory] = useState("");
     const updateModalRef = useRef();
     const [selectedIssue, setSelectedIssue] = useState(null);
@@ -34,7 +34,7 @@ export default function MyIssues() {
     const { data, isLoading, refetch } = useQuery({
         queryKey: ["issues", category, { email: user?.email }],
         queryFn: async () => {
-            const res = await axiosInstance.get(
+            const res = await axiosSecure.get(
                 `/issues?email=${user?.email}&category=${category}`,
             );
             return res.data;
@@ -63,7 +63,7 @@ export default function MyIssues() {
             if (result.isConfirmed) {
                 setLoading(true);
                 try {
-                    const res = axiosInstance.delete(`/issues/${id}`);
+                    const res = axiosSecure.delete(`/issues/${id}`);
                     if (res.acknowledged) {
                         Swal.fire({
                             title: "Deleted!",
@@ -113,7 +113,7 @@ export default function MyIssues() {
                 updatedIssueInfo.location = data.location;
             }
 
-            const result = await axiosInstance.patch(
+            const result = await axiosSecure.patch(
                 `/issues/${selectedIssue._id}`,
                 updatedIssueInfo,
             );

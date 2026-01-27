@@ -1,17 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import useAuth from "../../../hooks/useAuth";
-import useAxiosInstance from "../../../hooks/useAxios";
 import Loading from "../../../components/Loading";
 import { Link } from "react-router";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 export default function StaffDashboard() {
     const { user } = useAuth();
-    const axiosInstance = useAxiosInstance();
+    const axiosSecure = useAxiosSecure();
     const { data: userStats = {}, isLoading } = useQuery({
         queryKey: ["staffStats", user?.email],
         queryFn: async () => {
-            const res = await axiosInstance.get(
+            const res = await axiosSecure.get(
                 `/stats/staffs?email=${user?.email}`,
             );
             return res.data;
@@ -45,7 +45,12 @@ export default function StaffDashboard() {
                                     Today's Task (
                                     {userStats.todayTasksResult.length})
                                 </h2>
-                                <Link to="/dashboard/assigned-issues" className="btn btn-ghost btn-secondary">View All Tasks</Link>
+                                <Link
+                                    to="/dashboard/assigned-issues"
+                                    className="btn btn-ghost btn-secondary"
+                                >
+                                    View All Tasks
+                                </Link>
                             </div>
                             {/* <p className="stat-value">
                                 {userStats.todayTasks || 0}

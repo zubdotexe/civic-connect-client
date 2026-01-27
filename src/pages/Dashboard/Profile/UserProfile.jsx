@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
-import useAxiosInstance from "../../../hooks/useAxios";
+import useaxiosSecure from "../../../hooks/useAxios";
 import { CalendarPlus2, Download, Gem, Mail } from "lucide-react";
 import { MdOutlineWorkspacePremium } from "react-icons/md";
 import { useEffect } from "react";
@@ -13,11 +13,12 @@ import useRole from "../../../hooks/useRole";
 import useBlockChecker from "../../../hooks/useBlockChecker";
 import useInvoiceDownload from "../../../hooks/useInvoiceDownload";
 import Invoice from "../../../components/Invoice";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 export default function UserProfile() {
     const { user, updateUserProfile } = useAuth();
     const { role, roleLoading } = useRole();
-    const axiosInstance = useAxiosInstance();
+    const axiosSecure = useAxiosSecure();
     const modalRef = useRef();
     const [infoUpdateLoding, setInfoUpdateLoading] = useState(false);
     const { register, handleSubmit } = useForm();
@@ -35,9 +36,9 @@ export default function UserProfile() {
         queryFn: async () => {
             let res;
             if (role === "user") {
-                res = await axiosInstance(`/users?email=${user?.email}`);
+                res = await axiosSecure(`/users?email=${user?.email}`);
             } else if (role === "staff" || role === "admin") {
-                res = await axiosInstance(`/staffs?email=${user?.email}`);
+                res = await axiosSecure(`/staffs?email=${user?.email}`);
             }
             return res.data[0] || {};
         },
@@ -65,7 +66,7 @@ export default function UserProfile() {
                 const formData = new FormData();
                 formData.append("image", profileImg);
 
-                const result = await axiosInstance.post(
+                const result = await axiosSecure.post(
                     `https://api.imgbb.com/1/upload?key=${
                         import.meta.env.VITE_IMG_HOST_KEY
                     }`,
@@ -80,12 +81,12 @@ export default function UserProfile() {
 
             let res;
             if (role === "user") {
-                res = await axiosInstance.patch(
+                res = await axiosSecure.patch(
                     `/users/${userInfo?._id}`,
                     dbProfile,
                 );
             } else if (role === "staff") {
-                res = await axiosInstance.patch(
+                res = await axiosSecure.patch(
                     `/staffs/${userInfo?._id}`,
                     dbProfile,
                 );
@@ -111,7 +112,7 @@ export default function UserProfile() {
             email: userInfo?.email,
         };
         try {
-            const res = await axiosInstance.post(
+            const res = await axiosSecure.post(
                 "/payments/subscribe/checkout",
                 user,
             );
@@ -126,7 +127,7 @@ export default function UserProfile() {
     const { data: payments = [] } = useQuery({
         queryKey: ["payments", user?.email],
         queryFn: async () => {
-            const res = await axiosInstance.get(
+            const res = await axiosSecure.get(
                 `/payments?userEmail=${user?.email}`,
             );
             return res.data;

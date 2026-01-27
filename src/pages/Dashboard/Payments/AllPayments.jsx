@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useRef, useState } from "react";
-import useAxiosInstance from "../../../hooks/useAxios";
 import Loading from "../../../components/Loading";
 import { Download } from "lucide-react";
 import useInvoiceDownload from "../../../hooks/useInvoiceDownload";
 import Invoice from "../../../components/Invoice";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 export default function AllPayments() {
-    const axiosInstance = useAxiosInstance();
+    const axiosSecure = useAxiosSecure();
 
     const {
         data: payments = [],
@@ -16,7 +16,7 @@ export default function AllPayments() {
     } = useQuery({
         queryKey: ["payments"],
         queryFn: async () => {
-            const res = await axiosInstance.get("payments");
+            const res = await axiosSecure.get("payments");
             return res.data;
         },
     });
@@ -30,7 +30,7 @@ export default function AllPayments() {
         enabled: !!selectedPayment,
         queryKey: ["userInfo", selectedPayment[0]?.userEmail],
         queryFn: async () => {
-            const res = await axiosInstance.get(
+            const res = await axiosSecure.get(
                 `/users?email=${selectedPayment[0]?.userEmail}`,
             );
             return res.data[0];

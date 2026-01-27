@@ -1,18 +1,18 @@
 import React, { useEffect } from "react";
 import Loading from "../../../components/Loading";
 import useAuth from "../../../hooks/useAuth";
-import useAxiosInstance from "../../../hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 export default function CompletedIssues() {
     const { user } = useAuth();
-    const axiosInstance = useAxiosInstance();
+    const axiosSecure = useAxiosSecure();
 
     const { data: issues = [], isLoading } = useQuery({
         queryKey: ["issues", user?.email],
         queryFn: async () => {
-            const res = await axiosInstance.get(
+            const res = await axiosSecure.get(
                 `/issues?staffEmail=${user?.email}&status=closed`,
             );
 

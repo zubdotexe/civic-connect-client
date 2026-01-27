@@ -1,7 +1,6 @@
 import React from "react";
 import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
-import useAxiosInstance from "../../../hooks/useAxios";
 import Loading from "../../../components/Loading";
 import { useRef } from "react";
 import { useState } from "react";
@@ -9,6 +8,7 @@ import { Trash, X } from "lucide-react";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const categories = [
     "water",
@@ -22,7 +22,7 @@ const categories = [
 
 export default function AssignedIssues() {
     const { user } = useAuth();
-    const axiosInstance = useAxiosInstance();
+    const axiosSecure = useAxiosSecure();
     const modalRef = useRef();
     const [selectedIssue, setSelectedIssue] = useState(null);
     const [currentStatus, setCurrentStatus] = useState(null);
@@ -42,7 +42,7 @@ export default function AssignedIssues() {
     } = useQuery({
         queryKey: ["issues", user?.email, category],
         queryFn: async () => {
-            const res = await axiosInstance.get(
+            const res = await axiosSecure.get(
                 `/issues?staffEmail=${user?.email}&exceptStatus=closed&category=${category}`,
             );
 
@@ -92,7 +92,7 @@ export default function AssignedIssues() {
 
         console.log("", update);
 
-        const res = await axiosInstance.patch(
+        const res = await axiosSecure.patch(
             `/issues/${selectedIssue._id}/change-status`,
             update,
         );

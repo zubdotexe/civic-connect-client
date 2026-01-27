@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useRef, useState } from "react";
-import useAxiosInstance from "../../../hooks/useAxios";
 import Loading from "../../../components/Loading";
 import { Link } from "react-router";
 import { X } from "lucide-react";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 export default function ManageIssues() {
-    const axiosInstance = useAxiosInstance();
+    const axiosSecure = useAxiosSecure();
     const modalRef = useRef();
     const [selectedIssue, setSelectedIssue] = useState(null);
     const [staffLoading, setStaffLoading] = useState(false);
@@ -20,7 +20,7 @@ export default function ManageIssues() {
     } = useQuery({
         queryKey: ["issues", "pending"],
         queryFn: async () => {
-            const res = await axiosInstance.get(`/issues`);
+            const res = await axiosSecure.get(`/issues`);
             return res.data;
         },
     });
@@ -35,7 +35,7 @@ export default function ManageIssues() {
     } = useQuery({
         queryKey: ["staffs", "available"],
         queryFn: async () => {
-            const res = await axiosInstance.get(`/staffs?workStatus=available`);
+            const res = await axiosSecure.get(`/staffs?workStatus=available`);
             return res.data;
         },
     });
@@ -59,7 +59,7 @@ export default function ManageIssues() {
         setStaffLoading(true);
 
         try {
-            const res = await axiosInstance.patch(
+            const res = await axiosSecure.patch(
                 `/issues/${selectedIssue?._id}`,
                 assignedStaff,
             );
@@ -81,10 +81,7 @@ export default function ManageIssues() {
                 issueStatus: selectedIssue.status,
                 issueNote: `Issue assigned to Staff: ${staff.displayName}`,
             };
-            const trackingRes = axiosInstance.post(
-                "/issues/trackings",
-                issueLog,
-            );
+            const trackingRes = axiosSecure.post("/issues/trackings", issueLog);
         } catch (err) {
             console.log("err", err);
             toast.error(
@@ -115,7 +112,7 @@ export default function ManageIssues() {
                         issueStatus: "rejected",
                         issueNote: "Issue has been rejected",
                     };
-                    const res = await axiosInstance.patch(
+                    const res = await axiosSecure.patch(
                         `/issues/${issue._id}/change-status`,
                         update,
                     );

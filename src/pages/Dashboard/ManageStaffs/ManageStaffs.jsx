@@ -1,6 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
-import useAxiosInstance from "../../../hooks/useAxios";
 import Loading from "../../../components/Loading";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
@@ -10,9 +8,10 @@ import { useState } from "react";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 import useImgUp from "../../../hooks/useImgUp";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 export default function ManageStaffs() {
-    const axiosInstance = useAxiosInstance();
+    const axiosSecure = useAxiosSecure();
     const addModalRef = useRef();
     const updateModalRef = useRef();
     const { registerUser, updateUserProfile, loading, setLoading } = useAuth();
@@ -37,7 +36,7 @@ export default function ManageStaffs() {
     } = useQuery({
         queryKey: ["staffs"],
         queryFn: async () => {
-            const res = await axiosInstance.get("/staffs");
+            const res = await axiosSecure.get("/staffs");
             return res.data;
         },
     });
@@ -75,7 +74,7 @@ export default function ManageStaffs() {
                 import.meta.env.VITE_IMG_HOST_KEY
             }`;
 
-            const imgBBRes = await axiosInstance.post(imgApiUrl, formData);
+            const imgBBRes = await axiosSecure.post(imgApiUrl, formData);
 
             if (!imgBBRes.data?.success) {
                 throw new Error("image upload failed");
@@ -95,7 +94,7 @@ export default function ManageStaffs() {
                 photoURL: imgBBRes.data.data.url,
             };
 
-            const userRes = await axiosInstance.post(
+            const userRes = await axiosSecure.post(
                 "/admin/create-staff",
                 newStaff,
             );
@@ -134,7 +133,7 @@ export default function ManageStaffs() {
                 updatedStaffInfo.photoURL = await uploadImage(data.photo[0]);
             }
 
-            const result = await axiosInstance.patch(
+            const result = await axiosSecure.patch(
                 `/staffs/${selectedStaff._id}`,
                 updatedStaffInfo,
             );
@@ -175,7 +174,7 @@ export default function ManageStaffs() {
             confirmButtonText: "Yes, remove staff!",
         }).then((result) => {
             if (result.isConfirmed) {
-                axiosInstance.delete(`/staffs/${id}`).then((res) => {
+                axiosSecure.delete(`/staffs/${id}`).then((res) => {
                     console.log(res.data);
 
                     if (res.data.deletedCount) {

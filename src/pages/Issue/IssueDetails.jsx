@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import useAxiosInstance from "../../hooks/useAxios";
 import NotFound from "../NotFound/NotFound";
 import Loading from "../../components/Loading";
 import { motion } from "framer-motion";
@@ -10,6 +9,7 @@ import useAuth from "../../hooks/useAuth";
 import { Rocket, Star, UserIcon } from "lucide-react";
 import { toast } from "react-toastify";
 import useBlockChecker from "../../hooks/useBlockChecker";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -30,7 +30,7 @@ export default function IssueDetails() {
     const { issueId } = useParams();
     const { user } = useAuth();
     const navigate = useNavigate();
-    const axiosInstance = useAxiosInstance();
+    const axiosSecure = useAxiosSecure();
     const [loading, setLoading] = useState(false);
     const { showBlockModal } = useBlockChecker();
 
@@ -41,7 +41,7 @@ export default function IssueDetails() {
     } = useQuery({
         queryKey: ["issue", issueId],
         queryFn: async () => {
-            const res = await axiosInstance.get(`/issues/${issueId}`);
+            const res = await axiosSecure.get(`/issues/${issueId}`);
             return res.data;
         },
     });
@@ -49,7 +49,7 @@ export default function IssueDetails() {
     const { data: issueLogs = [], isLoading: trackingLoading } = useQuery({
         queryKey: ["issueTracking", { issueId: issue?._id }],
         queryFn: async () => {
-            const res = await axiosInstance.get(
+            const res = await axiosSecure.get(
                 `/issues/trackings/${issue?._id}`,
             );
 
@@ -76,7 +76,7 @@ export default function IssueDetails() {
         };
 
         try {
-            const res = await axiosInstance.patch(
+            const res = await axiosSecure.patch(
                 `/issues/${issue._id}/upvote`,
                 upvote,
             );
@@ -94,19 +94,6 @@ export default function IssueDetails() {
         }
     };
 
-    // const { data: userInfo = {} } = useQuery({
-    //     queryKey: ["userInfo", user?.email],
-    //     queryFn: async () => {
-    //         let res;
-    //         if (user?.email.endsWith("civicconnect.com")) {
-    //             res = await axiosInstance(`/staffs?email=${user?.email}`);
-    //         } else {
-    //             res = await axiosInstance(`/users?email=${user?.email}`);
-    //         }
-    //         return res.data[0] || [];
-    //     },
-    // });
-
     const handleBoost = async () => {
         setLoading(true);
         if (showBlockModal()) return;
@@ -117,7 +104,7 @@ export default function IssueDetails() {
             email: user?.email,
         };
         try {
-            const res = await axiosInstance.post(
+            const res = await axiosSecure.post(
                 "/payments/boost-issue/checkout",
                 boostInfo,
             );

@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import useAxiosInstance from "../../../hooks/useAxios";
 import Loading from "../../../components/Loading";
 import { useRef } from "react";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 export default function ManageUsers() {
-    const axiosInstance = useAxiosInstance();
+    const axiosSecure = useAxiosSecure();
     const [loading, setLoading] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
 
@@ -19,7 +19,7 @@ export default function ManageUsers() {
     } = useQuery({
         queryKey: ["users"],
         queryFn: async () => {
-            const res = await axiosInstance.get("/users");
+            const res = await axiosSecure.get("/users");
             return res.data;
         },
     });
@@ -45,7 +45,7 @@ export default function ManageUsers() {
         })
             .then((result) => {
                 if (result.isConfirmed) {
-                    axiosInstance
+                    axiosSecure
                         .patch(`/users/${user._id}`, status)
                         .then((res) => {
                             if (res.data.acknowledged) {

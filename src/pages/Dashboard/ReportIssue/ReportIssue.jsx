@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import useAxiosInstance from "../../../hooks/useAxios";
 import Swal from "sweetalert2";
 import useAuth from "../../../hooks/useAuth";
 import { Link, useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../components/Loading";
 import useBlockChecker from "../../../hooks/useBlockChecker";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const categories = [
     "water",
@@ -26,7 +26,7 @@ export default function ReportIssue() {
         formState: { errors },
     } = useForm();
     const [category, setCategory] = useState("");
-    const axiosInstance = useAxiosInstance();
+    const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -38,7 +38,7 @@ export default function ReportIssue() {
     const { data: userInfo = {}, isLoading: userLoading } = useQuery({
         queryKey: ["userInfo", user?.email],
         queryFn: async () => {
-            const res = await axiosInstance.get(`/users?email=${user?.email}`);
+            const res = await axiosSecure.get(`/users?email=${user?.email}`);
             return res.data[0] || {};
         },
     });
@@ -48,7 +48,7 @@ export default function ReportIssue() {
     const { data, isLoading: userIssuesLoading } = useQuery({
         queryKey: ["issues", user?.email],
         queryFn: async () => {
-            const res = await axiosInstance.get(`/issues?email=${user?.email}`);
+            const res = await axiosSecure.get(`/issues?email=${user?.email}`);
             return res.data;
         },
     });
@@ -78,7 +78,7 @@ export default function ReportIssue() {
                     import.meta.env.VITE_IMG_HOST_KEY
                 }`;
 
-                axiosInstance
+                axiosSecure
                     .post(imgApiUrl, formData)
                     .then(async (result) => {
                         data.image = result.data.data.url;
@@ -86,7 +86,7 @@ export default function ReportIssue() {
                         data.email = userInfo.email;
                         data.name = userInfo.displayName;
 
-                        await axiosInstance
+                        await axiosSecure
                             .post("/issues", data)
                             .then((result) => {
                                 console.log("", result);
@@ -103,7 +103,7 @@ export default function ReportIssue() {
                                     issueNote: "Issue reported by citizen",
                                 };
 
-                                axiosInstance
+                                axiosSecure
                                     .post("/issues/trackings", issueLog)
                                     .then((res) => {
                                         console.log("issue log inserted");
