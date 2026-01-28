@@ -29,7 +29,7 @@ export default function PaymentSuccess() {
             <div className="p-5 box-content flex flex-col h-36 gap-3 bg-base-200 justify-center items-center rounded-md">
                 <h2 className="text-2xl font-semibold">Payment Successful</h2>
                 <p className="text-3xl">Congrats for being a premium user!</p>
-                <Link to="/dashboard/my-profile" className="btn btn-secondary">
+                <Link to="/dashboard/" className="btn btn-secondary">
                     Go to Profile
                 </Link>
             </div>

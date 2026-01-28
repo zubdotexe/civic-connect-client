@@ -12,7 +12,7 @@ export default function Hero() {
                     CivicConnect helps people report issues and authorities fix
                     them faster with a transparent, connected workflow.
                 </p>
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-3">
                     <Link
                         to="/dashboard/report-issue"
                         className="btn btn-primary text-lg"
