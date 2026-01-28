@@ -33,9 +33,9 @@ export default function ManageIssues() {
         refetch: staffsRefetch,
         isLoading: staffsLoading,
     } = useQuery({
-        queryKey: ["staffs", "available"],
+        queryKey: ["staffs"],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/staffs?workStatus=available`);
+            const res = await axiosSecure.get(`/staffs?role=staff`);
             return res.data;
         },
     });

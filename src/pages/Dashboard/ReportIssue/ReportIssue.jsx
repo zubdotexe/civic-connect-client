@@ -7,6 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../components/Loading";
 import useBlockChecker from "../../../hooks/useBlockChecker";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAxiosInstance from "../../../hooks/useAxios";
+import { toast } from "react-toastify";
 
 const categories = [
     "water",
@@ -26,6 +28,7 @@ export default function ReportIssue() {
         formState: { errors },
     } = useForm();
     const [category, setCategory] = useState("");
+    const axiosInstance = useAxiosInstance();
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
     const navigate = useNavigate();
@@ -69,7 +72,7 @@ export default function ReportIssue() {
         }).then((result) => {
             if (result.isConfirmed) {
                 setLoading(true);
-                console.log("data", data);
+                // console.log("data", data);
 
                 const imageUrl = data.image[0];
                 const formData = new FormData();
@@ -78,7 +81,7 @@ export default function ReportIssue() {
                     import.meta.env.VITE_IMG_HOST_KEY
                 }`;
 
-                axiosSecure
+                axiosInstance
                     .post(imgApiUrl, formData)
                     .then(async (result) => {
                         data.image = result.data.data.url;
@@ -89,7 +92,7 @@ export default function ReportIssue() {
                         await axiosSecure
                             .post("/issues", data)
                             .then((result) => {
-                                console.log("", result);
+                                // console.log("", result);
 
                                 Swal.fire({
                                     title: "Reported!",
@@ -120,11 +123,13 @@ export default function ReportIssue() {
                             })
                             .catch((err) => {
                                 console.log("", err);
+                                toast.error(err.message);
                             })
                             .finally(() => setLoading(false));
                     })
                     .catch((err) => {
                         console.log("", err);
+                        toast.error(err.message);
                     })
                     .finally(() => setLoading(false));
             }
@@ -180,10 +185,10 @@ export default function ReportIssue() {
                                 Category
                             </label>
                             <select
-                                // value={category}
+                                value={category}
                                 {...register("category", { required: true })}
                                 className="select select-neutral bg-base-200 w-full"
-                                // onChange={handlePickCategory}
+                                onChange={handlePickCategory}
                             >
                                 <option value="" disabled={true}>
                                     Pick a category

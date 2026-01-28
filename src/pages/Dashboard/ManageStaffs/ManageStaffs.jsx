@@ -9,8 +9,10 @@ import { useEffect } from "react";
 import Swal from "sweetalert2";
 import useImgUp from "../../../hooks/useImgUp";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAxiosInstance from "../../../hooks/useAxios";
 
 export default function ManageStaffs() {
+    const axiosInstance = useAxiosInstance();
     const axiosSecure = useAxiosSecure();
     const addModalRef = useRef();
     const updateModalRef = useRef();
@@ -36,7 +38,7 @@ export default function ManageStaffs() {
     } = useQuery({
         queryKey: ["staffs"],
         queryFn: async () => {
-            const res = await axiosSecure.get("/staffs");
+            const res = await axiosSecure.get("/staffs?role=staff");
             return res.data;
         },
     });
@@ -74,7 +76,7 @@ export default function ManageStaffs() {
                 import.meta.env.VITE_IMG_HOST_KEY
             }`;
 
-            const imgBBRes = await axiosSecure.post(imgApiUrl, formData);
+            const imgBBRes = await axiosInstance.post(imgApiUrl, formData);
 
             if (!imgBBRes.data?.success) {
                 throw new Error("image upload failed");

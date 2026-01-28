@@ -14,10 +14,12 @@ import useBlockChecker from "../../../hooks/useBlockChecker";
 import useInvoiceDownload from "../../../hooks/useInvoiceDownload";
 import Invoice from "../../../components/Invoice";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAxiosInstance from "../../../hooks/useAxios";
 
 export default function UserProfile() {
     const { user, updateUserProfile } = useAuth();
     const { role, roleLoading } = useRole();
+    const axiosInstance = useAxiosInstance();
     const axiosSecure = useAxiosSecure();
     const modalRef = useRef();
     const [infoUpdateLoding, setInfoUpdateLoading] = useState(false);
@@ -66,7 +68,7 @@ export default function UserProfile() {
                 const formData = new FormData();
                 formData.append("image", profileImg);
 
-                const result = await axiosSecure.post(
+                const result = await axiosInstance.post(
                     `https://api.imgbb.com/1/upload?key=${
                         import.meta.env.VITE_IMG_HOST_KEY
                     }`,
