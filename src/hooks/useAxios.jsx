@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: "https://civic-conn.vercel.app",
 });
 
 export default function useAxiosInstance() {

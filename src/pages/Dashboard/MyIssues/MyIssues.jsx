@@ -77,7 +77,7 @@ export default function MyIssues() {
                     console.log("", err);
                     toast.error(err.message);
                 } finally {
-                    setLoading(true);
+                    setLoading(false);
                 }
             }
         });

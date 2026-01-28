@@ -54,7 +54,7 @@ export default function AssignedIssues() {
     const totalAssignedIssues = issues?.total ?? 0;
 
     const handleModal = (task, issue = null) => {
-        console.log("issue", issue);
+        // console.log("issue", issue);
         if (task === "open") {
             if (!issue) return;
 
@@ -64,7 +64,7 @@ export default function AssignedIssues() {
             modalRef.current.close();
             // setSelectedIssue(null);
         }
-        console.log("selectedIssue", selectedIssue);
+        // console.log("selectedIssue", selectedIssue);
     };
 
     const handleChangeStatus = async (status) => {
@@ -90,7 +90,7 @@ export default function AssignedIssues() {
 
         setCurrentStatus(status);
 
-        console.log("", update);
+        // console.log("", update);
 
         const res = await axiosSecure.patch(
             `/issues/${selectedIssue._id}/change-status`,

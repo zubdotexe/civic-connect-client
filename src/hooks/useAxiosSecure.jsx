@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 
 const axiosSecure = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: "https://civic-conn.vercel.app",
 });
 
 export default function useAxiosSecure() {
