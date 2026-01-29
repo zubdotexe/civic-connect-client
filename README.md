@@ -1,16 +1,57 @@
-# React + Vite
+# CivicConnect – Public Infrastructure Issue Reporting System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+CivicConnect is a web-based platform that enables citizens to report public infrastructure issues (such as road damage, lighting problems, water leaks, etc.) and allows administrators to track, manage, and resolve those issues efficiently.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌐 Live Website
 
-## React Compiler
+🔗 Live Site URL:  
+https://civic-connect-e0d60.web.app/
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🔐 Admin Credentials (Demo)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+> ⚠️ For demonstration/testing purposes only
+
+- **Admin Email:** admin@civicconnect.com  
+- **Admin Password:** Password123!
+
+---
+
+## 🚀 Key Features
+
+- 🏙️ Citizens can report public infrastructure issues with detailed descriptions
+- 📍 Location-based issue reporting for accurate tracking
+- 🖼️ Image upload support for better issue verification
+- 📊 Admin dashboard to monitor all reported issues
+- 🔄 Issue status tracking (Pending, In Progress, Resolved)
+- 👤 Role-based access control (Admin & Users)
+- 💳 Integrated payment system for premium services or donations
+- 🧾 Invoice generation and downloadable PDF invoices for payments
+- 🔍 Advanced filtering and searching of issues
+- 📅 Timestamped reports for better transparency
+- 📱 Fully responsive design for mobile, tablet, and desktop
+- 🔐 Secure authentication and authorization system
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** React, Tailwind CSS, DaisyUI
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB
+- **Authentication:** JWT
+- **State Management:** React Query
+- **Payments:** Stripe
+
+---
+
+## 📦 Installation & Setup
+
+```bash
+git clone https://github.com/zubdotexe/civic-connect-client.git
+cd civic-connect-client
+npm install
+npm run dev
