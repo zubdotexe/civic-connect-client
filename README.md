@@ -11,9 +11,7 @@ https://civic-connect-e0d60.web.app/
 
 ---
 
-## 🔐 Admin Credentials (Demo)
-
-> ⚠️ For demonstration/testing purposes only
+## 🔐 Admin Credentials
 
 - **Admin Email:** admin@civicconnect.com  
 - **Admin Password:** Password123!
