@@ -1,4 +1,12 @@
 import Marquee from "react-fast-marquee";
+import {
+    Construction,
+    Lightbulb,
+    Droplet,
+    Trash2,
+    Route,
+    TreeDeciduous,
+} from "lucide-react";
 
 export default function CoveredCategories() {
     return (
@@ -46,22 +54,33 @@ export default function CoveredCategories() {
             <div className="mt-9">
                 <Marquee className="py-3">
                     <div className="mx-4 bg-base-300 rounded-md p-5 w-72 text-center shadow-md">
-                        <span>🛣️ Road & Potholes</span>
+                        <Construction className="w-7 h-7 mx-auto mb-2 text-warning" />
+                        <span>Road & Potholes</span>
                     </div>
+
                     <div className="mx-4 bg-base-300 rounded-md p-5 w-72 text-center shadow-md">
-                        <span>💡 Street Lights</span>
+                        <Lightbulb className="w-7 h-7 mx-auto mb-2 text-yellow-500" />
+                        <span>Street Lights</span>
                     </div>
+
                     <div className="mx-4 bg-base-300 rounded-md p-5 w-72 text-center shadow-md">
-                        <span>🚰 Water Leakage</span>
+                        <Droplet className="w-7 h-7 mx-auto mb-2 text-blue-500" />
+                        <span>Water Leakage</span>
                     </div>
+
                     <div className="mx-4 bg-base-300 rounded-md p-5 w-72 text-center shadow-md">
-                        <span>🗑️ Garbage Overflow</span>
+                        <Trash2 className="w-7 h-7 mx-auto mb-2 text-success" />
+                        <span>Garbage Overflow</span>
                     </div>
+
                     <div className="mx-4 bg-base-300 rounded-md p-5 w-72 text-center shadow-md">
-                        <span>🚧 Footpath Damage</span>
+                        <Route className="w-7 h-7 mx-auto mb-2 text-error" />
+                        <span>Footpath Damage</span>
                     </div>
+
                     <div className="mx-4 bg-base-300 rounded-md p-5 w-72 text-center shadow-md">
-                        <span>🌳 Public Space Issues</span>
+                        <TreeDeciduous className="w-7 h-7 mx-auto mb-2 text-green-600" />
+                        <span>Public Space Issues</span>
                     </div>
                 </Marquee>
             </div>
