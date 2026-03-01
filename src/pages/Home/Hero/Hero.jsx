@@ -5,10 +5,10 @@ export default function Hero() {
     return (
         <div className="max-w-375 mx-auto p-10 bg-linear-to-br from-[#E3F2FD] to-[#F5F7FA] flex flex-col-reverse md:flex-row gap-5 items-center">
             <div className="space-y-3 flex-1">
-                <h1 className="text-4xl">
+                <h1 className="text-4xl text-black">
                     Connecting Citizens <br /> to Smarter Cities.
                 </h1>
-                <p className="text-xl">
+                <p className="text-xl text-black">
                     CivicConnect helps people report issues and authorities fix
                     them faster with a transparent, connected workflow.
                 </p>
@@ -21,7 +21,7 @@ export default function Hero() {
                     </Link>
                     <Link
                         to="/issues"
-                        className="btn btn-outline border-primary text-lg"
+                        className="btn btn-outline text-primary border-primary text-lg"
                     >
                         View All Issues
                     </Link>

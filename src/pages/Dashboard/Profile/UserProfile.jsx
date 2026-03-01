@@ -264,7 +264,7 @@ export default function UserProfile() {
                                 )}
                                 {payments.length > 0 && (
                                     <div className="bg-base-300 rounded-sm p-5 mt-5 space-y-2">
-                                        <h3 className="text-sm font-semibold text-gray-600">
+                                        <h3 className="text-sm font-semibold text-base-content">
                                             Invoice Available
                                         </h3>
                                         <button
