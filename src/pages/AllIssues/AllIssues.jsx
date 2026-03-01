@@ -4,6 +4,7 @@ import useAxiosInstance from "../../hooks/useAxios";
 import IssueCard from "../../components/IssueCard";
 import { ArrowLeft, ArrowRight, Trash } from "lucide-react";
 import Loading from "../../components/Loading";
+import Skeleton from "../../components/Skeleton";
 
 export default function AllIssues() {
     const axiosInstance = useAxiosInstance();
@@ -106,7 +107,7 @@ export default function AllIssues() {
                 </div>
             </div>
             {isLoading ? (
-                <Loading />
+                <Skeleton />
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-7">
                     {issues.map((issue, idx) => (

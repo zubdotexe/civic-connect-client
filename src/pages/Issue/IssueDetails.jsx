@@ -156,8 +156,8 @@ export default function IssueDetails() {
 
                             <div className="space-y-4">
                                 {/* Title and basic info */}
-                                <div className="flex justify-between items-center gap-3">
-                                    <h1 className="text-3xl font-semibold text-gray-800">
+                                <div className="flex flex-wrap justify-between items-center gap-3">
+                                    <h1 className="text-3xl font-semibold text-base-content">
                                         {issue?.title}
                                     </h1>
                                     <div className="flex items-center gap-2">
@@ -202,20 +202,20 @@ export default function IssueDetails() {
                                         )}
                                     </div>
                                 </div>
-                                <p className="text-lg text-gray-600">
+                                <p className="text-lg text-base-content">
                                     {issue?.location}
                                 </p>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-base-content">
                                     <strong>Reported by:</strong>{" "}
                                     {issue?.reportedBy.name}
                                 </p>
 
                                 {/* Description */}
                                 <div>
-                                    <h2 className="text-xl font-semibold text-gray-800">
+                                    <h2 className="text-xl font-semibold text-base-content">
                                         Description
                                     </h2>
-                                    <p className="text-gray-600">
+                                    <p className="text-base-content">
                                         {issue?.description}
                                     </p>
                                 </div>
@@ -223,10 +223,10 @@ export default function IssueDetails() {
                                 {/* Category, Priority, Status, Upvotes */}
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                                     <div className="flex items-center space-x-2">
-                                        <span className="font-semibold text-gray-600">
+                                        <span className="font-semibold text-base-content">
                                             Category:
                                         </span>
-                                        <span className="text-gray-600">
+                                        <span className="text-base-content">
                                             {issue?.category
                                                 .charAt(0)
                                                 .toUpperCase() +
@@ -234,7 +234,7 @@ export default function IssueDetails() {
                                         </span>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <span className="font-semibold text-gray-600">
+                                        <span className="font-semibold text-base-content">
                                             Priority:
                                         </span>
                                         <span
@@ -256,7 +256,7 @@ export default function IssueDetails() {
                                         </span>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <span className="font-semibold text-gray-600">
+                                        <span className="font-semibold text-base-content">
                                             Status:
                                         </span>
                                         <span
@@ -272,7 +272,7 @@ export default function IssueDetails() {
                                     </div>
                                     {/* Upvote count */}
                                     <div className="flex items-center space-x-2">
-                                        <span className="font-semibold text-gray-600">
+                                        <span className="font-semibold text-base-content">
                                             Upvotes:
                                         </span>
                                         <span className="">
@@ -283,7 +283,7 @@ export default function IssueDetails() {
 
                                 {/* Boosted status */}
                                 <div className="flex items-center space-x-2">
-                                    <span className="font-semibold text-gray-600">
+                                    <span className="font-semibold text-base-content">
                                         Boosted:
                                     </span>
                                     <span
@@ -299,10 +299,10 @@ export default function IssueDetails() {
 
                                 {/* Assigned Staff */}
                                 <div>
-                                    <h2 className="text-xl font-semibold text-gray-800">
+                                    <h2 className="text-xl font-semibold text-base-content">
                                         Assigned Staff
                                     </h2>
-                                    <p className="text-gray-600">
+                                    <p className="text-base-content">
                                         {issue?.assignedStaff.name ? (
                                             issue?.assignedStaff.name
                                         ) : (
@@ -314,7 +314,7 @@ export default function IssueDetails() {
                                 </div>
 
                                 {/* Created and Updated At */}
-                                <div className="flex justify-between text-sm text-gray-500">
+                                <div className="flex justify-between text-sm text-base-content">
                                     <p>
                                         <strong>Created at:</strong>{" "}
                                         {new Date(
@@ -368,7 +368,7 @@ export default function IssueDetails() {
 
                                         <div className="timeline-middle shadow-sm sm:w-2xs bg-base-200 hover:bg-base-300 transition-color duration-300 p-4 rounded-md">
                                             <p>{log.issueNote}</p>
-                                            <div className="flex justify-between items-center gap-3 mt-2">
+                                            <div className="flex flex-wrap justify-between items-center gap-3 mt-2">
                                                 {log.issueStatus && (
                                                     <p
                                                         className={`font-medium badge ${statusColor[log.issueStatus]}`}
@@ -381,7 +381,7 @@ export default function IssueDetails() {
                                                             )}
                                                     </p>
                                                 )}
-                                                <p className="text-sm text-neutral">
+                                                <p className="text-sm text-base-content">
                                                     {new Date(
                                                         log.createdAt,
                                                     ).toLocaleDateString()}
