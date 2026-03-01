@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import "tailwindcss";
+
+/* Include both themes explicitly */
 @plugin "daisyui" {
-  themes: light --default;
+  themes: civicconnectlight, civicconnectdark;
 }
 
 * {
@@ -10,17 +12,18 @@
     font-style: normal;
 }
 
+/* Your existing light theme */
 @plugin "daisyui/theme" {
-  name: "civicconnectlight";
+  name: "light";
   default: true;
-  prefersdark: false;
+  /* prefersdark: false; */
   color-scheme: light;
 
   /* base layers */
-  --color-base-100: #F5F7FA;   /* main background */
-  --color-base-200: #E9EDF2;   /* light surface */
-  --color-base-300: #DDE3EA;   /* card borders / subtle surface */
-  --color-base-content: #1A1A1A; /* text */
+  --color-base-100: #F5F7FA;
+  --color-base-200: #E9EDF2;
+  --color-base-300: #DDE3EA;
+  --color-base-content: #1A1A1A;
 
   /* brand colors */
   --color-primary: #1E88E5;
@@ -62,6 +65,57 @@
   --border: 1px;
 
   /* effects */
+  --depth: 1;
+  --noise: 0;
+}
+
+/* New dark theme */
+@plugin "daisyui/theme" {
+  name: "dark";
+  default: false;
+  /* prefersdark: true; */
+  color-scheme: dark;
+
+  /* Base layers - Warmer, softer dark background */
+  --color-base-100: #1A1D24;   /* main background - warm dark gray */
+  --color-base-200: #252A33;   /* elevated surface */
+  --color-base-300: #2F3642;   /* cards and elevated surfaces */
+  --color-base-content: #D3D9E5; /* text - soft off-white */
+
+  /* Brand colors - Muted but distinguishable */
+  --color-primary: #5F9BFA;     /* softer blue */
+  --color-primary-content: #1A1D24;
+
+  --color-secondary: #3ABE6B;   /* muted green */
+  --color-secondary-content: #1A1D24;
+
+  --color-accent: #E6A817;      /* warm amber */
+  --color-accent-content: #1A1D24;
+
+  /* Neutrals - For subtle UI elements */
+  --color-neutral: #3C4556;     /* muted neutral */
+  --color-neutral-content: #D3D9E5;
+
+  /* Semantic colors - Softer, easier on eyes */
+  --color-info: #5299D3;        /* muted info blue */
+  --color-info-content: #1A1D24;
+
+  --color-success: #43A668;      /* softer success green */
+  --color-success-content: #1A1D24;
+
+  --color-warning: #D7A33B;      /* muted warning amber */
+  --color-warning-content: #1A1D24;
+
+  --color-error: #C65D5D;        /* softer error red */
+  --color-error-content: #1A1D24;
+
+  /* Structural values */
+  --radius-selector: 1rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
   --depth: 1;
   --noise: 0;
 }
