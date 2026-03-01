@@ -26,6 +26,10 @@ import AllPayments from "../pages/Dashboard/Payments/AllPayments";
 import Invoice from "../components/Invoice";
 import StaffRoute from "./StaffRoute";
 import AdminRoute from "./AdminRoute";
+import About from "../pages/About/About";
+import Features from "../pages/Features/Features";
+import Contact from "../pages/Contact/Contact";
+import Skeleton from "../components/Skeleton";
 
 export const router = createBrowserRouter([
     {
@@ -47,6 +51,22 @@ export const router = createBrowserRouter([
                         <IssueDetails />
                     </PrivateRoute>
                 ),
+            },
+            {
+                path: "about",
+                Component: About,
+            },
+            {
+                path: "features",
+                Component: Features,
+            },
+            {
+                path: "contact",
+                Component: Contact,
+            },
+            {
+                path: "ske",
+                Component: Skeleton,
             },
         ],
     },

@@ -4,6 +4,7 @@ import civicConnLogo from "/civicConnect.png";
 import useAuth from "../../../hooks/useAuth";
 import { LogOut } from "lucide-react";
 import Loading from "../../../components/Loading";
+import ToggleTheme from "../../../contexts/ThemeContext/ToggleTheme";
 
 export default function Navbar() {
     const { user, logoutUser, loading } = useAuth();
@@ -34,15 +35,30 @@ export default function Navbar() {
                     Report Issue
                 </NavLink>
             </li>
+
+            {user && (
+                <>
+                    <li>
+                        <NavLink to="/dashboard/my-issues" className="mx-1">
+                            Track Issues
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/dashboard" className="mx-1">
+                            Dashboard
+                        </NavLink>
+                    </li>
+                </>
+            )}
             <li>
-                <NavLink to="/dashboard" className="mx-1">
-                    Dashboard
+                <NavLink to="/about" className="mx-1">
+                    About Us
                 </NavLink>
             </li>
         </>
     );
     return (
-        <div className="max-w-375 mx-auto navbar bg-base-100">
+        <div className="max-w-375 mx-auto navbar bg-base-100 sticky top-0 z-10 shadow-2xs">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div
@@ -85,8 +101,13 @@ export default function Navbar() {
                 <ul className="menu menu-horizontal px-1">{links}</ul>
             </div>
             <div className="navbar-end gap-2">
+                <ToggleTheme />
                 {loading ? (
-                    <Loading height="h-auto" width="w-auto" color="text-accent" />
+                    <Loading
+                        height="h-auto"
+                        width="w-auto"
+                        color="text-accent"
+                    />
                 ) : user ? (
                     <div className="dropdown dropdown-end cursor-pointer">
                         <div
@@ -114,7 +135,12 @@ export default function Navbar() {
                             >
                                 {user.displayName || user.email}
                             </Link>
-                            <Link to="/dashboard" className="hover:bg-base-200 rounded-md transition-color duration-300 p-2">Dashboard</Link>
+                            <Link
+                                to="/dashboard"
+                                className="hover:bg-base-200 rounded-md transition-color duration-300 p-2"
+                            >
+                                Dashboard
+                            </Link>
                             <button
                                 className="btn btn-accent"
                                 onClick={handleSignOut}
