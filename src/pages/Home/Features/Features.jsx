@@ -1,5 +1,14 @@
 import { motion } from "framer-motion";
-import { HdIcon } from "lucide-react";
+import {
+    Zap,
+    Clock,
+    Shield,
+    Rocket,
+    Flame,
+    Crown,
+    Lock,
+    Building2,
+} from "lucide-react";
 
 const divContainerVariants = {
     hidden: { opacity: 0 },
@@ -11,45 +20,47 @@ const divCardVariants = {
     show: { opacity: 1, transition: { duration: 0.3, ease: "easeOut" } },
 };
 
+const iconStyle = "w-8 h-8 text-primary";
+
 export default function Features() {
     const features = [
         {
-            icon: "⚡",
+            icon: <Zap className={iconStyle} />,
             title: "Quick Issue Reporting",
             desc: "Report problems like potholes, broken lights, or garbage overflow with photos and location in just a few clicks.",
         },
         {
-            icon: "🕒",
+            icon: <Clock className={iconStyle} />,
             title: "Track Every Update",
             desc: "Follow your issue from Pending → In-Progress → Resolved → Closed with a transparent activity timeline.",
         },
         {
-            icon: "👮‍♂️",
+            icon: <Shield className={iconStyle} />,
             title: "Official Resolution Process",
             desc: "Issues are reviewed by admins and handled by assigned government staff — no lost or ignored reports.",
         },
         {
-            icon: "🚀",
+            icon: <Rocket className={iconStyle} />,
             title: "Boost Critical Issues",
             desc: "Escalate urgent problems by boosting priority so they get resolved faster.",
         },
         {
-            icon: "🔥",
+            icon: <Flame className={iconStyle} />,
             title: "Public Importance Voting",
             desc: "Upvote issues to show public importance and push critical problems higher.",
         },
         {
-            icon: "👑",
+            icon: <Crown className={iconStyle} />,
             title: "Premium Citizen Access",
             desc: "Premium users can report unlimited issues and receive priority handling.",
         },
         {
-            icon: "🔐",
+            icon: <Lock className={iconStyle} />,
             title: "Secure Role Management",
             desc: "Citizens, Staff, and Admins have separate dashboards with secure access and permissions.",
         },
         {
-            icon: "🏙️",
+            icon: <Building2 className={iconStyle} />,
             title: "Smarter City Decisions",
             desc: "Authorities gain insights from issue trends, helping improve city planning and response time.",
         },
@@ -71,8 +82,8 @@ export default function Features() {
                         key={idx}
                         className="bg-base-200 transform transition-transform duration-300 delay-100 hover:bg-base-300/65 hover:scale-102 p-5 text-center rounded-md shadow-xl"
                     >
-                        <p>{feature.icon}</p>
-                        <h3 className="font-semibold text-2xl mt-2">
+                        <p className="flex justify-center">{feature.icon}</p>
+                        <h3 className="font-semibold text-2xl mt-7 wrap-break-word">
                             {feature.title}
                         </h3>
                         <p className="mt-3">{feature.desc}</p>

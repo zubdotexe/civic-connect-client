@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import Loading from "../../../components/Loading";
 import { motion } from "framer-motion";
+import Skeleton from "../../../components/Skeleton";
 
 const divContainerVariants = {
     hidden: { opacity: 0 },
@@ -26,7 +27,7 @@ export default function LatestResolvedIssues() {
         queryKey: ["issues"],
         queryFn: async () => {
             const res = await axiosInstance.get(
-                "/latest-issues?status=resolved"
+                "/latest-issues?status=resolved",
             );
             return res.data;
         },
@@ -37,7 +38,7 @@ export default function LatestResolvedIssues() {
         <div className="max-w-375 mx-auto p-10 bg-base-200">
             <h2 className="text-3xl font-semibold">Latest Resolved Issues</h2>
             {isLoading ? (
-                <Loading />
+                <Skeleton />
             ) : (
                 <>
                     <motion.div
